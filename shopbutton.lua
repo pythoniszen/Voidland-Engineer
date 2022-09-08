@@ -4,7 +4,7 @@ require "coin"
 
 ShopButton = Button:extend()
 
-function ShopButton:new(x, y, imageVar, price, i1, i2)
+function ShopButton:new(x, y, imageVar, price)
     self.image = imageVar
     self.imageMain = imageVar
     self.x = x
@@ -13,20 +13,23 @@ function ShopButton:new(x, y, imageVar, price, i1, i2)
     self.width = love.graphics.getWidth(self.image)
     self.canBuy = true
     self.price = price
-    self.right = i1
-    self.left = i2
 end
 
 function ShopButton:update(dt)
   
-    if mouse.x > self.right and mouse.y < self.y and mouse.x < self.left and mouse.y > 220 and mouse.y < 300 then
+    if mouse.x > self.x - 98 and mouse.y < self.y and mouse.x < self.x - 48 and mouse.y > 220 and mouse.y < 300 then
         --self.image = stillCoin
         self.canBuy = true
     else
         --self.image = self.imageMain
         self.canBuy = false
     end
-
+    
+    if user.x ~= user.last.x then
+        self.canBuy = false
+        shopTalkCounter = 0
+        shopTalkBool = false
+    end
 end
 
 function ShopButton:draw()

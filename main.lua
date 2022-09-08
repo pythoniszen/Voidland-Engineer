@@ -27,7 +27,7 @@ function love.load()
     
     -- Loading in base game assets
     start = false
-    gameLevel = 1
+    gameLevel = 2
     stillCoin = love.graphics.newImage("/art/stillcoin.png")
     coinCount = 0
     mushroomCount = 0
@@ -48,8 +48,8 @@ function love.load()
     drawLevel3Text = false
     textPrompt = love.graphics.newImage("/art/textprompt.png")
     shopKeep = Shopkeep(400, 845)
-    shopButton1 = ShopButton(400, 800, wrenchImage, 15, 300, 360)
-    shopButton2 = ShopButton(460, 800, mushroomImage, 30, 360, 420)
+    shopButton1 = ShopButton(400, 800, wrenchImage, 15)
+    shopButton2 = ShopButton(460, 800, mushroomImage, 30)
     
     -- Player character components
     user = User(60, 480)
@@ -91,10 +91,19 @@ function love.load()
    
    -- Spawns enemies for level 2
     enemyL2 = EnemyMushroom(1200, 875, 1110, 1210, 875)
+    enemy2L2 = EnemyMushroom(1400, 875, 1310, 1410, 875)
+    enemy3L2 = EnemyMushroom(1800, 875, 1710, 1810, 875)
+    enemy4L2 = EnemyMushroom(3590, 725, 3540, 3600, 725)
+    enemy5L2 = EnemyMushroom(3630, 725, 3580, 3640, 725)
+    enemy6L2 = EnemyMushroom(3430, 525, 3410, 3440, 525)
+    enemy7L2 = EnemyMushroom(2000, 875, 1910, 2010, 875)
+    
+    bEnemyL2 = BEnemyClass(2100, 710, 2010, 2110)
+    bEnemy2L2 = BEnemyClass(1480, 650, 1390, 1490)
 
     
     -- List of all level 2 enemies
-    enemiesList2 = {enemyL2}
+    enemiesList2 = {enemyL2, enemy2L2, enemy3L2, enemy4L2, enemy5L2, enemy6L2, enemy7L2, bEnemyL2, bEnemy2L2}
     
     -- Level 1 timers
     titleEnemeyTimer = Timer()
@@ -136,6 +145,15 @@ function love.load()
     
     -- Level 2 timers
     enemyL2Timer = Timer()
+    enemy2L2Timer = Timer()
+    enemy3L2Timer = Timer()
+    enemy4L2Timer = Timer()
+    enemy5L2Timer = Timer()
+    enemy6L2Timer = Timer()
+    enemy7L2Timer = Timer()
+    
+    bEnemyL2Timer = Timer()
+    bEnemy2L2Timer = Timer()
     
     -- Level 1 timers
     -- mushroom enemies
@@ -243,8 +261,42 @@ function love.load()
     --Level 2 enemy timers
     -- Mushroom enemies
     enemyL2Timer:script(function(wait)
-        wait(2)
+        wait(2.6)
         enemyL2Timer:every(2, function() enemyL2:movement() end)
+    end)
+    enemy2L2Timer:script(function(wait)
+        wait(3.3)
+        enemy2L2Timer:every(2, function() enemy2L2:movement() end)
+    end)
+    enemy3L2Timer:script(function(wait)
+        wait(4.2)
+        enemy3L2Timer:every(2, function() enemy3L2:movement() end)
+    end)
+    enemy4L2Timer:script(function(wait)
+        wait(2.1)
+        enemy4L2Timer:every(1.2, function() enemy4L2:movement() end)
+    end)
+    enemy5L2Timer:script(function(wait)
+        wait(4.6)
+        enemy5L2Timer:every(1.2, function() enemy5L2:movement() end)
+    end)
+    enemy6L2Timer:script(function(wait)
+        wait(2.3)
+        enemy6L2Timer:every(0.6, function() enemy6L2:movement() end)
+    end)
+    enemy7L2Timer:script(function(wait)
+        wait(4.2)
+        enemy7L2Timer:every(2, function() enemy7L2:movement() end)
+    end)
+  
+    --Bee Timer
+    bEnemyL2Timer:script(function(wait)
+        wait(2.1)
+        bEnemyL2Timer:every(2, function() bEnemyL2:movement() end)
+    end)
+    bEnemy2L2Timer:script(function(wait)
+        wait(3.4)
+        bEnemy2L2Timer:every(2, function() bEnemy2L2:movement() end)
     end)
   
     -- Floor/walls/game objects
@@ -714,6 +766,15 @@ function love.update(dt)
     
     --lvl 2 timers
     enemyL2Timer:update(dt)
+    enemy2L2Timer:update(dt)
+    enemy3L2Timer:update(dt)
+    enemy4L2Timer:update(dt)
+    enemy5L2Timer:update(dt)
+    enemy6L2Timer:update(dt)
+    enemy7L2Timer:update(dt)
+    
+    bEnemyL2Timer:update(dt)
+    bEnemy2L2Timer:update(dt)
     
     -- Updates player timers with dt
     invincibleTimer:update(dt)
@@ -807,6 +868,31 @@ function love.update(dt)
     -- Level 2 enemies
     if enemyL2.eAlive == false then
         enemyL2Timer:destroy()
+    end
+    if enemy2L2.eAlive == false then
+        enemy2L2Timer:destroy()
+    end
+    if enemy3L2.eAlive == false then
+        enemy3L2Timer:destroy()
+    end
+    if enemy4L2.eAlive == false then
+        enemy4L2Timer:destroy()
+    end
+    if enemy5L2.eAlive == false then
+        enemy5L2Timer:destroy()
+    end
+    if enemy6L2.eAlive == false then
+        enemy6L2Timer:destroy()
+    end
+    if enemy7L2.eAlive == false then
+        enemy7L2Timer:destroy()
+    end
+    
+    if bEnemyL2.eAlive == false then
+        bEnemyL2Timer:destroy()
+    end
+    if bEnemy2L2.eAlive == false then
+        bEnemy2L2Timer:destroy()
     end
     
     if isDashing == false then

@@ -255,9 +255,9 @@ end
 function User:draw()
     -- Player movement
     if love.keyboard.isDown("d") and jumpBool == true and isDashing == false then
-        love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 50, self.y + 40)
+        love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 45, self.y + 40)
     elseif love.keyboard.isDown("a") and jumpBool == true and isDashing == false then
-        love.graphics.draw(jump_img_left, left_run_frames[math.floor(currentFrameLeft)], self.x + 50, self.y + 40)
+        love.graphics.draw(jump_img_left, left_run_frames[math.floor(currentFrameLeft)], self.x + 55, self.y + 40)
     elseif gameLevel == 2 or gameLevel == 2.5 and drawLevel2Intro == true then
         love.graphics.draw(standImageRight, self.x, self.y)
     elseif onGround == false and jumpBool == false then

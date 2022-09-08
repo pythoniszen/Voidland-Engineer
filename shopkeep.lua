@@ -23,8 +23,8 @@ function Shopkeep:new(x, y)
 end
 
 function Shopkeep:update(dt)
-    if user_left == false and shopTalkBool == false and user.x < self.x - 10 and gameLevel > 1 and user.y >= 829 then
-        if user.x > self.x - 180 then
+    if user_left == false and shopTalkBool == false and user.x < self.x - 100 and gameLevel > 1 and user.y >= 829 then
+        if user.x > self.x - 160 then
             drawShopAlert = true
             self.image = shopKeepImage
             if love.keyboard.isDown("q") then
@@ -42,7 +42,6 @@ function Shopkeep:update(dt)
         
     else
         drawShopAlert = false
-
     end
     
     if user.x > shopKeep.x then
@@ -67,7 +66,7 @@ end
 function Shopkeep:draw()
     love.graphics.draw(self.image, self.x, self.y)
     
-    if shopTalkBool == true and shopTalkCounter <= 2 then
+    if shopTalkBool == true and shopTalkCounter <= 2 and user.x == user.last.x and user.x < shopKeep.x - 80 then
         
         if shopTalkCounter == 0 and user.x < self.x then
             love.graphics.draw(npcTalkImage, self.x - 160, self.y - 80)

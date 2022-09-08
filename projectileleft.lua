@@ -20,12 +20,24 @@ function Projectile_Left:new(x, y)
 end
 
 function Projectile_Left:update(dt)
-  
-    for i,v in ipairs(walls) do
-        if self:checkCollision(v) then
-            if self.y < 2000 then
-                while self.y < 2000 do
-                    self.y = self.y + self.gravity * dt
+    if gameLevel == 1 then
+        for i,v in ipairs(walls) do
+            if self:checkCollision(v) then
+                if self.y < 2000 then
+                    while self.y < 2000 do
+                        self.y = self.y + self.gravity * dt
+                    end
+                end
+            end
+        end
+    
+    elseif gameLevel == 2.5 then
+        for i,v in ipairs(walls2) do
+            if self:checkCollision(v) then
+                if self.y < 2000 then
+                    while self.y < 2000 do
+                        self.y = self.y + self.gravity * dt
+                    end
                 end
             end
         end
