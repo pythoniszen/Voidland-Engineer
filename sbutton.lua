@@ -39,7 +39,9 @@ function startButtonClass:update(dt)
     if drawLevel2Intro == false then
         fadeCurrentFrame4 = 1
     end
-
+    if drawLevel3Intro == false then
+        fadeCurrentFrame5 = 1
+    end
 end
 
 function startButtonClass:draw()
@@ -55,6 +57,7 @@ end
 function startButtonClass:endFade()
     startFade = false
     start = true
+    gameLevel = 3
 end
 
 function startButtonClass:l1Txt()

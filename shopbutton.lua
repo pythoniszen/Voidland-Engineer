@@ -11,7 +11,7 @@ function ShopButton:new(x, y, imageVar, price)
     self.y = y
     self.height = love.graphics.getHeight(self.image)
     self.width = love.graphics.getWidth(self.image)
-    self.canBuy = true
+    self.canBuy = false
     self.price = price
 end
 

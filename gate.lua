@@ -15,4 +15,11 @@ function Gate:new(x, y)
     self.image = gateImage
     self.x = x
     self.y = y
+    self.alive = true
 end
+
+--function Gate:update(dt)
+--    if self.alive == false then
+--        self.y = self.y + 10000
+--    end
+--end

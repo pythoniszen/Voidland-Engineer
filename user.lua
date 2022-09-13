@@ -1,4 +1,4 @@
-Timer = require "chrono-master.chrono-master.Timer"
+
 require "main"
 require "entity"
 require "helpers"
@@ -69,32 +69,41 @@ function User:update(dt)
         end
         
         -- Collision detection with enemies
-      for i,enemy in ipairs(enemiesList) do
-          if hitDetect(self, enemy) then
-              if enemy.eAlive == false then
-                  return
-              elseif invincible == true then
-                  if self.y == self.last.y then
-                      enemy.bounceBool = false
+      if gameLevel == 1 then
+          for i,enemy in ipairs(enemiesList) do
+              if hitDetect(self, enemy) then
+                  if enemy.eAlive == false then
+                      return
+                  elseif invincible == true then
+                      enemy.eAlive = true
+                  elseif invincible == false then
+                      alive = false
                   end
-                  enemy.eAlive = false
-              elseif invincible == false then
-                  alive = false
               end
           end
-      end
       
-      for i,enemy in ipairs(enemiesList2) do
-          if hitDetect(self, enemy) then
-              if enemy.eAlive == false then
-                  return
-              elseif invincible == true then
-                  if self.y == self.last.y then
-                      enemy.bounceBool = false
+      elseif gameLevel == 2.5 then
+          for i,enemy in ipairs(enemiesList2) do
+              if hitDetect(self, enemy) then
+                  if enemy.eAlive == false then
+                      return
+                  elseif invincible == true then
+                      enemy.eAlive = true
+                  elseif invincible == false then
+                      alive = false
                   end
-                  enemy.eAlive = false
-              elseif invincible == false then
-                  alive = false
+              end
+          end
+      elseif gameLevel == 3.5 then
+          for i,enemy in ipairs(enemiesList3) do
+              if hitDetect(self, enemy) then
+                  if enemy.eAlive == false then
+                      return
+                  elseif invincible == true then
+                      enemy.eAlive = true
+                  elseif invincible == false then
+                      alive = false
+                  end
               end
           end
       end
@@ -113,6 +122,18 @@ function User:update(dt)
       end
       
       for i,enemy in ipairs(enemiesList2) do
+          if enemy.eAlive == false and enemy.bounceBool == true then
+              if love.keyboard.isDown("space") then
+                  self.gravity = -520
+                  enemy.bounceBool = false
+              else
+                  self.gravity = -200
+                  enemy.bounceBool = false
+              end
+          end
+      end
+      
+      for i,enemy in ipairs(enemiesList3) do
           if enemy.eAlive == false and enemy.bounceBool == true then
               if love.keyboard.isDown("space") then
                   self.gravity = -520
@@ -180,9 +201,9 @@ function User:update(dt)
     end
     
     if drawLevel2Intro == true and drawLevel2Text == false then
-
         self.x = self.last.x
         self.y = self.last.y
+        jumpBool = true
     -- places user at level2 start point    
     elseif drawLevel2Intro == true and drawLevel2Text == true then
         self.x = 60
@@ -191,9 +212,9 @@ function User:update(dt)
     end
     
     if drawLevel3Intro == true and drawLevel3Text == false then
-
         self.x = self.last.x
         self.y = self.last.y
+        jumpBool = true
     -- places user at level3 start point    
     elseif drawLevel3Intro == true and drawLevel3Text == true then
         self.x = 60
@@ -241,6 +262,9 @@ end
 -- Eat funtion
 function User:eat()
     if mushroomCount > 0 then
+        if invincible == true then
+            invincibleTimer:destroy()
+        end
         mushroomCount = mushroomCount - 1
         invincible = true
         invincibleTimer:after(3, function() self:invincibleEnd() end)

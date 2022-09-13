@@ -7,11 +7,12 @@ function love.load()
     Timer = require "chrono-master.chrono-master.Timer"
     require "entity"
     require "titlescreenmushroom"
-    require "button" require "sbutton" require "shopbutton"
+    require "button" 
+    require "sbutton" 
+    require "shopbutton"
     require "helpers"
     require "user"
     require "benemy"
-    --require "flowerenemy"
     require "projectile"
     require "emushroomclass"
     require "projectileleft"
@@ -26,11 +27,12 @@ function love.load()
 
     
     -- Loading in base game assets
+    
     start = false
-    gameLevel = 2
+    gameLevel = 0
     stillCoin = love.graphics.newImage("/art/stillcoin.png")
     coinCount = 0
-    mushroomCount = 0
+    mushroomCount = 99
     drawGatePrompt = false
     promptX = 0
     PromptY = 0
@@ -50,6 +52,7 @@ function love.load()
     shopKeep = Shopkeep(400, 845)
     shopButton1 = ShopButton(400, 800, wrenchImage, 15)
     shopButton2 = ShopButton(460, 800, mushroomImage, 30)
+    bossBool = false
     
     -- Player character components
     user = User(60, 480)
@@ -73,9 +76,7 @@ function love.load()
     enemy10 = EnemyMushroom(5377, 525, 5287, 5387, 525)
     enemy11 = EnemyMushroom(5810, 125, 5720, 5820, 125)
     enemy12 = EnemyMushroom(2650, 125, 2560, 2660, 125)
-    
-    --fEnemy1 = FEnemyClass(1650, 475)
-    
+  
     bEnemy = BEnemyClass(2430, 280, 2340, 2440)
     bEnemy2 = BEnemyClass(3180, 300, 3090, 3190)
     bEnemy3 = BEnemyClass(3690, 370, 3600, 3700)
@@ -86,27 +87,51 @@ function love.load()
     bEnemy8 = BEnemyClass(5200, 20, 5110, 5210)
     
     -- List of all level 1 enemies
-    enemiesList = {enemy, enemy2, enemy3, enemy4, enemy5, bEnemy, enemy6, enemy7, bEnemy2, bEnemy3, enemy8, enemy9, bEnemy4, bEnemy5, enemy10, bEnemy6, enemy11, enemy12, bEnemy7, bEnemy8} --fEnemy1}
+    enemiesList = {enemy, enemy2, enemy3, enemy4, enemy5, bEnemy, enemy6, enemy7, bEnemy2, bEnemy3, enemy8, enemy9, bEnemy4, bEnemy5, enemy10, bEnemy6, enemy11, enemy12, bEnemy7, bEnemy8}
     
    
    -- Spawns enemies for level 2
     enemyL2 = EnemyMushroom(1200, 875, 1110, 1210, 875)
     enemy2L2 = EnemyMushroom(1400, 875, 1310, 1410, 875)
     enemy3L2 = EnemyMushroom(1800, 875, 1710, 1810, 875)
-    enemy4L2 = EnemyMushroom(3590, 725, 3540, 3600, 725)
-    enemy5L2 = EnemyMushroom(3630, 725, 3580, 3640, 725)
-    enemy6L2 = EnemyMushroom(3430, 525, 3410, 3440, 525)
+    enemy4L2 = EnemyMushroom(3590, 725, 3580, 3600, 725)
+    enemy5L2 = EnemyMushroom(3630, 725, 3620, 3640, 725)
+    enemy6L2 = EnemyMushroom(3430, 525, 3420, 3440, 525)
     enemy7L2 = EnemyMushroom(2000, 875, 1910, 2010, 875)
+    enemy8L2 = EnemyMushroom(3100, 725, 3010, 3110, 725)
+    enemy9L2 = EnemyMushroom(4250, 725, 4160, 4260, 725)
+    enemy10L2 = EnemyMushroom(4450, 1425, 4360, 4460, 1425)
+    enemy11L2 = EnemyMushroom(4650, 1425, 4560, 4660, 1425)
+    enemy12L2 = EnemyMushroom(4500, 1425, 4410, 4510, 1425)
+    enemy13L2 = EnemyMushroom(4300, 125, 4210, 4310, 125)
+    enemy14L2 = EnemyMushroom(4500, 125, 4410, 4510, 125)
+    enemy15L2 = EnemyMushroom(4200, 125, 4110, 4210, 125)
+    enemy16L2 = EnemyMushroom(3500, 125, 3410, 3510, 125)
+    enemy17L2 = EnemyMushroom(3350, 325, 3260, 3360, 325)
+    enemy18L2 = EnemyMushroom(3250, 325, 3160, 3260, 325)
+    enemy19L2 = EnemyMushroom(5480, 725, 5470, 5490, 725)
+    enemy20L2 = EnemyMushroom(5840, 575, 5830, 5850, 575)
     
     bEnemyL2 = BEnemyClass(2100, 710, 2010, 2110)
     bEnemy2L2 = BEnemyClass(1480, 650, 1390, 1490)
+    bEnemy3L2 = BEnemyClass(3100, 640, 3010, 3110)
+    bEnemy4L2 = BEnemyClass(3500, 235, 3410, 3510)
+    bEnemy5L2 = BEnemyClass(3600, 25, 3510, 3610)
+    bEnemy6L2 = BEnemyClass(4500, 25, 4410, 4510)
+    bEnemy7L2 = BEnemyClass(5540, 600, 5490, 5550)
 
     
     -- List of all level 2 enemies
-    enemiesList2 = {enemyL2, enemy2L2, enemy3L2, enemy4L2, enemy5L2, enemy6L2, enemy7L2, bEnemyL2, bEnemy2L2}
+    enemiesList2 = {enemyL2, enemy2L2, enemy3L2, enemy4L2, enemy5L2, enemy6L2, enemy7L2, enemy8L2, enemy9L2, enemy10L2, enemy11L2, enemy12L2, enemy13L2, enemy14L2, enemy15L2, enemy16L2, enemy17L2, enemy18L2, enemy19L2, enemy20L2, bEnemyL2, bEnemy2L2, bEnemy3L2, bEnemy4L2, bEnemy5L2, bEnemy6L2, bEnemy7L2}
+    
+    -- Spawns enemies for level 3
+    enemyL3 = EnemyMushroom(1700, 525, 1610, 1710, 525)
+    
+    -- List of all level 3 enemies
+    enemiesList3 = {enemyL3}
     
     -- Level 1 timers
-    titleEnemeyTimer = Timer()
+    titleEnemyTimer = Timer()
     introTimer = Timer()
     introFadeOutTimer = Timer()
     level2TextTimer = Timer()
@@ -136,11 +161,8 @@ function love.load()
     bEnemy7Timer = Timer()
     bEnemy8Timer = Timer()
     
-    fEnemey1StretchTimer = Timer()
-    
-    
     -- Title screen animation enemy
-    titleEnemeyTimer:every(2, function() enemyTitleScreen:movement() end)
+    titleEnemyTimer:every(2, function() enemyTitleScreen:movement() end)
     introTimer:after(2, function() startButtonClass:introEnd() end)
     
     -- Level 2 timers
@@ -151,112 +173,112 @@ function love.load()
     enemy5L2Timer = Timer()
     enemy6L2Timer = Timer()
     enemy7L2Timer = Timer()
+    enemy8L2Timer = Timer()
+    enemy9L2Timer = Timer()
+    enemy10L2Timer = Timer()
+    enemy11L2Timer = Timer()
+    enemy12L2Timer = Timer()
+    enemy13L2Timer = Timer()
+    enemy14L2Timer = Timer()
+    enemy15L2Timer = Timer()
+    enemy16L2Timer = Timer()
+    enemy17L2Timer = Timer()
+    enemy18L2Timer = Timer()
+    enemy19L2Timer = Timer()
+    enemy20L2Timer = Timer()
     
     bEnemyL2Timer = Timer()
     bEnemy2L2Timer = Timer()
+    bEnemy3L2Timer = Timer()
+    bEnemy4L2Timer = Timer()
+    bEnemy5L2Timer = Timer()
+    bEnemy6L2Timer = Timer()
+    bEnemy7L2Timer = Timer()
+    
+    -- Level 3 timers
+    enemyL3Timer = Timer()
     
     -- Level 1 timers
     -- mushroom enemies
     enemyTimer:every(2, function() enemy:movement() end)
-    
     enemy2Timer:script(function(wait)
         wait(2.4)
         enemy2Timer:every(2, function() enemy2:movement() end)
     end)
-  
     enemy3Timer:script(function(wait)
         wait(1.3)
         enemy3Timer:every(2, function() enemy3:movement() end)
     end)
-  
     enemy4Timer:script(function(wait)
         wait(4.1)
         enemy4Timer:every(2, function() enemy4:movement() end)
     end)
-  
     enemy5Timer:script(function(wait)
         wait(1.5)
         enemy5Timer:every(2, function() enemy5:movement() end)
     end)
-    
     enemy6Timer:script(function(wait)
         wait(2.2)
         enemy6Timer:every(2, function() enemy6:movement() end)
     end)
-  
     enemy7Timer:script(function(wait)
         wait(1.5)
         enemy7Timer:every(2, function() enemy7:movement() end)
     end)
-  
     enemy8Timer:script(function(wait)
         wait(1.1)
         enemy8Timer:every(2, function() enemy8:movement() end)
     end)
-  
     enemy9Timer:script(function(wait)
         wait(2.3)
         enemy9Timer:every(2, function() enemy9:movement() end)
     end)
-  
     enemy10Timer:script(function(wait)
         wait(1.1)
         enemy10Timer:every(2, function() enemy10:movement() end)
     end)
-  
     enemy11Timer:script(function(wait)
         wait(3.4)
         enemy11Timer:every(2, function() enemy11:movement() end)
     end)
-  
     enemy12Timer:script(function(wait)
         wait(2.1)
         enemy12Timer:every(2, function() enemy12:movement() end)
     end)
-  
   
     -- Bee timers
     bEnemyTimer:script(function(wait)
         wait(1.4)
         bEnemyTimer:every(2, function() bEnemy:movement() end)
     end)
-  
     bEnemy2Timer:script(function(wait)
         wait(2.2)
         bEnemy2Timer:every(2, function() bEnemy2:movement() end)
     end)
-  
     bEnemy3Timer:script(function(wait)
         wait(4.1)
         bEnemy3Timer:every(2, function() bEnemy3:movement() end)
     end)
-    
     bEnemy4Timer:script(function(wait)
         wait(1.8)
         bEnemy4Timer:every(2, function() bEnemy4:movement() end)
     end)
-  
     bEnemy5Timer:script(function(wait)
         wait(1.4)
         bEnemy5Timer:every(2, function() bEnemy5:movement() end)
     end)
-  
     bEnemy6Timer:script(function(wait)
         wait(2.1)
         bEnemy6Timer:every(2, function() bEnemy6:movement() end)
     end)
-    
     bEnemy7Timer:script(function(wait)
         wait(1.7)
         bEnemy7Timer:every(2, function() bEnemy7:movement() end)
     end)
-  
     bEnemy8Timer:script(function(wait)
         wait(1.3)
         bEnemy8Timer:every(2, function() bEnemy8:movement() end)
     end)
-  
---  fEnemey1StretchTimer:every(2, function() fEnemy1:movement() end)
     
     --Level 2 enemy timers
     -- Mushroom enemies
@@ -277,17 +299,70 @@ function love.load()
         enemy4L2Timer:every(1.2, function() enemy4L2:movement() end)
     end)
     enemy5L2Timer:script(function(wait)
-        wait(4.6)
+        wait(4)
         enemy5L2Timer:every(1.2, function() enemy5L2:movement() end)
     end)
     enemy6L2Timer:script(function(wait)
-        wait(2.3)
+        wait(2)
         enemy6L2Timer:every(0.6, function() enemy6L2:movement() end)
     end)
     enemy7L2Timer:script(function(wait)
-        wait(4.2)
+        wait(2.2)
         enemy7L2Timer:every(2, function() enemy7L2:movement() end)
     end)
+    enemy8L2Timer:script(function(wait)
+        wait(2.2)
+        enemy8L2Timer:every(2, function() enemy8L2:movement() end)
+    end)
+    enemy9L2Timer:script(function(wait)
+        wait(2)
+        enemy9L2Timer:every(1.2, function() enemy9L2:movement() end)
+    end)
+    enemy10L2Timer:script(function(wait)
+        wait(2.2)
+        enemy10L2Timer:every(2, function() enemy10L2:movement() end)
+    end)
+    enemy11L2Timer:script(function(wait)
+        wait(4.5)
+        enemy11L2Timer:every(2, function() enemy11L2:movement() end)
+    end)
+    enemy12L2Timer:script(function(wait)
+        wait(1.8)
+        enemy12L2Timer:every(2, function() enemy12L2:movement() end)
+    end)
+    enemy13L2Timer:script(function(wait)
+        wait(2.2)
+        enemy13L2Timer:every(2, function() enemy13L2:movement() end)
+    end)
+    enemy14L2Timer:script(function(wait)
+        wait(4.4)
+        enemy14L2Timer:every(2, function() enemy14L2:movement() end)
+    end)
+    enemy15L2Timer:script(function(wait)
+        wait(3.8)
+        enemy15L2Timer:every(2, function() enemy15L2:movement() end)
+    end)
+    enemy16L2Timer:script(function(wait)
+        wait(1.4)
+        enemy16L2Timer:every(2, function() enemy16L2:movement() end)
+    end)
+    enemy17L2Timer:script(function(wait)
+        wait(2.8)
+        enemy17L2Timer:every(2, function() enemy17L2:movement() end)
+    end)
+    enemy18L2Timer:script(function(wait)
+        wait(1.7)
+        enemy18L2Timer:every(2, function() enemy18L2:movement() end)
+    end)
+    enemy19L2Timer:script(function(wait)
+        wait(3)
+        enemy19L2Timer:every(0.6, function() enemy19L2:movement() end)
+    end)
+    enemy20L2Timer:script(function(wait)
+        wait(1)
+        enemy20L2Timer:every(1.2, function() enemy20L2:movement() end)
+    end)
+  
   
     --Bee Timer
     bEnemyL2Timer:script(function(wait)
@@ -297,6 +372,33 @@ function love.load()
     bEnemy2L2Timer:script(function(wait)
         wait(3.4)
         bEnemy2L2Timer:every(2, function() bEnemy2L2:movement() end)
+    end)
+    bEnemy3L2Timer:script(function(wait)
+        wait(1.1)
+        bEnemy3L2Timer:every(2, function() bEnemy3L2:movement() end)
+    end)
+    bEnemy4L2Timer:script(function(wait)
+        wait(1.8)
+        bEnemy4L2Timer:every(2, function() bEnemy4L2:movement() end)
+    end)
+    bEnemy5L2Timer:script(function(wait)
+        wait(3.2)
+        bEnemy5L2Timer:every(2, function() bEnemy5L2:movement() end)
+    end)
+    bEnemy6L2Timer:script(function(wait)
+        wait(2.4)
+        bEnemy6L2Timer:every(2, function() bEnemy6L2:movement() end)
+    end)
+    bEnemy7L2Timer:script(function(wait)
+        wait(1)
+        bEnemy7L2Timer:every(1.5, function() bEnemy7L2:movement() end)
+    end)
+  
+    --Level 3 enemy timers
+    -- Mushroom enemies
+    enemyL3Timer:script(function(wait)
+        wait(2.2)
+        enemyL3Timer:every(2, function() enemyL3:movement() end)
     end)
   
     -- Floor/walls/game objects
@@ -308,8 +410,149 @@ function love.load()
     dirtBlock = false
     walls = {}
     walls2 = {}
+    walls3 = {}
     objects = {}
     objects2 = {}
+    objects3 = {}
+    
+    
+    
+    -- Player projectile
+    projectileList = {}
+    leftProjectileList = {}
+    
+    inStock = true
+    pStock = 3
+    wallHit = false
+    
+    
+    -- Player movement/ status
+    frames = {}
+    left_run_frames = {}
+    
+    -- Left and right run spritesheets animation code
+    jump_img = love.graphics.newImage("/art/runsheet.png")
+    jump_img_left = love.graphics.newImage("/art/runsheetleft.png")
+    local img_width = jump_img:getWidth()
+    local img_height = jump_img:getHeight()
+    local quad_width = 50
+    local quad_height = 80
+    
+    for i=0, 4 do
+        table.insert(frames, love.graphics.newQuad(5 + i * (quad_width + 15), 10, quad_width + 10, quad_height, img_width, img_height))
+    end
+    
+    currentFrame = 1
+    
+    for i=0, 4 do
+        table.insert(left_run_frames, love.graphics.newQuad(5 + i * (quad_width + 15), 10, quad_width + 10, quad_height, img_width,        img_height))
+    end
+    
+    currentFrameLeft = 1
+    
+    alive = true
+    
+    -- Projectile animation spritesheet code
+    spin_frames = {}
+    left_spin_frames = {}
+    wrench_spin = love.graphics.newImage("/art/spinsheet.png")
+    left_wrench_spin = love.graphics.newImage("/art/spinsheetleft.png")
+    wrenchImage = love.graphics.newImage("/art/wrench.png")
+    
+    local spin_width = wrench_spin:getWidth()
+    local spin_height = wrench_spin:getHeight()
+    local spin_quad_w = 18
+    local spin_quad_h = 21
+    
+    for i=0, 5 do
+        table.insert(spin_frames, love.graphics.newQuad(6 + i * (spin_quad_w + 12), 6, spin_quad_w, (spin_quad_h + 2), spin_width,            spin_height))
+    end
+    
+    wrenchCurrentFrame = 1
+    
+    for i=0, 5 do
+        table.insert(left_spin_frames, love.graphics.newQuad(6 + i * (spin_quad_w + 12), 6, spin_quad_w, (spin_quad_h + 2),            spin_width, spin_height))
+    end
+    
+    wrenchCurrentFrameLeft = 1
+    
+    -- Coin animation
+    coinSheet = love.graphics.newImage("/art/coin.png")
+    coinFrames = {}
+    local imgWidth = coinSheet:getWidth()
+    local imgHeight = coinSheet:getHeight()
+    local quadW = 30
+    local quadH = 29
+    
+    for i=0, 5 do
+        table.insert(coinFrames, love.graphics.newQuad(6 + i * (quadW + 15), 6, quadW + 4, (quadH + 9.5), imgWidth, imgHeight))
+    end
+    
+    coinCurrentFrame = 1
+    
+    -- Fade animation
+    fade1 = love.graphics.newImage("/art/fade1.png")
+    fade2 = love.graphics.newImage("/art/fade2.png")
+    fade3 = love.graphics.newImage("/art/fade3.png")
+    fade4 = love.graphics.newImage("/art/fade4.png")
+    fade5 = love.graphics.newImage("/art/fade5.png")
+    fade6 = love.graphics.newImage("/art/fade6.png")
+    
+    fadeFrames = {}
+    
+    table.insert(fadeFrames, fade1)
+    table.insert(fadeFrames, fade2)
+    table.insert(fadeFrames, fade3)
+    table.insert(fadeFrames, fade4)
+    table.insert(fadeFrames, fade5)
+    table.insert(fadeFrames, fade6)
+    
+    fadeCurrentFrame = 1
+    fadeCurrentFrame2 = 7
+    fadeCurrentFrame3 = 1
+    fadeCurrentFrame4 = 1
+    fadeCurrentFrame5 = 1
+    
+    -- Enemy animations
+    
+    enemyJumpImage = love.graphics.newImage("/art/enemyjumpleft.png")
+    enemyJumpImageRight = love.graphics.newImage("/art/enemyjumpright.png")
+    bEnemyFlyRight = love.graphics.newImage("/art/benemyflyright.png")
+    bEnemyFlyLeft = love.graphics.newImage("/art/benemyfly.png")
+    
+    eFrames = {}
+    bEFrames = {}
+    fEStretchFrames = {}
+    fEMoveFrames = {}
+    
+    local eWidth = enemyJumpImage:getWidth()
+    local eHeight = enemyJumpImage:getHeight()
+    local eQuadW = 60
+    local eQuadH = -20
+    
+    -- Mushroom Class animation frames
+    for i=0, 4 do
+        table.insert(eFrames, love.graphics.newQuad(10 + i * (eQuadW + 15), 6, eQuadW, (eHeight - 16), eWidth, eHeight))
+    end
+    
+    -- Bee Enemy Class frames
+    for i=0, 4 do
+        table.insert(bEFrames, love.graphics.newQuad(6 + i * (eQuadW + 15), 9, eQuadW + 8, (eHeight - 16), eWidth, eHeight))
+    end
+
+    -- Music, background, game over screen, font
+    homeSong = love.audio.newSource("/art/voidlandtheme.ogg", "stream")
+    
+    myBackground = love.graphics.newImage("/art/bg.png")
+    myBackground2 = love.graphics.newImage("/art/bg2.png")
+    myBackground3 = love.graphics.newImage("/art/bg3.png")
+    statsCanvas = love.graphics.newCanvas(600, 800)
+    
+    r,g,b,a = love.graphics.getColor()
+    
+    font = love.graphics.newFont("/art/Retro Gaming.ttf", 60)
+    love.graphics.setFont(font)
+    
     
     -- Tilemaps located in helpers.lua
     for i,v in ipairs(map) do
@@ -533,172 +776,101 @@ function love.load()
         end
     end
     
-    -- Player projectile
-    projectileList = {}
-    leftProjectileList = {}
-    
-    inStock = true
-    pStock = 3
-    wallHit = false
-    
-    
-    -- Player movement/ status
-    frames = {}
-    left_run_frames = {}
-    
-    -- Left and right run spritesheets animation code
-    jump_img = love.graphics.newImage("/art/runsheet.png")
-    jump_img_left = love.graphics.newImage("/art/runsheetleft.png")
-    local img_width = jump_img:getWidth()
-    local img_height = jump_img:getHeight()
-    local quad_width = 50
-    local quad_height = 80
-    
-    for i=0, 4 do
-        table.insert(frames, love.graphics.newQuad(5 + i * (quad_width + 15), 10, quad_width + 10, quad_height, img_width, img_height))
-    end
-    
-    currentFrame = 1
-    
-    for i=0, 4 do
-        table.insert(left_run_frames, love.graphics.newQuad(5 + i * (quad_width + 15), 10, quad_width + 10, quad_height, img_width,        img_height))
-    end
-    
-    currentFrameLeft = 1
-    
-    alive = true
-    
-    -- Projectile animation spritesheet code
-    spin_frames = {}
-    left_spin_frames = {}
-    wrench_spin = love.graphics.newImage("/art/spinsheet.png")
-    left_wrench_spin = love.graphics.newImage("/art/spinsheetleft.png")
-    wrenchImage = love.graphics.newImage("/art/wrench.png")
-    
-    local spin_width = wrench_spin:getWidth()
-    local spin_height = wrench_spin:getHeight()
-    local spin_quad_w = 18
-    local spin_quad_h = 21
-    
-    for i=0, 5 do
-        table.insert(spin_frames, love.graphics.newQuad(6 + i * (spin_quad_w + 12), 6, spin_quad_w, (spin_quad_h + 2), spin_width,            spin_height))
-    end
-    
-    wrenchCurrentFrame = 1
-    
-    for i=0, 5 do
-        table.insert(left_spin_frames, love.graphics.newQuad(6 + i * (spin_quad_w + 12), 6, spin_quad_w, (spin_quad_h + 2),            spin_width, spin_height))
-    end
-    
-    wrenchCurrentFrameLeft = 1
-    
-    -- Coin animation
-    coinSheet = love.graphics.newImage("/art/coin.png")
-    coinFrames = {}
-    local imgWidth = coinSheet:getWidth()
-    local imgHeight = coinSheet:getHeight()
-    local quadW = 30
-    local quadH = 29
-    
-    for i=0, 5 do
-        table.insert(coinFrames, love.graphics.newQuad(6 + i * (quadW + 15), 6, quadW + 4, (quadH + 9.5), imgWidth, imgHeight))
-    end
-    
-    coinCurrentFrame = 1
-    
-    -- Fade animation
-    fade1 = love.graphics.newImage("/art/fade1.png")
-    fade2 = love.graphics.newImage("/art/fade2.png")
-    fade3 = love.graphics.newImage("/art/fade3.png")
-    fade4 = love.graphics.newImage("/art/fade4.png")
-    fade5 = love.graphics.newImage("/art/fade5.png")
-    fade6 = love.graphics.newImage("/art/fade6.png")
-    
-    fadeFrames = {}
-    
-    table.insert(fadeFrames, fade1)
-    table.insert(fadeFrames, fade2)
-    table.insert(fadeFrames, fade3)
-    table.insert(fadeFrames, fade4)
-    table.insert(fadeFrames, fade5)
-    table.insert(fadeFrames, fade6)
-    
-    fadeCurrentFrame = 1
-    fadeCurrentFrame2 = 7
-    fadeCurrentFrame3 = 1
-    fadeCurrentFrame4 = 1
-    fadeCurrentFrame5 = 1
-    
-    -- Enemy animations
-    
-    enemyJumpImage = love.graphics.newImage("/art/enemyjumpleft.png")
-    enemyJumpImageRight = love.graphics.newImage("/art/enemyjumpright.png")
-    bEnemyFlyRight = love.graphics.newImage("/art/benemyflyright.png")
-    bEnemyFlyLeft = love.graphics.newImage("/art/benemyfly.png")
-    
-    eFrames = {}
-    bEFrames = {}
-    fEStretchFrames = {}
-    fEMoveFrames = {}
-    
-    local eWidth = enemyJumpImage:getWidth()
-    local eHeight = enemyJumpImage:getHeight()
-    local eQuadW = 60
-    local eQuadH = -20
-    
-    -- Mushroom Class animation frames
-    for i=0, 4 do
-        table.insert(eFrames, love.graphics.newQuad(10 + i * (eQuadW + 15), 6, eQuadW, (eHeight - 16), eWidth, eHeight))
-    end
-    
-    -- Bee Enemy Class frames
-    for i=0, 4 do
-        table.insert(bEFrames, love.graphics.newQuad(6 + i * (eQuadW + 15), 9, eQuadW + 8, (eHeight - 16), eWidth, eHeight))
-    end
-    
-    -- Flower Enemy Class frames
---    local sWidth = whipSheet:getWidth()
---    local sHeight = whipSheet:getHeight()
---    local fQuadW = 185
---    local fQuadH = 40
-    
---    for i=0, 6 do
---        table.insert(fEStretchFrames, love.graphics.newQuad(6 + i * (fQuadW + 10), 6, fQuadW + 2, (sHeight - 12), sWidth, sHeight))
---    end
-    
---    fEnemy1.currentFrame = 1
-    
---    local mWidth = whipSheet:getWidth()
---    local mHeight = whipSheet:getHeight()
-    
---    for i=0, 6 do
---        table.insert(fEMoveFrames, love.graphics.newQuad(6 + i * (fQuadW + 10), 6, fQuadW + 2, (sHeight - 12), sWidth, sHeight))
---    end
-    
---    fEnemy1.currentFrame = 1
-    
-
-
-    -- Music, background, game over screen, font
-    homeSong = love.audio.newSource("/art/voidlandtheme.ogg", "stream")
-        homeSong:setLooping(true)
-        homeSong:play()
-    
-    myBackground = love.graphics.newImage("/art/bg.png")
-    myBackground2 = love.graphics.newImage("/art/bg2.png")
-    statsCanvas = love.graphics.newCanvas(600, 800)
-    
-    r,g,b,a = love.graphics.getColor()
-    
-    font = love.graphics.newFont("/art/Retro Gaming.ttf", 60)
-    love.graphics.setFont(font)
-    
+    for i,v in ipairs(map3) do
+            for j,w in ipairs(v) do
+                if w == 1 then
+                    local a = (j-1)*50
+                    local b = (i-1)*50
+                    brickWall = false
+                    grassBlock2 = false
+                    grassBlock1 = false
+                    grassBlock3 = false
+                    dirtBlock = false
+                    metalBrick = false
+                    local newWall = Wall(a, b)
+                    table.insert(walls3, newWall)
+                elseif w == 5 then
+                    local a = (j-1)*50
+                    local b = (i-1)*50
+                    brickWall = false
+                    grassBlock2 = false
+                    grassBlock1 = false
+                    grassBlock3 = false
+                    dirtBlock = false
+                    metalBrick = true
+                    local newWall = Wall(a, b)
+                    table.insert(walls3, newWall)
+                
+                -- Game objects (anything that isn't a wall)
+                elseif w == 3 then
+                    local a = (j-1)*50
+                    local b = (i-1)*50
+                    grassBlock2 = false
+                    grassBlock1 = false
+                    grassBlock3 = false
+                    brickWall = false
+                    dirtBlock = false
+                    metalBrick = false
+                    local newCoin = Coin(a, b)
+                    table.insert(objects3, newCoin)
+                elseif w == 4 then
+                    local a = (j-1)*50
+                    local b = (i-1)*50
+                    grassBlock2 = false
+                    grassBlock1 = false
+                    grassBlock3 = false
+                    brickWall = false
+                    dirtBlock = false
+                    metalBrick = false
+                    local newWrench = Wrench(a, b)
+                    table.insert(objects3, newWrench)
+                elseif w == 8 then
+                    local a = (j-1)*50
+                    local b = (i-1)*50
+                    grassBlock2 = false
+                    grassBlock1 = false
+                    grassBlock3 = false
+                    brickWall = false
+                    dirtBlock = false
+                    metalBrick = false
+                    local newMushroom = Mushroom(a, b)
+                    table.insert(objects3, newMushroom)
+                elseif w == 9 then
+                    local a = (j-1)*50
+                    local b = (i-1)*50
+                    grassBlock2 = false
+                    grassBlock1 = false
+                    grassBlock3 = false
+                    brickWall = false
+                    dirtBlock = false
+                    metalBrick = false
+                    local newKey = Key(a, b)
+                    table.insert(objects3, newKey)
+                elseif w == 10 then
+                    local a = (j-1)*50
+                    local b = (i-1)*50
+                    grassBlock2 = false
+                    grassBlock1 = false
+                    grassBlock3 = false
+                    brickWall = false
+                    dirtBlock = false
+                    metalBrick = false
+                    local newGate = Gate(a, b)
+                    table.insert(walls3, newGate)
+                end
+            end
+        end
 end
 
 function love.update(dt)
     
     -- Fixes bug where character would fall off screen when game window was moved
     dt = math.min(dt, 1/10)
+    
+    if alive == true then
+        homeSong:setLooping(true)
+        homeSong:play()
+    end
     
     --Button updates
     startButton:update(dt)
@@ -717,72 +889,105 @@ function love.update(dt)
     end
     
     -- Updates enemies
-    --if start == true then
+    if gameLevel == 1 then
         for i,enemy in ipairs(enemiesList) do
             enemy:update(dt)
         end
-    --end
-    
-    for i,enemy in ipairs(enemiesList2) do
-        enemy:update(dt)
+    elseif gameLevel == 2.5 then
+        for i,enemy in ipairs(enemiesList2) do
+            enemy:update(dt)
+        end
+    elseif gameLevel == 3.5 then
+        for i,enemy in ipairs(enemiesList3) do
+            enemy:update(dt)
+        end
     end
     
     if start == false then
         startTimer:update(dt)
-        titleEnemeyTimer:update(dt)
+        titleEnemyTimer:update(dt)
         level1textTimer:update(dt)
         introTimer:update(dt)
         introFadeOutTimer:update(dt)
     end
     
-    level2TextTimer:update(dt)
-    level2ScreenEndTimer:update(dt)
-    level3TextTimer:update(dt)
-    level3ScreenEndTimer:update(dt)
+    if gameLevel == 2 or gameLevel == 2.5 then
+        level2TextTimer:update(dt)
+        level2ScreenEndTimer:update(dt)
+    elseif gameLevel == 3 or gameLevel == 3.5 then
+        level3TextTimer:update(dt)
+        level3ScreenEndTimer:update(dt)
+    end
     
-    enemyTimer:update(dt)
-    enemy2Timer:update(dt)
-    enemy3Timer:update(dt)
-    bEnemyTimer:update(dt)
-    enemy4Timer:update(dt)
-    enemy5Timer:update(dt)
-    enemy6Timer:update(dt)
-    enemy7Timer:update(dt)
-    enemy8Timer:update(dt)
-    enemy9Timer:update(dt)
-    enemy10Timer:update(dt)
-    enemy11Timer:update(dt)
-    enemy12Timer:update(dt)
-    
-    bEnemy2Timer:update(dt)
-    bEnemy3Timer:update(dt)
-    bEnemy4Timer:update(dt)
-    bEnemy5Timer:update(dt)
-    bEnemy6Timer:update(dt)
-    bEnemy7Timer:update(dt)
-    bEnemy8Timer:update(dt)
-    
-    fEnemey1StretchTimer:update(dt)
-    
+    if gameLevel == 1 then
+        enemyTimer:update(dt)
+        enemy2Timer:update(dt)
+        enemy3Timer:update(dt)
+        bEnemyTimer:update(dt)
+        enemy4Timer:update(dt)
+        enemy5Timer:update(dt)
+        enemy6Timer:update(dt)
+        enemy7Timer:update(dt)
+        enemy8Timer:update(dt)
+        enemy9Timer:update(dt)
+        enemy10Timer:update(dt)
+        enemy11Timer:update(dt)
+        enemy12Timer:update(dt)
+        
+        bEnemy2Timer:update(dt)
+        bEnemy3Timer:update(dt)
+        bEnemy4Timer:update(dt)
+        bEnemy5Timer:update(dt)
+        bEnemy6Timer:update(dt)
+        bEnemy7Timer:update(dt)
+        bEnemy8Timer:update(dt)
+    end
+    if gameLevel == 2.5 then
     --lvl 2 timers
-    enemyL2Timer:update(dt)
-    enemy2L2Timer:update(dt)
-    enemy3L2Timer:update(dt)
-    enemy4L2Timer:update(dt)
-    enemy5L2Timer:update(dt)
-    enemy6L2Timer:update(dt)
-    enemy7L2Timer:update(dt)
-    
-    bEnemyL2Timer:update(dt)
-    bEnemy2L2Timer:update(dt)
+        enemyL2Timer:update(dt)
+        enemy2L2Timer:update(dt)
+        enemy3L2Timer:update(dt)
+        enemy4L2Timer:update(dt)
+        enemy5L2Timer:update(dt)
+        enemy6L2Timer:update(dt)
+        enemy7L2Timer:update(dt)
+        enemy8L2Timer:update(dt)
+        enemy9L2Timer:update(dt)
+        enemy10L2Timer:update(dt)
+        enemy11L2Timer:update(dt)
+        enemy12L2Timer:update(dt)
+        enemy13L2Timer:update(dt)
+        enemy14L2Timer:update(dt)
+        enemy15L2Timer:update(dt)
+        enemy16L2Timer:update(dt)
+        enemy17L2Timer:update(dt)
+        enemy18L2Timer:update(dt)
+        enemy19L2Timer:update(dt)
+        enemy20L2Timer:update(dt)
+        
+        bEnemyL2Timer:update(dt)
+        bEnemy2L2Timer:update(dt)
+        bEnemy3L2Timer:update(dt)
+        bEnemy4L2Timer:update(dt)
+        bEnemy5L2Timer:update(dt)
+        bEnemy6L2Timer:update(dt)
+        bEnemy7L2Timer:update(dt)
+    end
+    if gameLevel == 3.5 then
+        enemyL3Timer:update(dt)
+    end
     
     -- Updates player timers with dt
     invincibleTimer:update(dt)
     dashTimer:update(dt)
     cooldownTimer:update(dt)
     
+    if invincible == false then
+        invincibleTimer:destroy()
+    end
+    
     if start == true then
-        titleEnemeyTimer:destroy()
+        titleEnemyTimer:destroy()
         startTimer:destroy()
         level1textTimer:destroy()
     elseif drawIntro == false then
@@ -802,68 +1007,65 @@ function love.update(dt)
     
     if enemy.eAlive == false then
         enemyTimer:destroy()
-    end
-    if enemy2.eAlive == false then
-        enemy2Timer:destroy()
-    end
-    if enemy3.eAlive == false then
-        enemy3Timer:destroy()
-    end
-    if bEnemy.eAlive == false then
-        bEnemyTimer:destroy()
-    end
-    if enemy4.eAlive == false then
-        enemy4Timer:destroy()
-    end
-    if enemy5.eAlive == false then
-        enemy5Timer:destroy()
-    end
-    if enemy6.eAlive == false then
-        enemy6Timer:destroy()
-    end
-    if enemy7.eAlive == false then
-        enemy7Timer:destroy()
-    end
-    if enemy8.eAlive == false then
-        enemy8Timer:destroy()
-    end
-    if enemy9.eAlive == false then
-        enemy9Timer:destroy()
-    end
-    if enemy10.eAlive == false then
-        enemy10Timer:destroy()
-    end
-    if enemy11.eAlive == false then
-        enemy11Timer:destroy()
-    end
-    if enemy12.eAlive == false then
-        enemy12Timer:destroy()
-    end
     
-    if bEnemy2.eAlive == false then
+    elseif enemy2.eAlive == false then
+        enemy2Timer:destroy()
+    
+    elseif enemy3.eAlive == false then
+        enemy3Timer:destroy()
+    
+    elseif bEnemy.eAlive == false then
+        bEnemyTimer:destroy()
+    
+    elseif enemy4.eAlive == false then
+        enemy4Timer:destroy()
+    
+    elseif enemy5.eAlive == false then
+        enemy5Timer:destroy()
+    
+    elseif enemy6.eAlive == false then
+        enemy6Timer:destroy()
+    
+    elseif enemy7.eAlive == false then
+        enemy7Timer:destroy()
+    
+    elseif enemy8.eAlive == false then
+        enemy8Timer:destroy()
+    
+    elseif enemy9.eAlive == false then
+        enemy9Timer:destroy()
+    
+    elseif enemy10.eAlive == false then
+        enemy10Timer:destroy()
+    
+    elseif enemy11.eAlive == false then
+        enemy11Timer:destroy()
+    
+    elseif enemy12.eAlive == false then
+        enemy12Timer:destroy()
+    
+    
+    elseif bEnemy2.eAlive == false then
         bEnemy2Timer:destroy()
-    end
-    if bEnemy3.eAlive == false then
+    
+    elseif bEnemy3.eAlive == false then
         bEnemy3Timer:destroy()
-    end
-    if bEnemy4.eAlive == false then
+    
+    elseif bEnemy4.eAlive == false then
         bEnemy4Timer:destroy()
-    end
-    if bEnemy5.eAlive == false then
+    
+    elseif bEnemy5.eAlive == false then
         bEnemy5Timer:destroy()
-    end
-    if bEnemy5.eAlive == false then
+    
+    elseif bEnemy5.eAlive == false then
         bEnemy5Timer:destroy()
-    end
-    if bEnemy7.eAlive == false then
+    
+    elseif bEnemy7.eAlive == false then
         bEnemy7Timer:destroy()
-    end
-    if bEnemy8.eAlive == false then
+    
+    elseif bEnemy8.eAlive == false then
         bEnemy8Timer:destroy()
     end
---    if fEnemy1.eAlive == false then
---        fEnemey1StretchTimer:destroy()
---    end
     
     -- Level 2 enemies
     if enemyL2.eAlive == false then
@@ -887,12 +1089,71 @@ function love.update(dt)
     if enemy7L2.eAlive == false then
         enemy7L2Timer:destroy()
     end
+    if enemy8L2.eAlive == false then
+        enemy8L2Timer:destroy()
+    end
+    if enemy9L2.eAlive == false then
+        enemy9L2Timer:destroy()
+    end
+    if enemy10L2.eAlive == false then
+        enemy10L2Timer:destroy()
+    end
+    if enemy11L2.eAlive == false then
+        enemy11L2Timer:destroy()
+    end
+    if enemy12L2.eAlive == false then
+        enemy12L2Timer:destroy()
+    end
+    if enemy13L2.eAlive == false then
+        enemy13L2Timer:destroy()
+    end
+    if enemy14L2.eAlive == false then
+        enemy14L2Timer:destroy()
+    end
+    if enemy15L2.eAlive == false then
+        enemy15L2Timer:destroy()
+    end
+    if enemy16L2.eAlive == false then
+        enemy16L2Timer:destroy()
+    end
+    if enemy17L2.eAlive == false then
+        enemy17L2Timer:destroy()
+    end
+    if enemy18L2.eAlive == false then
+        enemy18L2Timer:destroy()
+    end
+    if enemy19L2.eAlive == false then
+        enemy19L2Timer:destroy()
+    end
+    if enemy20L2.eAlive == false then
+        enemy20L2Timer:destroy()
+    end
     
     if bEnemyL2.eAlive == false then
         bEnemyL2Timer:destroy()
     end
     if bEnemy2L2.eAlive == false then
         bEnemy2L2Timer:destroy()
+    end
+    if bEnemy3L2.eAlive == false then
+        bEnemy3L2Timer:destroy()
+    end
+    if bEnemy4L2.eAlive == false then
+        bEnemy4L2Timer:destroy()
+    end
+    if bEnemy5L2.eAlive == false then
+        bEnemy5L2Timer:destroy()
+    end
+    if bEnemy6L2.eAlive == false then
+        bEnemy6L2Timer:destroy()
+    end
+    if bEnemy7L2.eAlive == false then
+        bEnemy7L2Timer:destroy()
+    end
+    
+    -- Level 3 enemies
+    if enemyL3.eAlive == false then
+        enemyL3Timer:destroy()
     end
     
     if isDashing == false then
@@ -914,6 +1175,14 @@ function love.update(dt)
         end
         
         for i,v in ipairs(objects2) do
+            v:update(dt)
+        end
+    elseif gameLevel == 3.5 then
+        for i,v in ipairs(walls3) do
+            v:update(dt)
+        end
+        
+        for i,v in ipairs(objects3) do
             v:update(dt)
         end
     end
@@ -963,14 +1232,18 @@ function love.update(dt)
                 end
             end
         elseif gameLevel == 3.5 then
-            for i,object in ipairs(objects2) do
+            for i,object in ipairs(objects3) do
                 if hitDetect(user, object) then
                     object.alive = false
                 end
             end
 
-            for i,wall in ipairs(walls2) do
+            for i,wall in ipairs(walls3) do
                 collision = user:resolveCollision(wall)
+                if wall.image == gateImage and wall.alive == false then -- ADD METAL GATE IMAGE HERE
+                    wall.strength = 0
+                    bossBool = true
+                end
                 if collision then
                     onGround = true
                     loop = true
@@ -998,7 +1271,7 @@ function love.update(dt)
     end
     
     for i,wall in ipairs(walls) do
-        if wall.image == gateImage and user.x > wall.x - 150 and user.y > wall.y - 20 then
+        if wall.image == gateImage and user.x > wall.x - 150 and user.y > wall.y - 20 and bossBool == false then
             drawGatePrompt = true
             if hasKey == true and love.keyboard.isDown("q") and user.x > wall.x - 150 and user.y > wall.y - 150 then
                 if gameLevel == 1 then
@@ -1006,7 +1279,15 @@ function love.update(dt)
                     fadeCurrentFrame = 1
                 elseif gameLevel == 2.5 then
                     gameLevel = 3
-                    fadeCurrentFrame = 1
+                    fadeCurrentFrame5 = 1
+                elseif gameLevel == 3.5 then
+                    hasKey = false
+                    for i,wall in ipairs (walls3) do
+                        if wall.image == gateImage then
+                            wall.alive = false
+                            drawGatePrompt = false
+                        end
+                    end
                 end
             end
         elseif wall.image == gateImage and user.x < wall.x - 150 then
@@ -1073,6 +1354,10 @@ function love.update(dt)
         for i,enemy in ipairs(enemiesList) do
             enemy.eAlive = false
         end
+    elseif gameLevel == 3.5 then
+        for i,enemy in ipairs(enemiesList2) do
+            enemy.eAlive = false
+        end
     end
     
     if gameLevel == 2 then
@@ -1103,9 +1388,9 @@ function love.draw()
     if gameLevel == 1 then
         love.graphics.draw(myBackground, -300, -865)
     elseif gameLevel == 2.5 and drawLevel2Text == true then -- potentially causing animatiuon transition interuption
-        love.graphics.draw(myBackground2, -300, -515)  
+        love.graphics.draw(myBackground2, -300, -760)  
     elseif gameLevel == 3.5 and drawLevel3Text == true then
-        love.graphics.draw(myBackground2, -300, -515)  
+        love.graphics.draw(myBackground3, -300, -760)  
     end
     
     if gameLevel ~= 1 then
@@ -1126,6 +1411,12 @@ function love.draw()
     elseif gameLevel == 2.5 then
         for i,v in ipairs(objects2) do
             v:draw()
+        end
+    elseif gameLevel == 3.5 then
+        for i,v in ipairs(objects3) do
+            if v.alive == true then
+                v:draw()
+            end
         end
     end
     
@@ -1151,9 +1442,11 @@ function love.draw()
         for i,v in ipairs(walls2) do
             v:draw()
         end
-    elseif gameLevel == 3.5 and drawLevel2Text == true then
-        for i,v in ipairs(walls2) do
-            v:draw()
+    elseif gameLevel == 3.5 and drawLevel3Text == true then
+        for i,v in ipairs(walls3) do
+            if v.alive == true then
+                v:draw()
+            end
         end
     end
     
@@ -1165,6 +1458,10 @@ function love.draw()
         end
     elseif gameLevel == 2.5 then
         for i,enemy in ipairs(enemiesList2) do
+            enemy:draw()
+        end
+    elseif gameLevel == 3.5 then
+        for i,enemy in ipairs(enemiesList3) do
             enemy:draw()
         end
     end
@@ -1202,6 +1499,7 @@ function love.draw()
         love.graphics.setColor(0, 1, 0)
         love.graphics.print("Voidland", 240, 100)
         love.graphics.print("Engineer", 240, 200)
+        love.graphics.print("v1.0", 380, 560, 0, 0.2, 0.2)
         startButton:draw()
         love.graphics.setColor(r,g,b,a)
         enemyTitleScreen:draw()
@@ -1229,7 +1527,7 @@ function love.draw()
     if drawLevel2Intro == true  then
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame4)], user.x -400, user.y - 400)
         if drawLevel2Text == true then
-            love.graphics.print("Area 2", user.x - 50, user.y - 80)
+            love.graphics.print("Area 2", user.x - 40, user.y - 60)
         end
     end
     
@@ -1247,9 +1545,6 @@ function love.draw()
         love.graphics.draw(textPrompt, user.x, user.y + 190)
         love.graphics.print("Press 'q' to talk.", user.x + 10, user.y + 200, 0, 0.16, 0.16)
     end
-    
-    --love.graphics.draw(love.graphics.newImage("/art/flowerstretchsheet.png"), 200, 468)
-
     
     -- Game over screen
     if alive == false then

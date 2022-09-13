@@ -24,7 +24,7 @@ end
 
 function Shopkeep:update(dt)
     if user_left == false and shopTalkBool == false and user.x < self.x - 100 and gameLevel > 1 and user.y >= 829 then
-        if user.x > self.x - 160 then
+        if user.x > self.x - 130 then
             drawShopAlert = true
             self.image = shopKeepImage
             if love.keyboard.isDown("q") then

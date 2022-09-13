@@ -45,25 +45,41 @@ function Projectile_Left:update(dt)
   
     
     -- Enemies 
-    for i,enemy in ipairs(enemiesList) do
-        if hitDetect(self, enemy) then
-            enemy.eAlive = false
-            enemy.bounceBool = false
-            if self.y < 2000 then
-                while self.y < 2000 do
-                    self.y = self.y + self.gravity * dt
+    if gameLevel == 1 then
+        for i,enemy in ipairs(enemiesList) do
+            if hitDetect(self, enemy) then
+                enemy.eAlive = false
+                enemy.bounceBool = false
+                if self.y < 2000 then
+                    while self.y < 2000 do
+                        self.y = self.y + self.gravity * dt
+                    end
                 end
             end
         end
-    end
     
-    for i,enemy in ipairs(enemiesList2) do
-        if hitDetect(self, enemy) then
-            enemy.eAlive = false
-            enemy.bounceBool = false
-            if self.y < 2000 then
-                while self.y < 2000 do
-                    self.y = self.y + self.gravity * dt
+    elseif gameLevel == 2.5 then
+        for i,enemy in ipairs(enemiesList2) do
+            if hitDetect(self, enemy) then
+                enemy.eAlive = false
+                enemy.bounceBool = false
+                if self.y < 2000 then
+                    while self.y < 2000 do
+                        self.y = self.y + self.gravity * dt
+                    end
+                end
+            end
+        end
+    
+    elseif gameLevel == 3.5 then
+        for i,enemy in ipairs(enemiesList3) do
+            if hitDetect(self, enemy) then
+                enemy.eAlive = false
+                enemy.bounceBool = false
+                if self.y < 2000 then
+                    while self.y < 2000 do
+                        self.y = self.y + self.gravity * dt
+                    end
                 end
             end
         end

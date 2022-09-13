@@ -18,6 +18,8 @@ function Wall:new(x, y)
         Wall.super.new(self, x, y, "/art/grassdirtnotop.png")
     elseif dirtBlock == true then
         Wall.super.new(self, x, y, "/art/dirt.png")
+    elseif metalBrick == true then
+        Wall.super.new(self, x, y, "/art/metalbrick.png")
     end
     -- Properties
     self.strength = 100
@@ -25,4 +27,5 @@ function Wall:new(x, y)
     self.height = self.image:getHeight() - 40
     self.weight = 0
     self.strength = 100
+    self.alive = true
 end

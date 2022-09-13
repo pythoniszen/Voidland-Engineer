@@ -36,7 +36,8 @@ function EnemyMushroom:new(x, y, boundLeft, boundRight, floor)
 end
 
 function EnemyMushroom:update(dt)
-  
+    
+    EnemyMushroom.super.update(self, dt)
     if self.eAlive == false and self.bounceBool == true then
           if love.keyboard.isDown("space") then
               user.gravity = -520
