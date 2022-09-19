@@ -37,16 +37,17 @@ function User:new(x, y)
     bounceBool4 = true
     jumpBool2 = true
     invincible = false
+    self.eating = false
 end
 
 function User:update(dt)
   
     User.super.update(self, dt)
     
---    if jumpBool == true then
---        print("user x =".. user.x)
---        print("user y =".. user.y)
---    end
+    if jumpBool == true then
+        print("user x =".. user.x)
+        print("user y =".. user.y)
+    end
     
     if isDashing == true then
         dashTimer:after(0.15, function() self:cancelDash() end)
@@ -106,6 +107,27 @@ function User:update(dt)
                   end
               end
           end
+          
+          if hitDetect(self, boss) then
+              if boss.bounceBool == true and self.y < boss.y then
+                  if love.keyboard.isDown("space") then
+                      self.gravity = -520
+                      boss.bounceBool = false
+                  else
+                      self.gravity = -200
+                      boss.bounceBool = false
+                  end
+                  return
+              elseif invincible == true then
+                  enemy.eAlive = true
+              elseif invincible == false and boss.eAlive == true then
+                  alive = false
+              end
+          end
+      end
+      
+      if jumpBool == true then
+          boss.bounceBool = true
       end
       
       -- enemies from classes head bounce
@@ -133,6 +155,7 @@ function User:update(dt)
           end
       end
       
+      
       for i,enemy in ipairs(enemiesList3) do
           if enemy.eAlive == false and enemy.bounceBool == true then
               if love.keyboard.isDown("space") then
@@ -144,6 +167,10 @@ function User:update(dt)
               end
           end
       end
+      
+--      if boss.lastHit < boss.hits then
+          
+--      end
       
       -- Left and right player movement + dashing
       if love.keyboard.isDown("d") and isDashing == false then
@@ -182,8 +209,8 @@ function User:update(dt)
     
     if self.x < 0 then
         self.x = 0
---    elseif self.x + self.width > window_width * 20 then
---        self.x = window_width - self.width
+    elseif self.x > 6649 and bossBool == false then
+        self.x = 6649
     end
     
     -- Running animation
@@ -261,6 +288,7 @@ end
 
 -- Eat funtion
 function User:eat()
+    self.eating = true
     if mushroomCount > 0 then
         if invincible == true then
             invincibleTimer:destroy()
@@ -273,6 +301,7 @@ end
 
 function User:invincibleEnd()
     invincible = false
+    self.eating = false
 end
 
 

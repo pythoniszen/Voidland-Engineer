@@ -46,7 +46,6 @@ end
 
 function startButtonClass:draw()
     love.graphics.draw(self.image, self.x, self.y, 0, 0.2, 0.2)
-    
 end
 
 function startButtonClass:startGame()
@@ -57,7 +56,7 @@ end
 function startButtonClass:endFade()
     startFade = false
     start = true
-    gameLevel = 3
+    gameLevel = 1
 end
 
 function startButtonClass:l1Txt()

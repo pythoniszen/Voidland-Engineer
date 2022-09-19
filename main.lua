@@ -24,9 +24,11 @@ function love.load()
     require "key"
     require "gate"
     require "shopkeep"
+    require "boss"
 
     
     -- Loading in base game assets
+    bossImage = love.graphics.newImage("/art/bossstand.png")
     
     start = false
     gameLevel = 0
@@ -53,6 +55,10 @@ function love.load()
     shopButton1 = ShopButton(400, 800, wrenchImage, 15)
     shopButton2 = ShopButton(460, 800, mushroomImage, 30)
     bossBool = false
+    boss = Boss(8100, 760, 7460, 8110, 760)
+    speedUp = false
+    bJumpBool = false
+    compImage = love.graphics.newImage("/art/computer.png")
     
     -- Player character components
     user = User(60, 480)
@@ -130,6 +136,12 @@ function love.load()
     -- List of all level 3 enemies
     enemiesList3 = {enemyL3}
     
+    -- Boss timer
+    bossTimer = Timer()
+    bossTimer2 = Timer()
+    bossTimer3 = Timer()
+    bossTimer4 = Timer()
+    
     -- Level 1 timers
     titleEnemyTimer = Timer()
     introTimer = Timer()
@@ -198,13 +210,17 @@ function love.load()
     -- Level 3 timers
     enemyL3Timer = Timer()
     
+    -- Boss timer
+    bossTimer:every(4, function() boss:jump(dt) end)
+    bossTimer2:every(9, function() boss:movement(dt) end)
+    
     -- Level 1 timers
     -- mushroom enemies
     enemyTimer:every(2, function() enemy:movement() end)
     enemy2Timer:script(function(wait)
         wait(2.4)
         enemy2Timer:every(2, function() enemy2:movement() end)
-    end)
+    end) 
     enemy3Timer:script(function(wait)
         wait(1.3)
         enemy3Timer:every(2, function() enemy3:movement() end)
@@ -867,6 +883,10 @@ function love.update(dt)
     -- Fixes bug where character would fall off screen when game window was moved
     dt = math.min(dt, 1/10)
     
+--    if gameLevel == 3.5 then
+--        hasKey = true
+--    end
+
     if alive == true then
         homeSong:setLooping(true)
         homeSong:play()
@@ -879,6 +899,14 @@ function love.update(dt)
     
     -- Calls to update the state of characters in the game
     user:update(dt)
+    
+    if bossBool == true then
+        bossTimer:update(dt)
+        bossTimer2:update(dt)
+        bossTimer3:update(dt)
+        bossTimer4:update(dt)
+        boss:update(dt)
+    end
     
     shopKeep:update(dt)
     shopButton1:update(dt)
@@ -1240,8 +1268,7 @@ function love.update(dt)
 
             for i,wall in ipairs(walls3) do
                 collision = user:resolveCollision(wall)
-                if wall.image == gateImage and wall.alive == false then -- ADD METAL GATE IMAGE HERE
-                    wall.strength = 0
+                if wall.image == metalGateImage and wall.alive == false then -- ADD METAL GATE IMAGE HERE
                     bossBool = true
                 end
                 if collision then
@@ -1273,6 +1300,9 @@ function love.update(dt)
     for i,wall in ipairs(walls) do
         if wall.image == gateImage and user.x > wall.x - 150 and user.y > wall.y - 20 and bossBool == false then
             drawGatePrompt = true
+            if gameLevel == 3.5 and user.y < 500 then
+                drawGatePrompt = false
+            end
             if hasKey == true and love.keyboard.isDown("q") and user.x > wall.x - 150 and user.y > wall.y - 150 then
                 if gameLevel == 1 then
                     gameLevel = 2
@@ -1283,7 +1313,7 @@ function love.update(dt)
                 elseif gameLevel == 3.5 then
                     hasKey = false
                     for i,wall in ipairs (walls3) do
-                        if wall.image == gateImage then
+                        if wall.image == metalGateImage or wall.image == gateImage then
                             wall.alive = false
                             drawGatePrompt = false
                         end
@@ -1399,6 +1429,10 @@ function love.draw()
         shopButton2:draw()
     end
     
+    if gameLevel == 3.5 and bossBool == true then
+        love.graphics.draw(compImage, 7710, 805)
+    end
+    
     user:draw()
     
     
@@ -1450,6 +1484,8 @@ function love.draw()
         end
     end
     
+    
+    
     -- Draws enemy
     
     if gameLevel == 1 and start == true then
@@ -1464,10 +1500,13 @@ function love.draw()
         for i,enemy in ipairs(enemiesList3) do
             enemy:draw()
         end
+        if bossBool == true then
+            boss:draw()
+        end
     end
     
     
-    if invincible == true then
+    if invincible == true and user.eating == true then
         love.graphics.draw(mushroomImage, user.x, user.y, 0, 0.6, 0.6)
     end
     
@@ -1490,6 +1529,7 @@ function love.draw()
         love.graphics.print("press 'q' to open the", user.x + 10, user.y + 210, 0, 0.16, 0.16)
         love.graphics.print(" gate.", user.x + 10, user.y + 220, 0, 0.16, 0.16)
     end
+    
       
     
     -- Start Screen

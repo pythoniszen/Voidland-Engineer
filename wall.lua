@@ -26,6 +26,5 @@ function Wall:new(x, y)
     self.width = self.image:getWidth() - 40
     self.height = self.image:getHeight() - 40
     self.weight = 0
-    self.strength = 100
     self.alive = true
 end
