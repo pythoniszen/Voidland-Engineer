@@ -5,11 +5,12 @@ require "emushroomclass"
 
 -- Class for wrench items which are thrown to the left
 Projectile_Left = Object:extend()
+wrenchImg = love.graphics.newImage("/art/wrench.png")
 
 function Projectile_Left:new(x, y)
   
     --Properties
-    self.image = love.graphics.newImage("/art/wrench.png")
+    self.image = wrenchImg
     self.x = x + 50
     self.y = y + 70
     self.speed = 600

@@ -87,9 +87,9 @@ end
 -- Movement funtion for enemy including direction change and bounce
 function EnemyMushroom:movement()
   if start == true then
-        if self.x < self.boundaryRight and self.x > self.boundaryLeft then
+        if self.x > self.boundaryRight then
             self.eLeft = true
-        else
+        elseif self.x < self.boundaryLeft then
             self.eLeft = false
         end
         

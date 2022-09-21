@@ -44,10 +44,10 @@ function User:update(dt)
   
     User.super.update(self, dt)
     
-    if jumpBool == true then
-        print("user x =".. user.x)
-        print("user y =".. user.y)
-    end
+--    if jumpBool == true then
+--        print("user x =".. user.x)
+--        print("user y =".. user.y)
+--    end
     
     if isDashing == true then
         dashTimer:after(0.15, function() self:cancelDash() end)

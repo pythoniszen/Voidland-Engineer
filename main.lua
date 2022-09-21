@@ -70,71 +70,75 @@ function love.load()
     -- Spawns enemies for level 1
     enemyTitleScreen = TitleScreenM(890, 290, -60, 900, 290)
     
-    enemy = EnemyMushroom(800, 525, 690, 810, 525)
-    enemy2 = EnemyMushroom(1290, 525, 1200, 1300, 525)
-    enemy3 = EnemyMushroom(1440, 375, 1350, 1450, 375)
-    enemy4 = EnemyMushroom(2230, 375, 2140, 2240, 375)
-    enemy5 = EnemyMushroom(2590, 525, 2500, 2600, 525)
-    enemy6 = EnemyMushroom(3190, 525, 3100, 3200, 525)
-    enemy7 = EnemyMushroom(3590, -15, 3500, 3600, -25)
-    enemy8 = EnemyMushroom(4190, 525, 4100, 4200, 525)
-    enemy9 = EnemyMushroom(4290, 525, 4200, 4300, 525)
-    enemy10 = EnemyMushroom(5377, 525, 5287, 5387, 525)
-    enemy11 = EnemyMushroom(5810, 125, 5720, 5820, 125)
-    enemy12 = EnemyMushroom(2650, 125, 2560, 2660, 125)
+    -- minus 50 to right boundary to FIX MVMNT SCRPT
+    enemy = EnemyMushroom(800, 525, 690, 760, 525)--
+    enemy2 = EnemyMushroom(1290, 525, 1200, 1250, 525)
+    enemy3 = EnemyMushroom(1440, 375, 1350, 1400, 375)
+    enemy4 = EnemyMushroom(2230, 375, 2140, 2190, 375)
+    enemy5 = EnemyMushroom(2590, 525, 2500, 2550, 525)
+    enemy6 = EnemyMushroom(3190, 525, 3100, 3150, 525)
+    enemy7 = EnemyMushroom(3590, -15, 3500, 3550, -25)
+    enemy8 = EnemyMushroom(4190, 525, 4100, 4150, 525)
+    enemy9 = EnemyMushroom(4290, 525, 4200, 4250, 525)
+    enemy10 = EnemyMushroom(5377, 525, 5287, 5337, 525)
+    enemy11 = EnemyMushroom(5810, 125, 5720, 5770, 125)
+    enemy12 = EnemyMushroom(2650, 125, 2560, 2610, 125)
   
-    bEnemy = BEnemyClass(2430, 280, 2340, 2440)
-    bEnemy2 = BEnemyClass(3180, 300, 3090, 3190)
-    bEnemy3 = BEnemyClass(3690, 370, 3600, 3700)
-    bEnemy4 = BEnemyClass(4500, 260, 4410, 4510)
-    bEnemy5 = BEnemyClass(4000, 150, 3910, 4010)
-    bEnemy6 = BEnemyClass(5000, 350, 4910, 5010)
-    bEnemy7 = BEnemyClass(2450, 20, 2360, 2460)
-    bEnemy8 = BEnemyClass(5200, 20, 5110, 5210)
+    bEnemy = BEnemyClass(2430, 280, 2340, 2390)
+    bEnemy2 = BEnemyClass(3180, 300, 3090, 3140)
+    bEnemy3 = BEnemyClass(3690, 370, 3600, 3650)
+    bEnemy4 = BEnemyClass(4500, 260, 4410, 4460)
+    bEnemy5 = BEnemyClass(4000, 150, 3910, 3960)
+    bEnemy6 = BEnemyClass(5000, 350, 4910, 4960)
+    bEnemy7 = BEnemyClass(2450, 20, 2360, 2410)
+    bEnemy8 = BEnemyClass(5200, 20, 5110, 5160)
     
     -- List of all level 1 enemies
     enemiesList = {enemy, enemy2, enemy3, enemy4, enemy5, bEnemy, enemy6, enemy7, bEnemy2, bEnemy3, enemy8, enemy9, bEnemy4, bEnemy5, enemy10, bEnemy6, enemy11, enemy12, bEnemy7, bEnemy8}
     
    
    -- Spawns enemies for level 2
-    enemyL2 = EnemyMushroom(1200, 875, 1110, 1210, 875)
-    enemy2L2 = EnemyMushroom(1400, 875, 1310, 1410, 875)
-    enemy3L2 = EnemyMushroom(1800, 875, 1710, 1810, 875)
-    enemy4L2 = EnemyMushroom(3590, 725, 3580, 3600, 725)
-    enemy5L2 = EnemyMushroom(3630, 725, 3620, 3640, 725)
-    enemy6L2 = EnemyMushroom(3430, 525, 3420, 3440, 525)
-    enemy7L2 = EnemyMushroom(2000, 875, 1910, 2010, 875)
-    enemy8L2 = EnemyMushroom(3100, 725, 3010, 3110, 725)
-    enemy9L2 = EnemyMushroom(4250, 725, 4160, 4260, 725)
-    enemy10L2 = EnemyMushroom(4450, 1425, 4360, 4460, 1425)
-    enemy11L2 = EnemyMushroom(4650, 1425, 4560, 4660, 1425)
-    enemy12L2 = EnemyMushroom(4500, 1425, 4410, 4510, 1425)
-    enemy13L2 = EnemyMushroom(4300, 125, 4210, 4310, 125)
-    enemy14L2 = EnemyMushroom(4500, 125, 4410, 4510, 125)
-    enemy15L2 = EnemyMushroom(4200, 125, 4110, 4210, 125)
-    enemy16L2 = EnemyMushroom(3500, 125, 3410, 3510, 125)
-    enemy17L2 = EnemyMushroom(3350, 325, 3260, 3360, 325)
-    enemy18L2 = EnemyMushroom(3250, 325, 3160, 3260, 325)
-    enemy19L2 = EnemyMushroom(5480, 725, 5470, 5490, 725)
-    enemy20L2 = EnemyMushroom(5840, 575, 5830, 5850, 575)
+    enemyL2 = EnemyMushroom(1200, 875, 1110, 1160, 875)
+    enemy2L2 = EnemyMushroom(1400, 875, 1310, 1360, 875)
+    enemy3L2 = EnemyMushroom(1800, 875, 1710, 1760, 875)
+    enemy4L2 = EnemyMushroom(3590, 725, 3580, 3550, 725)
+    enemy5L2 = EnemyMushroom(3630, 725, 3620, 3590, 725)
+    enemy6L2 = EnemyMushroom(3430, 525, 3420, 3390, 525)
+    enemy7L2 = EnemyMushroom(2000, 875, 1910, 1960, 875)
+    enemy8L2 = EnemyMushroom(3100, 725, 3010, 3069, 725)
+    enemy9L2 = EnemyMushroom(4250, 725, 4160, 4210, 725)
+    enemy10L2 = EnemyMushroom(4450, 1425, 4360, 4410, 1425)
+    enemy11L2 = EnemyMushroom(4650, 1425, 4560, 4610, 1425)
+    enemy12L2 = EnemyMushroom(4500, 1425, 4410, 4460, 1425)
+    enemy13L2 = EnemyMushroom(4300, 125, 4210, 4260, 125)
+    enemy14L2 = EnemyMushroom(4500, 125, 4410, 4460, 125)
+    enemy15L2 = EnemyMushroom(4200, 125, 4110, 4160, 125)
+    enemy16L2 = EnemyMushroom(3500, 125, 3410, 3460, 125)
+    enemy17L2 = EnemyMushroom(3350, 325, 3260, 3310, 325)
+    enemy18L2 = EnemyMushroom(3250, 325, 3160, 3210, 325)
+    enemy19L2 = EnemyMushroom(5480, 725, 5470, 5440, 725)
+    enemy20L2 = EnemyMushroom(5840, 575, 5830, 5800, 575)
     
-    bEnemyL2 = BEnemyClass(2100, 710, 2010, 2110)
-    bEnemy2L2 = BEnemyClass(1480, 650, 1390, 1490)
-    bEnemy3L2 = BEnemyClass(3100, 640, 3010, 3110)
-    bEnemy4L2 = BEnemyClass(3500, 235, 3410, 3510)
-    bEnemy5L2 = BEnemyClass(3600, 25, 3510, 3610)
-    bEnemy6L2 = BEnemyClass(4500, 25, 4410, 4510)
-    bEnemy7L2 = BEnemyClass(5540, 600, 5490, 5550)
+    bEnemyL2 = BEnemyClass(2100, 710, 2010, 2060)
+    bEnemy2L2 = BEnemyClass(1480, 650, 1390, 1440)
+    bEnemy3L2 = BEnemyClass(3100, 640, 3010, 3060)
+    bEnemy4L2 = BEnemyClass(3500, 235, 3410, 3460)
+    bEnemy5L2 = BEnemyClass(3600, 25, 3510, 3560)
+    bEnemy6L2 = BEnemyClass(4500, 25, 4410, 4460)
+    bEnemy7L2 = BEnemyClass(5540, 600, 5490, 5500)
 
     
     -- List of all level 2 enemies
     enemiesList2 = {enemyL2, enemy2L2, enemy3L2, enemy4L2, enemy5L2, enemy6L2, enemy7L2, enemy8L2, enemy9L2, enemy10L2, enemy11L2, enemy12L2, enemy13L2, enemy14L2, enemy15L2, enemy16L2, enemy17L2, enemy18L2, enemy19L2, enemy20L2, bEnemyL2, bEnemy2L2, bEnemy3L2, bEnemy4L2, bEnemy5L2, bEnemy6L2, bEnemy7L2}
     
     -- Spawns enemies for level 3
-    enemyL3 = EnemyMushroom(1700, 525, 1610, 1710, 525)
+    enemyL3 = EnemyMushroom(1700, 525, 1610, 1660, 525)
+    enemy2L3 = EnemyMushroom(1800, 525, 1710, 1760, 525)
+    
+    bEnemyL3 = BEnemyClass(1800, 50, 1710, 1760)
     
     -- List of all level 3 enemies
-    enemiesList3 = {enemyL3}
+    enemiesList3 = {enemyL3, enemy2L3, bEnemyL3}
     
     -- Boss timer
     bossTimer = Timer()
@@ -209,6 +213,8 @@ function love.load()
     
     -- Level 3 timers
     enemyL3Timer = Timer()
+    enemy2L3Timer = Timer()
+    bEnemyL3Timer = Timer()
     
     -- Boss timer
     bossTimer:every(4, function() boss:jump(dt) end)
@@ -415,6 +421,16 @@ function love.load()
     enemyL3Timer:script(function(wait)
         wait(2.2)
         enemyL3Timer:every(2, function() enemyL3:movement() end)
+    end)
+    enemy2L3Timer:script(function(wait)
+        wait(3.5)
+        enemy2L3Timer:every(2, function() enemy2L3:movement() end)
+    end)
+  
+    -- Bee Timers
+    bEnemyL3Timer:script(function(wait)
+        wait(2)
+        bEnemyL3Timer:every(1.5, function() bEnemyL3:movement() end)
     end)
   
     -- Floor/walls/game objects
@@ -882,10 +898,10 @@ function love.update(dt)
     
     -- Fixes bug where character would fall off screen when game window was moved
     dt = math.min(dt, 1/10)
-    
---    if gameLevel == 3.5 then
---        hasKey = true
---    end
+
+    if gameLevel == 3.5 then
+        hasKey = true
+    end
 
     if alive == true then
         homeSong:setLooping(true)
@@ -1003,6 +1019,9 @@ function love.update(dt)
     end
     if gameLevel == 3.5 then
         enemyL3Timer:update(dt)
+        enemy2L3Timer:update(dt)
+        
+        bEnemyL3Timer:update(dt)
     end
     
     -- Updates player timers with dt
@@ -1183,7 +1202,15 @@ function love.update(dt)
     if enemyL3.eAlive == false then
         enemyL3Timer:destroy()
     end
+    if enemy2L3.eAlive == false then
+        enemy2L3Timer:destroy()
+    end
     
+    if bEnemyL3.eAlive == false then
+        bEnemyL3Timer:destroy()
+    end
+    
+    -- Dash Timer
     if isDashing == false then
         dashTimer:destroy()
     end
@@ -1506,7 +1533,7 @@ function love.draw()
     end
     
     
-    if invincible == true and user.eating == true then
+    if user.eating == true then
         love.graphics.draw(mushroomImage, user.x, user.y, 0, 0.6, 0.6)
     end
     

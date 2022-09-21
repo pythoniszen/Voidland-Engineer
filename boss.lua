@@ -44,7 +44,7 @@ function Boss:update(dt)
         self.bounceBool = true
     end
     
-    if self.hits >= 54 then
+    if self.hits >= 23 then -- 12 hits to boss
         self.eAlive = false
         self.bounceBool = false
     end
@@ -60,7 +60,9 @@ function Boss:update(dt)
               self.bounceBool = false
               self.gravity = 500
           end
-          bossTimer2:after(0.5, function() user:invincibleEnd() end)
+          if user.eating == false then
+              bossTimer2:after(0.3, function() user:invincibleEnd() end)
+          end
       end
     
     if self.x > self.boundaryRight then

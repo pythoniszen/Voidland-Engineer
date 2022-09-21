@@ -27,7 +27,9 @@ function Mushroom:update(dt)
 end
 
 function Mushroom:draw(x, y)
-    if self.alive == true then
+    if self.alive == true and gameLevel ~= 3.5 then
         love.graphics.draw(self.image, self.x, self.y + 10)
+    elseif self.alive == true and gameLevel == 3.5 then
+        love.graphics.draw(self.image, self.x + 10, self.y + 10)
     end
 end
