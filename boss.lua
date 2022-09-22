@@ -44,7 +44,7 @@ function Boss:update(dt)
         self.bounceBool = true
     end
     
-    if self.hits >= 23 then -- 12 hits to boss
+    if self.hits >= 30 then -- == 15 hits
         self.eAlive = false
         self.bounceBool = false
     end
@@ -53,15 +53,21 @@ function Boss:update(dt)
           invincible = true
           if love.keyboard.isDown("space") then
               user.gravity = -520
-              self.bounceBool = false
               self.gravity = 500
+              self.bounceBool = false
+--              if self.bounceBool == false then
+--                  self.hits = self.hits + 1
+--              end
           else
               user.gravity = -200
-              self.bounceBool = false
               self.gravity = 500
+              self.bounceBool = false
+--              if self.bounceBool == false then
+--                  self.hits = self.hits + 1
+--              end
           end
-          if user.eating == false then
-              bossTimer2:after(0.3, function() user:invincibleEnd() end)
+          if user.eating == false and invincible == true then
+              bossTimer2:after(0.1, function() user:invincibleEnd() end)
           end
       end
     

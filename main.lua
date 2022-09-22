@@ -134,11 +134,23 @@ function love.load()
     -- Spawns enemies for level 3
     enemyL3 = EnemyMushroom(1700, 525, 1610, 1660, 525)
     enemy2L3 = EnemyMushroom(1800, 525, 1710, 1760, 525)
+    enemy3L3 = EnemyMushroom(1800, 325, 1710, 1760, 325)
+    enemy4L3 = EnemyMushroom(1900, 325, 1810, 1860, 325)
+    enemy5L3 = EnemyMushroom(1700, 325, 1610, 1660, 325)
+    enemy6L3 = EnemyMushroom(3000, 325, 2910, 2960, 325)
+    enemy7L3 = EnemyMushroom(3100, 325, 3010, 3060, 325)
+    enemy8L3 = EnemyMushroom(3150, 325, 3050, 3100, 325)
+    enemy9L3 = EnemyMushroom(3100, 525, 3000, 3050, 525)
+    enemy10L3 = EnemyMushroom(3150, 525, 3050, 3100, 525)
+    enemy11L3 = EnemyMushroom(3250, 525, 3150, 3200, 525)
+    enemy12L3 = EnemyMushroom(3900, 325, 3800, 3850, 325)
     
     bEnemyL3 = BEnemyClass(1800, 50, 1710, 1760)
+    bEnemy2L3 = BEnemyClass(3800, 475, 3700, 3750)
+    bEnemy3L3 = BEnemyClass(3850, 475, 3750, 3800)
     
     -- List of all level 3 enemies
-    enemiesList3 = {enemyL3, enemy2L3, bEnemyL3}
+    enemiesList3 = {enemyL3, enemy2L3, enemy3L3, enemy4L3, enemy5L3, enemy6L3, enemy7L3, enemy8L3, enemy9L3, enemy10L3, enemy11L3, enemy12L3, bEnemyL3, bEnemy2L3, bEnemy3L3}
     
     -- Boss timer
     bossTimer = Timer()
@@ -214,7 +226,20 @@ function love.load()
     -- Level 3 timers
     enemyL3Timer = Timer()
     enemy2L3Timer = Timer()
+    enemy3L3Timer = Timer()
+    enemy4L3Timer = Timer()
+    enemy5L3Timer = Timer()
+    enemy6L3Timer = Timer()
+    enemy7L3Timer = Timer()
+    enemy8L3Timer = Timer()
+    enemy9L3Timer = Timer()
+    enemy10L3Timer = Timer()
+    enemy11L3Timer = Timer()
+    enemy12L3Timer = Timer()
+    
     bEnemyL3Timer = Timer()
+    bEnemy2L3Timer = Timer()
+    bEnemy3L3Timer = Timer()
     
     -- Boss timer
     bossTimer:every(4, function() boss:jump(dt) end)
@@ -426,11 +451,59 @@ function love.load()
         wait(3.5)
         enemy2L3Timer:every(2, function() enemy2L3:movement() end)
     end)
+    enemy3L3Timer:script(function(wait)
+        wait(1.7)
+        enemy3L3Timer:every(2, function() enemy3L3:movement() end)
+    end)
+    enemy4L3Timer:script(function(wait)
+        wait(4.1)
+        enemy4L3Timer:every(2, function() enemy4L3:movement() end)
+    end)
+    enemy5L3Timer:script(function(wait)
+        wait(2.8)
+        enemy5L3Timer:every(2, function() enemy5L3:movement() end)
+    end)
+    enemy6L3Timer:script(function(wait)
+        wait(3.2)
+        enemy6L3Timer:every(2, function() enemy6L3:movement() end)
+    end)
+    enemy7L3Timer:script(function(wait)
+        wait(4.1)
+        enemy7L3Timer:every(2, function() enemy7L3:movement() end)
+    end)
+    enemy8L3Timer:script(function(wait)
+        wait(1.2)
+        enemy8L3Timer:every(2, function() enemy8L3:movement() end)
+    end)
+    enemy9L3Timer:script(function(wait)
+        wait(5.4)
+        enemy9L3Timer:every(2, function() enemy9L3:movement() end)
+    end)
+    enemy10L3Timer:script(function(wait)
+        wait(2.8)
+        enemy10L3Timer:every(2, function() enemy10L3:movement() end)
+    end)
+    enemy11L3Timer:script(function(wait)
+        wait(1.2)
+        enemy11L3Timer:every(2, function() enemy11L3:movement() end)
+    end)
+    enemy12L3Timer:script(function(wait)
+        wait(2.5)
+        enemy12L3Timer:every(2, function() enemy12L3:movement() end)
+    end)
   
     -- Bee Timers
     bEnemyL3Timer:script(function(wait)
         wait(2)
         bEnemyL3Timer:every(1.5, function() bEnemyL3:movement() end)
+    end)
+    bEnemy2L3Timer:script(function(wait)
+        wait(2)
+        bEnemy2L3Timer:every(1.5, function() bEnemy2L3:movement() end)
+    end)
+    bEnemy3L3Timer:script(function(wait)
+        wait(4)
+        bEnemy3L3Timer:every(1.5, function() bEnemy3L3:movement() end)
     end)
   
     -- Floor/walls/game objects
@@ -1020,8 +1093,20 @@ function love.update(dt)
     if gameLevel == 3.5 then
         enemyL3Timer:update(dt)
         enemy2L3Timer:update(dt)
+        enemy3L3Timer:update(dt)
+        enemy4L3Timer:update(dt)
+        enemy5L3Timer:update(dt)
+        enemy6L3Timer:update(dt)
+        enemy7L3Timer:update(dt)
+        enemy8L3Timer:update(dt)
+        enemy9L3Timer:update(dt)
+        enemy10L3Timer:update(dt)
+        enemy11L3Timer:update(dt)
+        enemy12L3Timer:update(dt)
         
         bEnemyL3Timer:update(dt)
+        bEnemy2L3Timer:update(dt)
+        bEnemy3L3Timer:update(dt)
     end
     
     -- Updates player timers with dt
@@ -1205,9 +1290,45 @@ function love.update(dt)
     if enemy2L3.eAlive == false then
         enemy2L3Timer:destroy()
     end
+    if enemy3L3.eAlive == false then
+        enemy3L3Timer:destroy()
+    end
+    if enemy4L3.eAlive == false then
+        enemy4L3Timer:destroy()
+    end
+    if enemy5L3.eAlive == false then
+        enemy5L3Timer:destroy()
+    end
+    if enemy6L3.eAlive == false then
+        enemy6L3Timer:destroy()
+    end
+    if enemy7L3.eAlive == false then
+        enemy7L3Timer:destroy()
+    end
+    if enemy8L3.eAlive == false then
+        enemy8L3Timer:destroy()
+    end
+    if enemy9L3.eAlive == false then
+        enemy9L3Timer:destroy()
+    end
+    if enemy10L3.eAlive == false then
+        enemy10L3Timer:destroy()
+    end
+    if enemy11L3.eAlive == false then
+        enemy11L3Timer:destroy()
+    end
+    if enemy12L3.eAlive == false then
+        enemy12L3Timer:destroy()
+    end
     
     if bEnemyL3.eAlive == false then
         bEnemyL3Timer:destroy()
+    end
+    if bEnemy2L3.eAlive == false then
+        bEnemy2L3Timer:destroy()
+    end
+    if bEnemy3L3.eAlive == false then
+        bEnemy3L3Timer:destroy()
     end
     
     -- Dash Timer
@@ -1601,7 +1722,7 @@ function love.draw()
     if drawLevel3Intro == true  then
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame5)], user.x -400, user.y - 400)
         if drawLevel3Text == true then
-            love.graphics.print("Area 3", user.x - 50, user.y - 80)
+            love.graphics.print("Area 3", user.x - 40, user.y - 80)
             love.graphics.setColor(1, 0, 0)
             love.graphics.print('"The Control Room"', user.x - 90, user.y, 0, 0.5, 0.5)
             love.graphics.setColor(r, g, b, a)
