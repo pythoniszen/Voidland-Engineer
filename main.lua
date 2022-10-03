@@ -527,7 +527,7 @@ function love.load()
     leftProjectileList = {}
     
     inStock = true
-    pStock = 3
+    pStock = 15
     wallHit = false
     
     

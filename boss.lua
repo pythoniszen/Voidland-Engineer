@@ -38,37 +38,84 @@ function Boss:new(x, y, boundLeft, boundRight, floor)
 end
 
 function Boss:update(dt)
-    self.lastHit = self.hits
-    
+  
     if self.eAlive == true then
         self.bounceBool = true
     end
-    
-    if self.hits >= 30 then -- == 15 hits
-        self.eAlive = false
-        self.bounceBool = false
+  
+    if self.hits > self.lastHit + 2 then
+        self.hits = self.lastHit + 2
     end
+    self.lastHit = self.hits - 1
+--    print("hits:"..self.hits)
+--    print(self.lastHit)
+
+    if self.hits >= 12 then
+        self.eAlive = false
+--        self.bounceBool = false
+    end
+  
+--    if hitDetect(user, self) == false then
+--        self.bounceBool = true
+--    end
+    
     if self.bounceBool == true and hitDetect(user, self) and user.y < self.y then
           
-          invincible = true
+--          print("HIT!")
+          
           if love.keyboard.isDown("space") then
+              self.bounceBool = false
+              if self.bounceBool == false and user.y >= user.last.y then
+                  invincible = true
+                  self.hits = self.hits + 1
+--                  print("PLUS ONE!")
+              end
+              self.bounceBool = true
               user.gravity = -520
               self.gravity = 500
-              self.bounceBool = false
+--              if self.hits > self.lastHit + 2 then
+--                  self.hits = self.lastHit + 2
+--              end
+              return
+              
+--          elseif bJumpBool == true and love.keyboard.isDown("space") and invincible == true then
+--              self.bounceBool = false
 --              if self.bounceBool == false then
 --                  self.hits = self.hits + 1
+--              end 
+--              user.gravity = -520
+--              self.gravity = 500
+--              if self.hits > self.lastHit + 2 then
+--                  self.hits = self.lastHit + 2
+--              end
+--          elseif bJumpBool == true and invincible == true then
+--              self.bounceBool = false
+--              if self.bounceBool == false then
+--                  self.hits = self.hits + 1
+--              end 
+--              user.gravity = -200
+--              self.gravity = 500
+--              if self.hits > self.lastHit + 2 then
+--                  self.hits = self.lastHit + 2
 --              end
           else
+              self.bounceBool = false
+              if self.bounceBool == false and user.y >= user.last.y then
+                  invincible = true
+                  self.hits = self.hits + 1
+              end
               user.gravity = -200
               self.gravity = 500
-              self.bounceBool = false
---              if self.bounceBool == false then
---                  self.hits = self.hits + 1
+--              if self.hits > self.lastHit + 2 then
+--                  self.hits = self.lastHit + 2
 --              end
+              return
+            
           end
           if user.eating == false and invincible == true then
               bossTimer2:after(0.1, function() user:invincibleEnd() end)
           end
+          self.bounceBool = true
       end
     
     if self.x > self.boundaryRight then
@@ -110,7 +157,11 @@ end
 function Boss:jump(dt)
     if self.eAlive == true then
         bJumpBool = true
-        self.gravity = -420
+        if hitDetect(user, self) then
+            self.gravity = 500
+        else
+            self.gravity = -420
+        end
         bossTimer2:after(0.2, function() self:endJump() end)
         self.image = bossJumpImg
     end

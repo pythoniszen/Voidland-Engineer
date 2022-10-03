@@ -83,7 +83,7 @@ function Projectile:update(dt)
         end
         
         if hitDetect(self, boss) then
-            boss.hits = boss.hits + 2
+            boss.hits = boss.hits + 1
             if self.y < 2000 then
                 while self.y < 2000 do
                     self.y = self.y + self.gravity * dt
