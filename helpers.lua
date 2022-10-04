@@ -63,14 +63,15 @@ function hitDetect(element_x, element_y)
 --            end
             if element_x_bottom < element_y_top + 19 and element_x_bottom > element_y_top and element_x_top < element_y_top - user.height + 18 then --and k == true then --and boss.bounceBool == false then
 --                element_y.hits = element_y.hits + 1
-                element_y.eAlive = true
+--                element_y.eAlive = true
 --                k = false
+                userHitBoss = true
                 return true
             end
             
         elseif element_y.imageMain == bossImage and element_x_bottom > element_y_top and element_x_bottom < element_y_bottom + 10 then
             --local delta = love.timer.getDelta()
-            element_y.eAlive = true
+--            element_y.eAlive = true
 --            element_y.hits = element_y.hits + 1
             return true
         end

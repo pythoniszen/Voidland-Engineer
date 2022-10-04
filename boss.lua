@@ -35,39 +35,45 @@ function Boss:new(x, y, boundLeft, boundRight, floor)
     self.lastHit = 0
     jumpHitFloor = true
     jumpHitTop = false
+    userHitBoss = false
 end
 
 function Boss:update(dt)
   
     if self.eAlive == true then
         self.bounceBool = true
+        self.image = bossImage
     end
   
-    if self.hits > self.lastHit + 2 then
-        self.hits = self.lastHit + 2
+    if self.hits > self.lastHit + 1 then
+        self.hits = self.lastHit + 1
     end
-    self.lastHit = self.hits - 1
+    
+    self.lastHit = self.hits
 --    print("hits:"..self.hits)
 --    print(self.lastHit)
 
     if self.hits >= 12 then
         self.eAlive = false
 --        self.bounceBool = false
-    end
+  end
   
 --    if hitDetect(user, self) == false then
 --        self.bounceBool = true
 --    end
     
-    if self.bounceBool == true and hitDetect(user, self) and user.y < self.y then
+    if self.bounceBool == true and hitDetect(user, self) and (user.y >= user.last.y or bJumpBool == true) then
           
 --          print("HIT!")
-          
+          bJumpBool = false
           if love.keyboard.isDown("space") then
               self.bounceBool = false
               if self.bounceBool == false and user.y >= user.last.y then
                   invincible = true
                   self.hits = self.hits + 1
+                  if self.hits > self.lastHit + 1 then
+                      self.hits = self.lastHit + 1
+                  end
 --                  print("PLUS ONE!")
               end
               self.bounceBool = true
@@ -100,15 +106,19 @@ function Boss:update(dt)
 --              end
           else
               self.bounceBool = false
-              if self.bounceBool == false and user.y >= user.last.y then
+              if self.bounceBool == false and userHitBoss == true then
                   invincible = true
-                  self.hits = self.hits + 1
+                  self.image = mushroomImage
+                  if self.hits == self.lastHit then
+                      self.hits = self.hits + 1
+                  end
+                  userHitBoss = false
+                  if self.hits > self.lastHit + 1 then
+                      self.hits = self.lastHit + 1
+                  end
               end
               user.gravity = -200
               self.gravity = 500
---              if self.hits > self.lastHit + 2 then
---                  self.hits = self.lastHit + 2
---              end
               return
             
           end

@@ -109,17 +109,16 @@ function User:update(dt)
           end
           
           if hitDetect(self, boss) then
+--              boss.bounceBool = false
               if boss.bounceBool == false then
                   if love.keyboard.isDown("space") then
                       self.gravity = -520
-                      boss.bounceBool = false
                   else
                       self.gravity = -200
-                      boss.bounceBool = false
                   end
 --              elseif invincible == true then
 --                  enemy.eAlive = true
-              elseif invincible == false and boss.eAlive == true then
+              elseif invincible == false and boss.eAlive == true and userHitBoss == false then
                   alive = false
               end
           end
