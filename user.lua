@@ -73,10 +73,10 @@ function User:update(dt)
       if gameLevel == 1 then
           for i,enemy in ipairs(enemiesList) do
               if hitDetect(self, enemy) then
-                  if enemy.eAlive == false then
-                      return
-                  elseif invincible == true then
+                  if invincible == true then
                       enemy.eAlive = true
+                  elseif enemy.eAlive == false then
+                      return
                   elseif invincible == false then
                       alive = false
                   end
@@ -86,10 +86,10 @@ function User:update(dt)
       elseif gameLevel == 2.5 then
           for i,enemy in ipairs(enemiesList2) do
               if hitDetect(self, enemy) then
-                  if enemy.eAlive == false then
-                      return
-                  elseif invincible == true then
+                  if invincible == true then
                       enemy.eAlive = true
+                  elseif enemy.eAlive == false then
+                      return
                   elseif invincible == false then
                       alive = false
                   end
@@ -98,26 +98,24 @@ function User:update(dt)
       elseif gameLevel == 3.5 then
           for i,enemy in ipairs(enemiesList3) do
               if hitDetect(self, enemy) then
-                  if enemy.eAlive == false then
-                      return
-                  elseif invincible == true then
+                  if invincible == true then
                       enemy.eAlive = true
+                  elseif enemy.eAlive == false then
+                      return
                   elseif invincible == false then
                       alive = false
                   end
               end
           end
           
-          if hitDetect(self, boss) then
---              boss.bounceBool = false
+          if hitDetect(self, boss) and invincible == false then
+              boss.bounceBool = false
               if boss.bounceBool == false then
                   if love.keyboard.isDown("space") then
                       self.gravity = -520
                   else
                       self.gravity = -200
                   end
---              elseif invincible == true then
---                  enemy.eAlive = true
               elseif invincible == false and boss.eAlive == true and userHitBoss == false then
                   alive = false
               end
