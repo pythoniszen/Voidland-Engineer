@@ -108,9 +108,9 @@ function User:update(dt)
               end
           end
           
-          if hitDetect(self, boss) and invincible == false then
+          if hitDetect(self, boss) then
               boss.bounceBool = false
-              if boss.bounceBool == false then
+              if boss.bounceBool == false and self.y < 720 and invincible == false then
                   if love.keyboard.isDown("space") then
                       self.gravity = -520
                   else

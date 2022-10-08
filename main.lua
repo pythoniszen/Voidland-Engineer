@@ -629,11 +629,16 @@ function love.load()
     bEFrames = {}
     fEStretchFrames = {}
     fEMoveFrames = {}
+    bossFramesLeft = {}
     
     local eWidth = enemyJumpImage:getWidth()
     local eHeight = enemyJumpImage:getHeight()
     local eQuadW = 60
     local eQuadH = -20
+    
+    local bossWidth = bossRunLeftImage:getWidth()
+    local bossHeight = bossRunLeftImage:getHeight()
+    local bossQuadWidth = bossWidth / 2
     
     -- Mushroom Class animation frames
     for i=0, 4 do
@@ -643,6 +648,12 @@ function love.load()
     -- Bee Enemy Class frames
     for i=0, 4 do
         table.insert(bEFrames, love.graphics.newQuad(6 + i * (eQuadW + 15), 9, eQuadW + 8, (eHeight - 16), eWidth, eHeight))
+    end
+    
+    -- Boss run frames
+    
+    for i=0, 2 do
+        table.insert(bossFramesLeft, love.graphics.newQuad(6 + i * (bossQuadWidth + 5), 7, bossQuadWidth - 10, (bossHeight - 16), bossWidth + 10, bossHeight))
     end
 
     -- Music, background, game over screen, font
@@ -1752,8 +1763,8 @@ function love.keypressed(key)
         if jumpBool == true then
             user:jump()
         end
-    elseif key == "return" then
-        start = false
+--    elseif key == "return" then
+--        start = false
     elseif key == "q" then
         if shopTalkBool == true then
             shopTalkCounter = shopTalkCounter + 1

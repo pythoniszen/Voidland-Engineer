@@ -84,6 +84,8 @@ function Projectile:update(dt)
         
         if hitDetect(self, boss) then
             boss.hits = boss.hits + 1
+            boss.image = bossHitImage
+            bossTimer4:after(0.5, function() boss:hitAnimationEnd() end)
             if self.y < 2000 then
                 while self.y < 2000 do
                     self.y = self.y + self.gravity * dt

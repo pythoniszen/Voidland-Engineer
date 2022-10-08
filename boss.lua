@@ -6,6 +6,8 @@ require "user"
 Boss = Entity:extend()
 imgM = love.graphics.newImage("/art/enemy1.png")
 bossJumpImg = love.graphics.newImage("/art/bossjump.png")
+bossHitImage = love.graphics.newImage("/art/bosshit.png")
+bossRunLeftImage = love.graphics.newImage("/art/bossrunleft.png")
 
 function Boss:new(x, y, boundLeft, boundRight, floor)
     -- Loads properties and variables
@@ -36,13 +38,20 @@ function Boss:new(x, y, boundLeft, boundRight, floor)
     jumpHitFloor = true
     jumpHitTop = false
     userHitBoss = false
+    bossGroundBool = true
 end
 
 function Boss:update(dt)
+    
+    if self.y >= 760 then
+        bossGroundBool = true
+    else
+        bossGroundBool = false
+    end
   
     if self.eAlive == true then
         self.bounceBool = true
-        self.image = bossImage
+--        self.image = bossImage
     end
   
     if self.hits > self.lastHit + 1 then
@@ -55,12 +64,22 @@ function Boss:update(dt)
 
     if self.hits >= 12 then
         self.eAlive = false
+        self.image = bossHitImage
 --        self.bounceBool = false
   end
   
 --    if hitDetect(user, self) == false then
 --        self.bounceBool = true
 --    end
+    if self.speed ~= 400 then
+        self.currentFrame = self.currentFrame + 2 * dt
+    elseif self.speed == 400 then
+        self.currentFrame = self.currentFrame + 6 * dt
+    end
+    if self.currentFrame >= 3 then
+        self.currentFrame = 1
+    end
+    
     
     if self.bounceBool == true and hitDetect(user, self) and (user.y >= user.last.y or bJumpBool == true) and invincible == false then
 --          print("HIT!")
@@ -69,7 +88,7 @@ function Boss:update(dt)
               self.bounceBool = false
               if self.bounceBool == false and (userHitBoss == true or bJumpBool == true) then
                   invincible = true
-                  self.image = mushroomImage
+                  self.image = bossHitImage
                   if self.hits == self.lastHit then
                       self.hits = self.hits + 1
                   end
@@ -77,6 +96,7 @@ function Boss:update(dt)
                   if self.hits > self.lastHit + 1 then
                       self.hits = self.lastHit + 1
                   end
+                  bossTimer4:after(1, function() self:hitAnimationEnd() end)
               end
               user.gravity = -520
               self.gravity = 500
@@ -86,7 +106,7 @@ function Boss:update(dt)
               self.bounceBool = false
               if self.bounceBool == false and (userHitBoss == true or bJumpBool == true) then
                   invincible = true
-                  self.image = mushroomImage
+                  self.image = bossHitImage
                   if self.hits == self.lastHit then
                       self.hits = self.hits + 1
                   end
@@ -94,6 +114,7 @@ function Boss:update(dt)
                   if self.hits > self.lastHit + 1 then
                       self.hits = self.lastHit + 1
                   end
+                  bossTimer4:after(1, function() self:hitAnimationEnd() end)
               end
               invincible = false
               user.gravity = -200
@@ -134,6 +155,10 @@ function Boss:update(dt)
     end
 end
 
+function Boss:hitAnimationEnd()
+    self.image = bossImage
+end
+
 function Boss:movement(dt)
     self.speed = 400
     bossTimer3:after(2, function() self:endSpeed() end)
@@ -144,6 +169,7 @@ function Boss:endSpeed(dt)
 end
 
 function Boss:jump(dt)
+    bossGroundBool = false
     if self.eAlive == true then
         bJumpBool = true
         if hitDetect(user, self) then
@@ -162,7 +188,11 @@ function Boss:endJump()
 end
 
 function Boss:draw()
-    love.graphics.draw(self.image, self.x, self.y)
+    if self.image ~= bossJumpImg and self.image ~= bossHitImage and bossGroundBool == true then
+        love.graphics.draw(bossRunLeftImage, bossFramesLeft[math.floor(self.currentFrame)], self.x, self.y + 10)
+    else
+        love.graphics.draw(self.image, self.x, self.y)
+    end
 end
   
   
