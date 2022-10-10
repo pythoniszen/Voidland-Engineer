@@ -284,14 +284,17 @@ end
 
 -- Eat funtion
 function User:eat()
-    self.eating = true
+    
     if mushroomCount > 0 then
+        self.eating = true
         if invincible == true then
             invincibleTimer:destroy()
         end
         mushroomCount = mushroomCount - 1
         invincible = true
         invincibleTimer:after(3, function() self:invincibleEnd() end)
+    else
+        mushroomCount = 0
     end
 end
 

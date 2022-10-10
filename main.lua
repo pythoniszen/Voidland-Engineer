@@ -144,13 +144,40 @@ function love.load()
     enemy10L3 = EnemyMushroom(3150, 525, 3050, 3100, 525)
     enemy11L3 = EnemyMushroom(3250, 525, 3150, 3200, 525)
     enemy12L3 = EnemyMushroom(3900, 325, 3800, 3850, 325)
+    enemy13L3 = EnemyMushroom(1900, 825, 1810, 1860, 825)
+    enemy14L3 = EnemyMushroom(2300, 825, 2210, 2260, 825)
+    enemy15L3 = EnemyMushroom(2500, 825, 2410, 2460, 825)
+    enemy16L3 = EnemyMushroom(4560, 825, 4470, 4530, 825)
+    enemy17L3 = EnemyMushroom(4660, 825, 4570, 4630, 825)
+    enemy18L3 = EnemyMushroom(3030, 825, 2940, 3000, 825)
+    enemy19L3 = EnemyMushroom(5310, 575, 5220, 5280, 575)
+    enemy20L3 = EnemyMushroom(5330, 575, 5240, 5300, 575) -- Middle platform
+    enemy21L3 = EnemyMushroom(5260, 575, 5170, 5230, 575) -- middle of middle platform
+    enemy22L3 = EnemyMushroom(4690, 575, 4600, 4660, 575) -- left
+    --(5480, 725, 5470, 5440, 725)
+    enemy23L3 = EnemyMushroom(5940, 825, 5930, 5900, 825)
+    enemy24L3 = EnemyMushroom(4730, 575, 4720, 4700, 575) -- left
+    enemy25L3 = EnemyMushroom(6140, 825, 6130, 6100, 825)
+    enemy26L3 = EnemyMushroom(6090, 375, 6080, 6050, 375)
+    enemy27L3 = EnemyMushroom(6040, 375, 6030, 6000, 375)
+    enemy28L3 = EnemyMushroom(6450, 525, 6440, 6410, 525)
+    enemy29L3 = EnemyMushroom(6550, 525, 6540, 6510, 525) -- middle
+    enemy30L3 = EnemyMushroom(6650, 525, 6640, 6610, 525)
+    enemy31L3 = EnemyMushroom(6650, 525, 6640, 6610, 525)
+    enemy32L3 = EnemyMushroom(6700, 525, 6690, 6660, 525)
+    enemy33L3 = EnemyMushroom(3800, 325, 3700, 3750, 325)
     
     bEnemyL3 = BEnemyClass(1800, 50, 1710, 1760)
     bEnemy2L3 = BEnemyClass(3800, 475, 3700, 3750)
     bEnemy3L3 = BEnemyClass(3850, 475, 3750, 3800)
+    bEnemy4L3 = BEnemyClass(3300, 675, 3200, 3250)
+    bEnemy5L3 = BEnemyClass(4760, 725, 4670, 4730)
+    bEnemy6L3 = BEnemyClass(5460, 425, 5370, 5430)
+    bEnemy7L3 = BEnemyClass(5260, 50, 5170, 5230)
+    bEnemy8L3 = BEnemyClass(6400, 50, 6310, 6370)
     
     -- List of all level 3 enemies
-    enemiesList3 = {enemyL3, enemy2L3, enemy3L3, enemy4L3, enemy5L3, enemy6L3, enemy7L3, enemy8L3, enemy9L3, enemy10L3, enemy11L3, enemy12L3, bEnemyL3, bEnemy2L3, bEnemy3L3}
+    enemiesList3 = {enemyL3, enemy2L3, enemy3L3, enemy4L3, enemy5L3, enemy6L3, enemy7L3, enemy8L3, enemy9L3, enemy10L3, enemy11L3, enemy12L3, enemy13L3, enemy14L3, enemy15L3, enemy16L3, enemy17L3, enemy18L3, enemy19L3, enemy20L3, enemy21L3, enemy22L3, enemy23L3, enemy24L3, enemy25L3, enemy26L3, enemy27L3, enemy28L3, enemy29L3, enemy30L3, enemy31L3, enemy32L3, enemy33L3, bEnemyL3, bEnemy2L3, bEnemy3L3, bEnemy4L3, bEnemy5L3, bEnemy6L3, bEnemy7L3, bEnemy8L3}
     
     -- Boss timer
     bossTimer = Timer()
@@ -236,10 +263,36 @@ function love.load()
     enemy10L3Timer = Timer()
     enemy11L3Timer = Timer()
     enemy12L3Timer = Timer()
+    enemy13L3Timer = Timer()
+    enemy14L3Timer = Timer()
+    enemy15L3Timer = Timer()
+    enemy16L3Timer = Timer()
+    enemy17L3Timer = Timer()
+    enemy18L3Timer = Timer()
+    enemy19L3Timer = Timer()
+    enemy20L3Timer = Timer()
+    enemy21L3Timer = Timer()
+    enemy22L3Timer = Timer()
+    enemy23L3Timer = Timer()
+    enemy24L3Timer = Timer()
+    enemy25L3Timer = Timer()
+    enemy26L3Timer = Timer()
+    enemy27L3Timer = Timer()
+    enemy28L3Timer = Timer()
+    enemy29L3Timer = Timer()
+    enemy30L3Timer = Timer()
+    enemy31L3Timer = Timer()
+    enemy32L3Timer = Timer()
+    enemy33L3Timer = Timer()
     
     bEnemyL3Timer = Timer()
     bEnemy2L3Timer = Timer()
     bEnemy3L3Timer = Timer()
+    bEnemy4L3Timer = Timer()
+    bEnemy5L3Timer = Timer()
+    bEnemy6L3Timer = Timer()
+    bEnemy7L3Timer = Timer()
+    bEnemy8L3Timer = Timer()
     
     -- Boss timer
     bossTimer:every(4, function() boss:jump(dt) end)
@@ -491,6 +544,90 @@ function love.load()
         wait(2.5)
         enemy12L3Timer:every(2, function() enemy12L3:movement() end)
     end)
+    enemy13L3Timer:script(function(wait)
+        wait(4.2)
+        enemy13L3Timer:every(2, function() enemy13L3:movement() end)
+    end)
+    enemy14L3Timer:script(function(wait)
+        wait(1.2)
+        enemy14L3Timer:every(2, function() enemy14L3:movement() end)
+    end)
+    enemy15L3Timer:script(function(wait)
+        wait(2.4)
+        enemy15L3Timer:every(2, function() enemy15L3:movement() end)
+    end)
+    enemy16L3Timer:script(function(wait)
+        wait(3.8)
+        enemy16L3Timer:every(2, function() enemy16L3:movement() end)
+    end)
+    enemy17L3Timer:script(function(wait)
+        wait(4.9)
+        enemy17L3Timer:every(2, function() enemy17L3:movement() end)
+    end)
+    enemy18L3Timer:script(function(wait)
+        wait(2.2)
+        enemy18L3Timer:every(2, function() enemy18L3:movement() end)
+    end)
+    enemy19L3Timer:script(function(wait)
+        wait(3.5)
+        enemy19L3Timer:every(2, function() enemy19L3:movement() end)
+    end)
+    enemy20L3Timer:script(function(wait)
+        wait(5.5)
+        enemy20L3Timer:every(2, function() enemy20L3:movement() end)
+    end)
+    enemy21L3Timer:script(function(wait)
+        wait(3.7)
+        enemy21L3Timer:every(1.2, function() enemy21L3:movement() end)
+    end)
+    enemy22L3Timer:script(function(wait)
+        wait(2.5)
+        enemy22L3Timer:every(1.2, function() enemy22L3:movement() end)
+    end)
+    enemy23L3Timer:script(function(wait)
+        wait(3.1)
+        enemy23L3Timer:every(2, function() enemy23L3:movement() end)
+    end)
+    enemy24L3Timer:script(function(wait)
+        wait(4.2)
+        enemy24L3Timer:every(0.6, function() enemy24L3:movement() end)
+    end)
+    enemy25L3Timer:script(function(wait)
+        wait(5.7)
+        enemy25L3Timer:every(2, function() enemy25L3:movement() end)
+    end)
+    enemy26L3Timer:script(function(wait)
+        wait(2.2)
+        enemy26L3Timer:every(1.2, function() enemy26L3:movement() end)
+    end)
+    enemy27L3Timer:script(function(wait)
+        wait(4.2)
+        enemy27L3Timer:every(0.6, function() enemy27L3:movement() end)
+    end)
+    enemy28L3Timer:script(function(wait)
+        wait(2.4)
+        enemy28L3Timer:every(0.6, function() enemy28L3:movement() end)
+    end)
+    enemy29L3Timer:script(function(wait)
+        wait(3.6)
+        enemy29L3Timer:every(1.2, function() enemy29L3:movement() end)
+    end)
+    enemy30L3Timer:script(function(wait)
+        wait(2.6)
+        enemy30L3Timer:every(2, function() enemy30L3:movement() end)
+    end)
+    enemy31L3Timer:script(function(wait)
+        wait(3.4)
+        enemy31L3Timer:every(1.2, function() enemy31L3:movement() end)
+    end)
+    enemy32L3Timer:script(function(wait)
+        wait(6.7)
+        enemy32L3Timer:every(1.2, function() enemy32L3:movement() end)
+    end)
+    enemy33L3Timer:script(function(wait)
+        wait(3.7)
+        enemy33L3Timer:every(1.2, function() enemy33L3:movement() end)
+    end)
   
     -- Bee Timers
     bEnemyL3Timer:script(function(wait)
@@ -504,6 +641,26 @@ function love.load()
     bEnemy3L3Timer:script(function(wait)
         wait(4)
         bEnemy3L3Timer:every(1.5, function() bEnemy3L3:movement() end)
+    end)
+    bEnemy4L3Timer:script(function(wait)
+        wait(2)
+        bEnemy4L3Timer:every(1.5, function() bEnemy4L3:movement() end)
+    end)
+    bEnemy5L3Timer:script(function(wait)
+        wait(4)
+        bEnemy5L3Timer:every(0.8, function() bEnemy5L3:movement() end)
+    end)
+    bEnemy6L3Timer:script(function(wait)
+        wait(2)
+        bEnemy6L3Timer:every(1.5, function() bEnemy6L3:movement() end)
+    end)
+    bEnemy7L3Timer:script(function(wait)
+        wait(4)
+        bEnemy7L3Timer:every(1.5, function() bEnemy7L3:movement() end)
+    end)
+    bEnemy8L3Timer:script(function(wait)
+        wait(2)
+        bEnemy8L3Timer:every(1.5, function() bEnemy8L3:movement() end)
     end)
   
     -- Floor/walls/game objects
@@ -527,7 +684,7 @@ function love.load()
     leftProjectileList = {}
     
     inStock = true
-    pStock = 15
+    pStock = 3
     wallHit = false
     
     
@@ -983,9 +1140,9 @@ function love.update(dt)
     -- Fixes bug where character would fall off screen when game window was moved
     dt = math.min(dt, 1/10)
 
-    if gameLevel == 3.5 then
-        hasKey = true
-    end
+--    if gameLevel == 3.5 then
+--        hasKey = true
+--    end
 
     if alive == true then
         homeSong:setLooping(true)
@@ -1114,10 +1271,36 @@ function love.update(dt)
         enemy10L3Timer:update(dt)
         enemy11L3Timer:update(dt)
         enemy12L3Timer:update(dt)
+        enemy13L3Timer:update(dt)
+        enemy14L3Timer:update(dt)
+        enemy15L3Timer:update(dt)
+        enemy16L3Timer:update(dt)
+        enemy17L3Timer:update(dt)
+        enemy18L3Timer:update(dt)
+        enemy19L3Timer:update(dt)
+        enemy20L3Timer:update(dt)
+        enemy21L3Timer:update(dt)
+        enemy22L3Timer:update(dt)
+        enemy23L3Timer:update(dt)
+        enemy24L3Timer:update(dt)
+        enemy25L3Timer:update(dt)
+        enemy26L3Timer:update(dt)
+        enemy27L3Timer:update(dt)
+        enemy28L3Timer:update(dt)
+        enemy29L3Timer:update(dt)
+        enemy30L3Timer:update(dt)
+        enemy31L3Timer:update(dt)
+        enemy32L3Timer:update(dt)
+        enemy33L3Timer:update(dt)
         
         bEnemyL3Timer:update(dt)
         bEnemy2L3Timer:update(dt)
         bEnemy3L3Timer:update(dt)
+        bEnemy4L3Timer:update(dt)
+        bEnemy5L3Timer:update(dt)
+        bEnemy6L3Timer:update(dt)
+        bEnemy7L3Timer:update(dt)
+        bEnemy8L3Timer:update(dt)
     end
     
     -- Updates player timers with dt
@@ -1331,6 +1514,69 @@ function love.update(dt)
     if enemy12L3.eAlive == false then
         enemy12L3Timer:destroy()
     end
+    if enemy13L3.eAlive == false then
+        enemy13L3Timer:destroy()
+    end
+    if enemy14L3.eAlive == false then
+        enemy14L3Timer:destroy()
+    end
+    if enemy15L3.eAlive == false then
+        enemy15L3Timer:destroy()
+    end
+    if enemy16L3.eAlive == false then
+        enemy16L3Timer:destroy()
+    end
+    if enemy17L3.eAlive == false then
+        enemy17L3Timer:destroy()
+    end
+    if enemy18L3.eAlive == false then
+        enemy18L3Timer:destroy()
+    end
+    if enemy19L3.eAlive == false then
+        enemy19L3Timer:destroy()
+    end
+    if enemy20L3.eAlive == false then
+        enemy20L3Timer:destroy()
+    end
+    if enemy21L3.eAlive == false then
+        enemy21L3Timer:destroy()
+    end
+    if enemy22L3.eAlive == false then
+        enemy22L3Timer:destroy()
+    end
+    if enemy23L3.eAlive == false then
+        enemy23L3Timer:destroy()
+    end
+    if enemy24L3.eAlive == false then
+        enemy24L3Timer:destroy()
+    end
+    if enemy25L3.eAlive == false then
+        enemy25L3Timer:destroy()
+    end
+    if enemy26L3.eAlive == false then
+        enemy26L3Timer:destroy()
+    end
+    if enemy27L3.eAlive == false then
+        enemy27L3Timer:destroy()
+    end
+    if enemy28L3.eAlive == false then
+        enemy28L3Timer:destroy()
+    end
+    if enemy29L3.eAlive == false then
+        enemy29L3Timer:destroy()
+    end
+    if enemy30L3.eAlive == false then
+        enemy30L3Timer:destroy()
+    end
+    if enemy31L3.eAlive == false then
+        enemy31L3Timer:destroy()
+    end
+    if enemy32L3.eAlive == false then
+        enemy32L3Timer:destroy()
+    end
+    if enemy33L3.eAlive == false then
+        enemy33L3Timer:destroy()
+    end
     
     if bEnemyL3.eAlive == false then
         bEnemyL3Timer:destroy()
@@ -1340,6 +1586,21 @@ function love.update(dt)
     end
     if bEnemy3L3.eAlive == false then
         bEnemy3L3Timer:destroy()
+    end
+    if bEnemy4L3.eAlive == false then
+        bEnemy4L3Timer:destroy()
+    end
+    if bEnemy5L3.eAlive == false then
+        bEnemy5L3Timer:destroy()
+    end
+    if bEnemy6L3.eAlive == false then
+        bEnemy6L3Timer:destroy()
+    end
+    if bEnemy7L3.eAlive == false then
+        bEnemy7L3Timer:destroy()
+    end
+    if bEnemy8L3.eAlive == false then
+        bEnemy8L3Timer:destroy()
     end
     
     -- Dash Timer

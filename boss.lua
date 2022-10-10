@@ -62,7 +62,7 @@ function Boss:update(dt)
 --    print("hits:"..self.hits)
 --    print(self.lastHit)
 
-    if self.hits >= 12 then
+    if self.hits >= 21 then
         self.eAlive = false
         self.image = bossHitImage
 --        self.bounceBool = false
@@ -80,7 +80,6 @@ function Boss:update(dt)
         self.currentFrame = 1
     end
     
-    
     if self.bounceBool == true and hitDetect(user, self) and (user.y >= user.last.y or bJumpBool == true) and invincible == false then
 --          print("HIT!")
           bJumpBool = false
@@ -96,7 +95,7 @@ function Boss:update(dt)
                   if self.hits > self.lastHit + 1 then
                       self.hits = self.lastHit + 1
                   end
-                  bossTimer4:after(1, function() self:hitAnimationEnd() end)
+                  bossTimer4:after(0.5, function() self:hitAnimationEnd() end)
               end
               user.gravity = -520
               self.gravity = 500
@@ -114,7 +113,7 @@ function Boss:update(dt)
                   if self.hits > self.lastHit + 1 then
                       self.hits = self.lastHit + 1
                   end
-                  bossTimer4:after(1, function() self:hitAnimationEnd() end)
+                  bossTimer4:after(0.5, function() self:hitAnimationEnd() end)
               end
               invincible = false
               user.gravity = -200
