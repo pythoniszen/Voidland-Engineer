@@ -24,6 +24,7 @@ function love.load()
     require "key"
     require "gate"
     require "shopkeep"
+    require "traveler"
     require "boss"
 
     
@@ -39,6 +40,8 @@ function love.load()
     promptX = 0
     PromptY = 0
     startButton = startButtonClass(310, 380, startButtonImage)
+    controlsButton = Button(310, 440, controlsButtonImage)
+    storyButton = Button(310, 500, storyButtonImage)
     mouse = {}
     startFade = false
     gameOver = love.graphics.newImage("/art/gameover.png")
@@ -52,8 +55,9 @@ function love.load()
     drawLevel3Text = false
     textPrompt = love.graphics.newImage("/art/textprompt.png")
     shopKeep = Shopkeep(400, 845)
-    shopButton1 = ShopButton(400, 800, wrenchImage, 15)
-    shopButton2 = ShopButton(460, 800, mushroomImage, 30)
+    traveler = Traveler(5872, 85)
+    shopButton1 = ShopButton(400, 800, wrenchImage, 10)
+    shopButton2 = ShopButton(460, 800, mushroomImage, 20)
     bossBool = false
     boss = Boss(8100, 760, 7460, 8110, 760)
     speedUp = false
@@ -174,7 +178,7 @@ function love.load()
     bEnemy5L3 = BEnemyClass(4760, 725, 4670, 4730)
     bEnemy6L3 = BEnemyClass(5460, 425, 5370, 5430)
     bEnemy7L3 = BEnemyClass(5260, 50, 5170, 5230)
-    bEnemy8L3 = BEnemyClass(6400, 50, 6310, 6370)
+    bEnemy8L3 = BEnemyClass(6300, 50, 6210, 6270)
     
     -- List of all level 3 enemies
     enemiesList3 = {enemyL3, enemy2L3, enemy3L3, enemy4L3, enemy5L3, enemy6L3, enemy7L3, enemy8L3, enemy9L3, enemy10L3, enemy11L3, enemy12L3, enemy13L3, enemy14L3, enemy15L3, enemy16L3, enemy17L3, enemy18L3, enemy19L3, enemy20L3, enemy21L3, enemy22L3, enemy23L3, enemy24L3, enemy25L3, enemy26L3, enemy27L3, enemy28L3, enemy29L3, enemy30L3, enemy31L3, enemy32L3, enemy33L3, bEnemyL3, bEnemy2L3, bEnemy3L3, bEnemy4L3, bEnemy5L3, bEnemy6L3, bEnemy7L3, bEnemy8L3}
@@ -1151,6 +1155,8 @@ function love.update(dt)
     
     --Button updates
     startButton:update(dt)
+    controlsButton:update(dt)
+    storyButton:update(dt)
     
     enemyTitleScreen:update(dt)
     
@@ -1166,6 +1172,7 @@ function love.update(dt)
     end
     
     shopKeep:update(dt)
+    traveler:update(dt)
     shopButton1:update(dt)
     shopButton2:update(dt)
     
@@ -1847,6 +1854,11 @@ function love.draw()
         shopKeep:draw()
         shopButton1:draw()
         shopButton2:draw()
+        
+    end
+    
+    if gameLevel == 2.5 then
+        traveler:draw()
     end
     
     if gameLevel == 3.5 and bossBool == true then
@@ -1927,7 +1939,7 @@ function love.draw()
     
     
     if user.eating == true then
-        love.graphics.draw(mushroomImage, user.x, user.y, 0, 0.6, 0.6)
+        love.graphics.draw(mushroomImage, user.x + 10, user.y + 10, 0, 0.6, 0.6)
     end
     
     -- Draws HUD
@@ -1959,8 +1971,10 @@ function love.draw()
         love.graphics.setColor(0, 1, 0)
         love.graphics.print("Voidland", 240, 100)
         love.graphics.print("Engineer", 240, 200)
-        love.graphics.print("v1.0", 380, 560, 0, 0.2, 0.2)
+        love.graphics.print("v1.0", 385, 568, 0, 0.2, 0.2)
         startButton:draw()
+        controlsButton:draw()
+        storyButton:draw()
         love.graphics.setColor(r,g,b,a)
         enemyTitleScreen:draw()
     end
@@ -2006,6 +2020,11 @@ function love.draw()
         love.graphics.print("Press 'q' to talk.", user.x + 10, user.y + 200, 0, 0.16, 0.16)
     end
     
+    if drawTravelerAlert == true then
+        love.graphics.draw(textPrompt, user.x, user.y + 190)
+        love.graphics.print("Press 'q' to talk.", user.x + 10, user.y + 200, 0, 0.16, 0.16)
+    end
+    
     -- Game over screen
     if alive == false then
           love.graphics.translate(user.x - 300, user.y - 300)
@@ -2029,19 +2048,21 @@ function love.keypressed(key)
     elseif key == "q" then
         if shopTalkBool == true then
             shopTalkCounter = shopTalkCounter + 1
+        elseif travelerTalkBool == true then
+            travelerCounter = travelerCounter + 1
         end
     end
 end
 
 function love.mousepressed(x, y, button)
     if button == 1 and shopTalkCounter == 2 and shopButton1.canBuy == true then
-        if coinCount >= 15 then
-            coinCount = coinCount - 15
+        if coinCount >= 10 then
+            coinCount = coinCount - 10
             pStock = pStock + 1
         end
     elseif button == 1 and shopTalkCounter == 2 and shopButton2.canBuy == true then
-        if coinCount >= 30 then
-            coinCount = coinCount - 30
+        if coinCount >= 20 then
+            coinCount = coinCount - 20
             mushroomCount = mushroomCount + 1
         end
     end
