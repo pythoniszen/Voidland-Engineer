@@ -64,6 +64,10 @@ function love.load()
     bJumpBool = false
     compImage = love.graphics.newImage("/art/computer.png")
     
+    -- Sound Fx
+    coinFx = love.audio.newSource("/vleaudiofx/coingrab.ogg", "stream")
+    itemFx = love.audio.newSource("/vleaudiofx/itemgrab.ogg", "stream")
+    
     -- Player character components
     user = User(60, 480)
     hasKey = false
@@ -1150,6 +1154,7 @@ function love.update(dt)
 
     if alive == true then
         homeSong:setLooping(true)
+        homeSong:setVolume(0.3)
         homeSong:play()
     end
     
@@ -1657,6 +1662,17 @@ function love.update(dt)
             for i,object in ipairs(objects) do
                 if hitDetect(user, object) then
                     object.alive = false
+                    if object.image == coinImage then
+                        love.audio.stop(coinFx)
+                        coinFx:setLooping(false)
+                        coinFx:setVolume(0.6)
+                        coinFx:play()
+                    elseif object.image ~= coinImage then
+                        love.audio.stop(itemFx)
+                        itemFx:setLooping(false)
+                        itemFx:setVolume(0.6)
+                        itemFx:play()
+                    end
                 end
             end
 
@@ -1689,6 +1705,18 @@ function love.update(dt)
         elseif gameLevel == 3.5 then
             for i,object in ipairs(objects3) do
                 if hitDetect(user, object) then
+                    
+                    if object.image == coinImage and object.alive == true then
+                        love.audio.stop(coinFx)
+                        coinFx:setLooping(false)
+                        coinFx:setVolume(0.6)
+                        coinFx:play()
+                    elseif object.image ~= coinImage and object.alive == true then
+                        love.audio.stop(itemFx)
+                        itemFx:setLooping(false)
+                        itemFx:setVolume(0.8)
+                        itemFx:play()
+                    end
                     object.alive = false
                 end
             end

@@ -45,12 +45,20 @@ function hitDetect(element_x, element_y)
         --enemies from classes
         if element_y.imageMain == imgM and element_x_bottom > element_y_top and element_x_top < element_y_top - 80 then
             element_y.eAlive = false
+            if invincible == false then
+                element_y.enemyDieFx:setLooping(false)
+                element_y.enemyDieFx:play()
+            end
             return true
         elseif element_y.imageMain == imgM and element_x_bottom > element_y_top and element_x_bottom < element_y_bottom + 10 then
             element_y.eAlive  = true
             return true
         elseif element_y.imageMain == imgB and element_x_bottom > element_y_top and element_x_top < element_y_top - 80 then
             element_y.eAlive = false
+            if invincible == false then
+                element_y.enemyDieFx:setLooping(false)
+                element_y.enemyDieFx:play()
+            end
             return true
         elseif element_y.imageMain == imgB and element_x_bottom > element_y_top and element_x_bottom < element_y_bottom + 10 then
             element_y.eAlive = true

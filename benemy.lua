@@ -29,9 +29,12 @@ function BEnemyClass:new(x, y, boundLeft, boundRight)
     self.eLeft = true
     self.bounceBool = true
     self.currentFrame = 1
+    self.enemyDieFx = love.audio.newSource("/vleaudiofx/enemy2die.ogg", "stream")
 end
 
 function BEnemyClass:update(dt)
+  
+    self.enemyDieFx:setVolume(0.8)
   
     if self.eAlive == false and self.bounceBool == true then
           if love.keyboard.isDown("space") then

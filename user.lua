@@ -38,6 +38,10 @@ function User:new(x, y)
     jumpBool2 = true
     invincible = false
     self.eating = false
+    self.jumpFx = love.audio.newSource("/vleaudiofx/jump.ogg", "stream")
+    self.dashFx = love.audio.newSource("/vleaudiofx/dash.ogg", "stream")
+    self.eatFx = love.audio.newSource("/vleaudiofx/eat.ogg", "stream")
+    self.projectileFx = love.audio.newSource("/vleaudiofx/wrench-throw.ogg", "stream")
 end
 
 function User:update(dt)
@@ -249,6 +253,10 @@ end
 -- Jump function
 function User:jump()
     onGround = false
+    love.audio.stop(self.jumpFx)
+    self.jumpFx:setLooping(false)
+    self.jumpFx:setVolume(0.4)
+    self.jumpFx:play()
     if jumpBool == true then
         self.gravity = -420
     elseif wallHitBottom == true then
@@ -265,7 +273,11 @@ end
 
 -- Dash function
 
-function User:dash() ------------------------------------------------
+function User:dash()
+    
+    self.dashFx:setLooping(false)
+    self.dashFx:setVolume(0.3)
+    self.dashFx:play()
     if cooldown == false then
         isDashing = true
         cooldown = true
@@ -279,12 +291,16 @@ end
 
 
 function User:cooldownEnd()
+    love.audio.stop(self.dashFx)
     cooldown = false
 end
 
 -- Eat funtion
 function User:eat()
-    
+    love.audio.stop(self.eatFx)
+    self.eatFx:setLooping(false)
+    self.eatFx:setVolume(0.6)
+    self.eatFx:play()
     if mushroomCount > 0 then
         self.eating = true
         if invincible == true then
@@ -351,11 +367,19 @@ end
 function User:keyInput(key)
     if key == "k" and user_left == true then
         if pStock > 0 then
+            love.audio.stop(self.projectileFx)
+            self.projectileFx:setLooping(false)
+            self.projectileFx:setVolume(0.6)
+            self.projectileFx:play()
             table.insert(leftProjectileList, Projectile_Left(self.x, self.y))
             pStock = pStock - 1
         end
     elseif key == "k" and user_left == false then
         if pStock > 0 then
+            love.audio.stop(self.projectileFx)
+            self.projectileFx:setLooping(false)
+            self.projectileFx:setVolume(0.6)
+            self.projectileFx:play()
             table.insert(projectileList, Projectile(self.x, self.y))
             pStock = pStock - 1
         end

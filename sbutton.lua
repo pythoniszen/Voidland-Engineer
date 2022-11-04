@@ -56,7 +56,7 @@ end
 function startButtonClass:endFade()
     startFade = false
     start = true
-    gameLevel = 2
+    gameLevel = 3
 end
 
 function startButtonClass:l1Txt()

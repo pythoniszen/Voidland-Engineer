@@ -33,9 +33,12 @@ function EnemyMushroom:new(x, y, boundLeft, boundRight, floor)
     self.eLeft = true
     self.bounceBool = true
     self.currentFrame = 1
+    self.enemyDieFx = love.audio.newSource("/vleaudiofx/enemydie.ogg", "stream")
 end
 
 function EnemyMushroom:update(dt)
+  
+    self.enemyDieFx:setVolume(1.0)
     
     EnemyMushroom.super.update(self, dt)
     if self.eAlive == false and self.bounceBool == true then

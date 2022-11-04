@@ -42,6 +42,16 @@ function Projectile_Left:update(dt)
                 end
             end
         end
+    elseif gameLevel == 3.5 then
+        for i,v in ipairs(walls3) do
+            if self:checkCollision(v) then
+                if self.y < 2000 then
+                    while self.y < 2000 do
+                        self.y = self.y + self.gravity * dt
+                    end
+                end
+            end
+        end
     end
   
     
@@ -49,6 +59,8 @@ function Projectile_Left:update(dt)
     if gameLevel == 1 then
         for i,enemy in ipairs(enemiesList) do
             if hitDetect(self, enemy) then
+                enemy.enemyDieFx:setLooping(false)
+                enemy.enemyDieFx:play()
                 enemy.eAlive = false
                 enemy.bounceBool = false
                 if self.y < 2000 then
@@ -62,6 +74,8 @@ function Projectile_Left:update(dt)
     elseif gameLevel == 2.5 then
         for i,enemy in ipairs(enemiesList2) do
             if hitDetect(self, enemy) then
+                enemy.enemyDieFx:setLooping(false)
+                enemy.enemyDieFx:play()
                 enemy.eAlive = false
                 enemy.bounceBool = false
                 if self.y < 2000 then
@@ -75,6 +89,8 @@ function Projectile_Left:update(dt)
     elseif gameLevel == 3.5 then
         for i,enemy in ipairs(enemiesList3) do
             if hitDetect(self, enemy) then
+                enemy.enemyDieFx:setLooping(false)
+                enemy.enemyDieFx:play()
                 enemy.eAlive = false
                 enemy.bounceBool = false
                 if self.y < 2000 then
