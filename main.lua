@@ -63,10 +63,17 @@ function love.load()
     speedUp = false
     bJumpBool = false
     compImage = love.graphics.newImage("/art/computer.png")
+    l3SongTimer = Timer()
+    gameOverFxTimer = Timer()
+    endGameFxBool = false
     
     -- Sound Fx
+    clickFx = love.audio.newSource("/vleaudiofx/click.ogg", "stream")
     coinFx = love.audio.newSource("/vleaudiofx/coingrab.ogg", "stream")
     itemFx = love.audio.newSource("/vleaudiofx/itemgrab.ogg", "stream")
+    doorFx = love.audio.newSource("/vleaudiofx/door.ogg", "stream")
+    doorFx2 = love.audio.newSource("/vleaudiofx/door.ogg", "stream")
+    doorFx3 = love.audio.newSource("/vleaudiofx/door.ogg", "stream")
     
     -- Player character components
     user = User(60, 480)
@@ -823,6 +830,7 @@ function love.load()
 
     -- Music, background, game over screen, font
     homeSong = love.audio.newSource("/art/voidlandtheme.ogg", "stream")
+    controlRoomSong = love.audio.newSource("/vleaudiofx/the-control-room.ogg", "stream")
     
     myBackground = love.graphics.newImage("/art/bg.png")
     myBackground2 = love.graphics.newImage("/art/bg2.png")
@@ -1148,14 +1156,27 @@ function love.update(dt)
     -- Fixes bug where character would fall off screen when game window was moved
     dt = math.min(dt, 1/10)
 
---    if gameLevel == 3.5 then
---        hasKey = true
---    end
+    if gameLevel == 3 then
+        homeSong:setLooping(false)
+        love.audio.stop(homeSong)
+    end
+    
+    if gameLevel == 3.5 then
+        doorFx2:setLooping(false)
+        doorFx2:play()
+    end
 
-    if alive == true then
+    if alive == true and gameLevel ~= 3 and gameLevel ~= 3.5 then
         homeSong:setLooping(true)
         homeSong:setVolume(0.3)
         homeSong:play()
+    elseif alive == true and gameLevel == 3.5 then
+        homeSong:setLooping(false)
+        love.audio.stop(homeSong)
+        l3SongTimer:script(function(wait)
+            wait(1)
+            l3SongTimer:after(1, function() finalSongPlay() end)
+        end)
     end
     
     --Button updates
@@ -1167,6 +1188,13 @@ function love.update(dt)
     
     -- Calls to update the state of characters in the game
     user:update(dt)
+    
+    l3SongTimer:update(dt)
+    gameOverFxTimer:update(dt)
+    
+    if endGameFxBool == true then
+        gameOverFxTimer:destroy()
+    end
     
     if bossBool == true then
         bossTimer:update(dt)
@@ -1340,6 +1368,7 @@ function love.update(dt)
     if gameLevel == 4 then
         level3TextTimer:destroy()
         level3ScreenEndTimer:destroy()
+        l3SongTimer:destroy()
     end
     
     
@@ -1661,18 +1690,18 @@ function love.update(dt)
         if gameLevel == 1 then
             for i,object in ipairs(objects) do
                 if hitDetect(user, object) then
-                    object.alive = false
-                    if object.image == coinImage then
+                    if object.image == coinImage and object.alive == true then
                         love.audio.stop(coinFx)
                         coinFx:setLooping(false)
                         coinFx:setVolume(0.6)
                         coinFx:play()
-                    elseif object.image ~= coinImage then
+                    elseif object.image ~= coinImage and object.alive == true then
                         love.audio.stop(itemFx)
                         itemFx:setLooping(false)
-                        itemFx:setVolume(0.6)
+                        itemFx:setVolume(0.8)
                         itemFx:play()
                     end
+                    object.alive = false
                 end
             end
 
@@ -1689,6 +1718,17 @@ function love.update(dt)
         elseif gameLevel == 2.5 then
             for i,object in ipairs(objects2) do
                 if hitDetect(user, object) then
+                    if object.image == coinImage and object.alive == true then
+                        love.audio.stop(coinFx)
+                        coinFx:setLooping(false)
+                        coinFx:setVolume(0.6)
+                        coinFx:play()
+                    elseif object.image ~= coinImage and object.alive == true then
+                        love.audio.stop(itemFx)
+                        itemFx:setLooping(false)
+                        itemFx:setVolume(0.8)
+                        itemFx:play()
+                    end
                     object.alive = false
                 end
             end
@@ -1705,7 +1745,6 @@ function love.update(dt)
         elseif gameLevel == 3.5 then
             for i,object in ipairs(objects3) do
                 if hitDetect(user, object) then
-                    
                     if object.image == coinImage and object.alive == true then
                         love.audio.stop(coinFx)
                         coinFx:setLooping(false)
@@ -1759,6 +1798,8 @@ function love.update(dt)
                 drawGatePrompt = false
             end
             if hasKey == true and love.keyboard.isDown("q") and user.x > wall.x - 150 and user.y > wall.y - 150 then
+                doorFx:setLooping(false)
+                doorFx:play()
                 if gameLevel == 1 then
                     gameLevel = 2
                     fadeCurrentFrame = 1
@@ -1769,6 +1810,7 @@ function love.update(dt)
                     hasKey = false
                     for i,wall in ipairs (walls3) do
                         if wall.image == metalGateImage or wall.image == gateImage then
+                            doorFx3:play()
                             wall.alive = false
                             drawGatePrompt = false
                         end
@@ -1862,6 +1904,19 @@ function love.update(dt)
     if drawLevel3Intro == true then
         level3TextTimer:after(2, function() user:drawLevel3Text() end)
     end 
+    
+    if alive == false then
+        user.gameOverFx:setLooping(false)
+        if endGameFxBool == false then
+            user.gameOverFx:play()
+        end
+        love.audio.stop(homeSong)
+        love.audio.stop(controlRoomSong)
+        gameOverFxTimer:script(function(wait)
+            wait(0.5)
+            gameOverFxTimer:after(0.2, function() endGameFx() end)
+        end)
+    end
 end
 
 function love.draw()
@@ -2060,7 +2115,11 @@ function love.draw()
           love.graphics.setColor(1, 0, 0)
           love.graphics.print("YOU ARE DEAD.", 140, 200)
           love.graphics.print("Press 'r' to reload the game.", 150, 300, 0, 0.5, 0.5)
-          love.audio.stop()
+    end
+    
+    -- Endgame Screen
+    if alive == true and boss.eAlive == false  then
+        love.graphics.print("The end.", user.x, user.y)
     end
 end
 
@@ -2094,4 +2153,16 @@ function love.mousepressed(x, y, button)
             mushroomCount = mushroomCount + 1
         end
     end
+end
+
+function finalSongPlay()
+    controlRoomSong:setLooping(true)
+    controlRoomSong:setVolume(0.3)
+    controlRoomSong:play()
+end
+
+function endGameFx()
+    endGameFxBool = true
+    love.audio.stop(doorFx)
+    love.audio.stop(controlRoomSong)
 end

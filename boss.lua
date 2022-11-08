@@ -39,6 +39,8 @@ function Boss:new(x, y, boundLeft, boundRight, floor)
     jumpHitTop = false
     userHitBoss = false
     bossGroundBool = true
+    bossHitFx = love.audio.newSource("/vleaudiofx/boss-hit.ogg", "stream")
+    bossDieFx = love.audio.newSource("/vleaudiofx/boss-die.ogg", "stream")
 end
 
 function Boss:update(dt)
@@ -63,11 +65,15 @@ function Boss:update(dt)
 --    print(self.lastHit)
 
     if self.hits >= 21 then
+        love.audio.stop(bossHitFx)
+        bossDieFx:setLooping(false)
+        bossDieFx:play()
         self.eAlive = false
         self.image = bossHitImage
+        self.hits = 0
 --        self.bounceBool = false
   end
-  
+
 --    if hitDetect(user, self) == false then
 --        self.bounceBool = true
 --    end
@@ -100,6 +106,10 @@ function Boss:update(dt)
               user.gravity = -520
               self.gravity = 500
               invincible = false
+              love.audio.stop(bossHitFx)
+              bossHitFx:setLooping(false)
+              bossHitFx:setVolume(0.6)
+              bossHitFx:play()
               return
           else
               self.bounceBool = false
@@ -118,6 +128,10 @@ function Boss:update(dt)
               invincible = false
               user.gravity = -200
               self.gravity = 500
+              love.audio.stop(bossHitFx)
+              bossHitFx:setLooping(false)
+              bossHitFx:setVolume(0.6)
+              bossHitFx:play()
               return
             
           end
@@ -125,6 +139,8 @@ function Boss:update(dt)
               bossTimer2:after(0.1, function() user:invincibleEnd() end)
           end
           self.bounceBool = true
+      elseif hitDetect(user, self) and invincible == false and user.y >= self.y then
+          alive = false
       end
     
     if self.x > self.boundaryRight then

@@ -49,6 +49,7 @@ function startButtonClass:draw()
 end
 
 function startButtonClass:startGame()
+    clickFx:play()
     startTimer:after(3, function() self:endFade() end)
     level1textTimer:after(1.5, function() self:l1Txt() end)
 end
@@ -56,7 +57,7 @@ end
 function startButtonClass:endFade()
     startFade = false
     start = true
-    gameLevel = 3
+    gameLevel = 1
 end
 
 function startButtonClass:l1Txt()

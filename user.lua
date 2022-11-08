@@ -42,6 +42,7 @@ function User:new(x, y)
     self.dashFx = love.audio.newSource("/vleaudiofx/dash.ogg", "stream")
     self.eatFx = love.audio.newSource("/vleaudiofx/eat.ogg", "stream")
     self.projectileFx = love.audio.newSource("/vleaudiofx/wrench-throw.ogg", "stream")
+    self.gameOverFx = love.audio.newSource("/vleaudiofx/gameover.ogg", "stream")
 end
 
 function User:update(dt)

@@ -43,7 +43,7 @@ function Projectile:update(dt)
         end
     elseif gameLevel == 3.5 then
         for i,v in ipairs(walls3) do
-            if self:checkCollision(v) then
+            if self:checkCollision(v) and v.alive == true then
                 if self.y < 2000 then
                     while self.y < 2000 do
                         self.y = self.y + self.gravity * dt
