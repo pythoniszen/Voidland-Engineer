@@ -9,6 +9,7 @@ function love.load()
     require "titlescreenmushroom"
     require "button" 
     require "sbutton" 
+    require "cbutton" 
     require "shopbutton"
     require "helpers"
     require "user"
@@ -40,8 +41,8 @@ function love.load()
     promptX = 0
     PromptY = 0
     startButton = startButtonClass(310, 380, startButtonImage)
-    controlsButton = Button(310, 440, controlsButtonImage)
-    storyButton = Button(310, 500, storyButtonImage)
+    controlsButton = controlsButtonClass(310, 440, controlsButtonImage, controlsButtonImage2)
+    storyButton = controlsButtonClass(310, 500, storyButtonImage, storyButtonImage2)
     mouse = {}
     startFade = false
     gameOver = love.graphics.newImage("/art/gameover.png")
@@ -1826,6 +1827,7 @@ function love.update(dt)
     if alive == false then
         if love.keyboard.isDown("r") then
             love.graphics.setColor(r,g,b,a)
+            love.audio.stop()
             love.load()
         end
     end
@@ -1913,7 +1915,7 @@ function love.update(dt)
         love.audio.stop(homeSong)
         love.audio.stop(controlRoomSong)
         gameOverFxTimer:script(function(wait)
-            wait(0.5)
+            wait(0.2)
             gameOverFxTimer:after(0.2, function() endGameFx() end)
         end)
     end
@@ -2115,6 +2117,41 @@ function love.draw()
           love.graphics.setColor(1, 0, 0)
           love.graphics.print("YOU ARE DEAD.", 140, 200)
           love.graphics.print("Press 'r' to reload the game.", 150, 300, 0, 0.5, 0.5)
+    end
+    
+    -- Control Screen
+    if controlScreenBool == true then
+        love.graphics.draw(gameOver, 0, 0)
+        love.graphics.setColor(0, 1, 0)
+        love.graphics.print("'a'/'d' - Walk left or right", 20, 40, 0, 0.2, 0.2)
+        love.graphics.print("'space' - Jump", 20, 60, 0, 0.2, 0.2)
+        love.graphics.print("'shift' - Dash", 20, 80, 0, 0.2, 0.2)
+        love.graphics.print("'k' - Throw wrench", 20, 100, 0, 0.2, 0.2)
+        love.graphics.print("'e' - Eat mushroom", 20, 120, 0, 0.2, 0.2)
+        love.graphics.print("'q' - Action", 20, 140, 0, 0.2, 0.2)
+        love.graphics.print("Jump directly on top of enemies heads in order to neutralize them.", 20, 160, 0, 0.2, 0.2)
+        love.graphics.print("Hold down 'space' while landing on an enemies head in order to perform", 20, 180, 0, 0.2, 0.2)
+        love.graphics.print("a 'super jump'.", 20, 200, 0, 0.2, 0.2)
+        love.graphics.print("Press 'escape' to exit the controls screen.", 450, 20, 0, 0.2, 0.2)
+    end
+    
+    -- Story Screen
+    if storyScreenBool == true then
+        love.graphics.draw(gameOver, 0, 0)
+        love.graphics.setColor(0, 1, 0)
+        love.graphics.print("The best engineer in Voidland wakes up to a call one day.", 20, 60, 0, 0.2, 0.2)
+        love.graphics.print("The king of Voidland declares a state of emergency, as the server for voidlands network has crashed.", 20, 80, 0, 0.2, 0.2)
+        love.graphics.print("The server is used by all of Voidland's residents, and is crucial for the resident's day to day lives.", 20, 100, 0, 0.2, 0.2)
+        love.graphics.print("The king tells the engineer that after an investigation, it was discovered that", 20, 120, 0, 0.2, 0.2)
+        love.graphics.print("the server had been shut down by some of the wild creatures of Voidland.", 20, 140, 0, 0.2, 0.2)
+        love.graphics.print("They apparently infiltrated the control room out of protest, because ", 20, 160, 0, 0.2, 0.2)
+        love.graphics.print("when the the control room and server were consctructed, large portions of", 20, 180, 0, 0.2, 0.2)
+        love.graphics.print("the creature's habitat were destroyed.", 20, 200, 0, 0.2, 0.2)
+        love.graphics.print("The king reminds the engineer one more time how important this task is.", 20, 220, 0, 0.2, 0.2)
+        love.graphics.print("The engineer knows he may get a chance to meet the princess of Voidland", 20, 240, 0, 0.2, 0.2)
+        love.graphics.print("if he can do a good job and impress the king.", 20, 260, 0, 0.2, 0.2)
+        love.graphics.print("Time to get to work!", 20, 300, 0, 0.2, 0.2)
+        love.graphics.print("Press 'escape' to exit the story screen.", 450, 20, 0, 0.2, 0.2)
     end
     
     -- Endgame Screen

@@ -1,4 +1,5 @@
 require "main"
+require "cbutton"
 Timer = require "chrono-master.chrono-master.Timer"
 
 startTimer = Timer()
@@ -21,7 +22,7 @@ function startButtonClass:update(dt)
   
     if mouse.x > self.x and mouse.y < self.y + 50 and mouse.x < self.width - self.x and mouse.y < self.y + self.height + 50 and mouse.y > self.y then
         self.image = startButtonImage2
-        if love.mouse.isDown("1") and start == false then
+        if love.mouse.isDown("1") and start == false and controlScreenBool == false then
             startFade = true
             self:startGame()
             love.graphics.setColor(r,g,b,a)
@@ -49,6 +50,7 @@ function startButtonClass:draw()
 end
 
 function startButtonClass:startGame()
+    love.audio.stop(clickFx)
     clickFx:play()
     startTimer:after(3, function() self:endFade() end)
     level1textTimer:after(1.5, function() self:l1Txt() end)
@@ -57,7 +59,7 @@ end
 function startButtonClass:endFade()
     startFade = false
     start = true
-    gameLevel = 1
+    gameLevel = 3
 end
 
 function startButtonClass:l1Txt()
