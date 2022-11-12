@@ -1,4 +1,3 @@
-
 require "main"
 require "entity"
 require "helpers"
@@ -6,6 +5,8 @@ require "helpers"
 dashTimer = Timer()
 cooldownTimer = Timer()
 invincibleTimer = Timer()
+endTextTimer = Timer()
+reloadTextTimer = Timer()
 User = Entity:extend()
 
 function User:new(x, y)
@@ -43,6 +44,9 @@ function User:new(x, y)
     self.eatFx = love.audio.newSource("/vleaudiofx/eat.ogg", "stream")
     self.projectileFx = love.audio.newSource("/vleaudiofx/wrench-throw.ogg", "stream")
     self.gameOverFx = love.audio.newSource("/vleaudiofx/gameover.ogg", "stream")
+    endBoolX = true
+    endTextBool = false
+    reloadTextBool = false
 end
 
 function User:update(dt)
@@ -68,9 +72,9 @@ function User:update(dt)
         if wallHitBottom == true then
             onGround = true
         end
-        if love.keyboard.isDown("d") then
+        if love.keyboard.isDown("d") and endBool == false then
             user_left = false
-        elseif love.keyboard.isDown("a") then
+        elseif love.keyboard.isDown("a") and endBool == false then
             user_left = true
         end
         
@@ -204,6 +208,12 @@ function User:update(dt)
       self.x = self.x
       self.y = self.y
   end
+  
+  -- Endscreen
+  if endBool == true and endRunBool == false then
+      self.x = self.last.x
+      self.y = self.last.y
+  end
     
     -- Contains user in the game window
     local window_width = love.graphics.getWidth(myBackground)
@@ -248,6 +258,29 @@ function User:update(dt)
         self.x = 60
         self.y = 830
         jumpBool = true
+    end
+    
+    if endRunBool == true then
+        if endBoolX == true then
+            self.x = -50
+            self.gravity = 0
+            endBoolX = false
+        end
+        currentFrame = currentFrame + 15 * dt
+        if currentFrame >= 4 then
+            currentFrame = 1
+        end
+        
+        if self.x < 690 then
+            self.x = self.x + self.speed * dt
+        else
+            self.x = self.last.x
+        end
+    end
+    
+    if walkOutBool == true then
+        self.speed = 180
+        self.x = self.x + self.speed * dt
     end
 end
 
@@ -329,12 +362,18 @@ function User:draw()
         love.graphics.draw(jump_img_left, left_run_frames[math.floor(currentFrameLeft)], self.x + 55, self.y + 40)
     elseif gameLevel == 2 or gameLevel == 2.5 and drawLevel2Intro == true then
         love.graphics.draw(standImageRight, self.x, self.y)
+    elseif endBool == true and endRunBool == false then
+        if user_left == true then
+            love.graphics.draw(standImageLeft, self.x, self.y)
+        elseif user_left == false then
+            love.graphics.draw(standImageRight, self.x, self.y)
+        end
     elseif onGround == false and jumpBool == false then
         if love.keyboard.isDown("d") or love.keyboard.isDown("lshift") and user_left == false then
             love.graphics.draw(engineer_jump, self.x, self.y)
         elseif love.keyboard.isDown("a") or love.keyboard.isDown("lshift") and user_left == true then
             love.graphics.draw(engineer_jump_left, self.x, self.y)
-        else
+        elseif endBool == false then
             if user_left == true then
                 love.graphics.draw(engineer_jump_left, self.x, self.y)
             elseif user_left == false then
@@ -349,19 +388,39 @@ function User:draw()
         love.graphics.draw(throw_img, self.x, self.y)
         
     -- Basic stance / dashing / jump
-    elseif self.x ~= self.last.x then
+    elseif self.x ~= self.last.x and endBool == false then
         if user_left == false then
             love.graphics.draw(engineer_jump, self.x, self.y)
         else
             love.graphics.draw(engineer_jump_left, self.x, self.y)
         end
-    elseif self.x == self.last.x then
+    elseif self.x == self.last.x and endBool == false then
         if user_left == false and jumpBool == true then
               love.graphics.draw(standImageRight, self.x, self.y)
         elseif user_left == true and jumpBool == true then
             love.graphics.draw(standImageLeft, self.x, self.y)
         end
     end
+    
+    if endBool == true and endRunBool == false then
+        if user_left == true then
+            love.graphics.draw(standImageLeft, self.x, self.y)
+        elseif user_left == false then
+            love.graphics.draw(standImageRight, self.x, self.y)
+        end
+    elseif endBool == true and endRunBool == true and walkOutBool == false then
+        if self.x <= 690 then
+            love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 45, self.y + 40)
+        else
+            love.graphics.draw(standImageRight, self.x, self.y)
+        end
+    end
+    
+    if walkOutBool == true then
+        love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 45, self.y + 40)
+        endTextTimer:after(4, function() self:endText() end)
+    end
+
 end
 
 -- Function used for user projectile throw function
@@ -412,7 +471,7 @@ end
 function User:level3(level)
     if level == 3 then
         gameLevel = 3.5
-        hasKey = false
+        hasKey = true
     end
 end
 
@@ -423,4 +482,13 @@ end
 
 function User:endLevel3Screen()
     drawLevel3Intro = false
+end
+
+function User:endText()
+    endTextBool = true
+    reloadTextTimer:after(6, function() self:reloadText() end)
+end
+
+function User:reloadText()
+    reloadTextBool = true
 end

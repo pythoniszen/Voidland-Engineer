@@ -18,6 +18,7 @@ function love.load()
     require "emushroomclass"
     require "projectileleft"
     require "coin"
+    require "computer"
     require "mushroom"
     require "wrench"
     require "wall"
@@ -27,6 +28,7 @@ function love.load()
     require "shopkeep"
     require "traveler"
     require "boss"
+    require "princess"
 
     
     -- Loading in base game assets
@@ -63,10 +65,10 @@ function love.load()
     boss = Boss(8100, 760, 7460, 8110, 760)
     speedUp = false
     bJumpBool = false
-    compImage = love.graphics.newImage("/art/computer.png")
     l3SongTimer = Timer()
     gameOverFxTimer = Timer()
     endGameFxBool = false
+    computer = Computer()
     
     -- Sound Fx
     clickFx = love.audio.newSource("/vleaudiofx/click.ogg", "stream")
@@ -78,10 +80,10 @@ function love.load()
     
     -- Player character components
     user = User(60, 480)
+    princess = Princess(200)
     hasKey = false
     inStock = true
     onGround = true
-    
 
     -- Spawns enemies for level 1
     enemyTitleScreen = TitleScreenM(890, 290, -60, 900, 290)
@@ -790,6 +792,7 @@ function love.load()
     fadeCurrentFrame3 = 1
     fadeCurrentFrame4 = 1
     fadeCurrentFrame5 = 1
+    fadeCurrentFrame6 = 1
     
     -- Enemy animations
     
@@ -1189,9 +1192,18 @@ function love.update(dt)
     
     -- Calls to update the state of characters in the game
     user:update(dt)
+    princess:update(dt)
+    
+    actionTimer:update(dt)
+    kissEndTimer:update(dt)
+    faceRightTimer:update(dt)
+    walkOutTimer:update(dt)
+    endTextTimer:update(dt)
+    reloadTextTimer:update(dt)
     
     l3SongTimer:update(dt)
     gameOverFxTimer:update(dt)
+    endRunTimer:update(dt)
     
     if endGameFxBool == true then
         gameOverFxTimer:destroy()
@@ -1203,6 +1215,10 @@ function love.update(dt)
         bossTimer3:update(dt)
         bossTimer4:update(dt)
         boss:update(dt)
+    end
+    
+    if gameLevel >= 3 then
+        computer:update(dt)
     end
     
     shopKeep:update(dt)
@@ -1762,7 +1778,9 @@ function love.update(dt)
             end
 
             for i,wall in ipairs(walls3) do
-                collision = user:resolveCollision(wall)
+                if walkOutBool == false then
+                    collision = user:resolveCollision(wall)
+                end
                 if wall.image == metalGateImage and wall.alive == false then -- ADD METAL GATE IMAGE HERE
                     bossBool = true
                 end
@@ -1799,6 +1817,7 @@ function love.update(dt)
                 drawGatePrompt = false
             end
             if hasKey == true and love.keyboard.isDown("q") and user.x > wall.x - 150 and user.y > wall.y - 150 then
+                love.audio.stop(doorFx)
                 doorFx:setLooping(false)
                 doorFx:play()
                 if gameLevel == 1 then
@@ -1860,6 +1879,11 @@ function love.update(dt)
     if fadeCurrentFrame5 >= 6 then
         fadeCurrentFrame5 = 6
     end
+    
+    fadeCurrentFrame6 = fadeCurrentFrame6 + 45 * dt
+    if fadeCurrentFrame6 >= 6 then
+        fadeCurrentFrame6 = 6
+    end
 
     -- Wrench Animation
     
@@ -1907,6 +1931,11 @@ function love.update(dt)
         level3TextTimer:after(2, function() user:drawLevel3Text() end)
     end 
     
+    -- Endgame screen
+    if endBool == true then
+        
+    end
+    
     if alive == false then
         user.gameOverFx:setLooping(false)
         if endGameFxBool == false then
@@ -1919,21 +1948,34 @@ function love.update(dt)
             gameOverFxTimer:after(0.2, function() endGameFx() end)
         end)
     end
+    
+--    if reloadTextBool == true then
+--        if love.keyboard.isDown("r") then
+--            love.graphics.setColor(r,g,b,a)
+--            love.audio.stop()
+--            love.load()
+--        end
+--    end
 end
 
 function love.draw()
     
     --Camera
-    love.graphics.translate(-user.x + 300, -user.y + 300)
+    if endRunBool == false then
+        love.graphics.translate(-user.x + 300, -user.y + 300)
+    elseif endRunBool == true then
+        love.graphics.translate(-300, -user.y + 300)
+    end
     
     -- Draws base game
     if gameLevel == 1 then
         love.graphics.draw(myBackground, -300, -865)
     elseif gameLevel == 2.5 and drawLevel2Text == true then -- potentially causing animatiuon transition interuption
         love.graphics.draw(myBackground2, -300, -760)  
-    elseif gameLevel == 3.5 and drawLevel3Text == true then
-        love.graphics.draw(myBackground3, -300, -760)  
+    elseif gameLevel == 3.5 and drawLevel3Text == true and walkOutBool == false then
+        love.graphics.draw(myBackground3, -300, -760)
     end
+    
     
     if gameLevel ~= 1 then
         shopKeep:draw()
@@ -1946,8 +1988,8 @@ function love.draw()
         traveler:draw()
     end
     
-    if gameLevel == 3.5 and bossBool == true then
-        love.graphics.draw(compImage, 7710, 805)
+    if gameLevel == 3.5 then
+        computer:draw()
     end
     
     user:draw()
@@ -2001,7 +2043,9 @@ function love.draw()
         end
     end
     
-    
+    if endBool == true then
+        love.graphics.draw(gameOver, 300, 450)
+    end
     
     -- Draws enemy
     
@@ -2100,7 +2144,26 @@ function love.draw()
         end
     end
     
-    if drawShopAlert == true then
+    -- Endgame animation
+    if endBool == true then
+        love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame6)], user.x -400, user.y - 400)
+        endRunTimer:after(2, function() computer:endRun() end)
+--        if fadeCurrentFrame6 > 4 then
+--            love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 45, self.y + 40)
+--        end
+        if endRunBool == true then
+--            love.graphics.translate(-computer.x + 300, -user.y + 300)
+            user:draw()
+            princess:draw()
+        end
+        
+        if endTextBool == true then
+            love.graphics.setColor(0, 1, 0)
+            love.graphics.print("The End", 550, user.y - 100)
+        end
+    end
+    
+    if drawShopAlert == true and endBool == false then
         love.graphics.draw(textPrompt, user.x, user.y + 190)
         love.graphics.print("Press 'q' to talk.", user.x + 10, user.y + 200, 0, 0.16, 0.16)
     end
@@ -2121,7 +2184,7 @@ function love.draw()
     
     -- Control Screen
     if controlScreenBool == true then
-        love.graphics.draw(gameOver, 0, 0)
+        love.graphics.draw(gameOver, 0 , 0)
         love.graphics.setColor(0, 1, 0)
         love.graphics.print("'a'/'d' - Walk left or right", 20, 40, 0, 0.2, 0.2)
         love.graphics.print("'space' - Jump", 20, 60, 0, 0.2, 0.2)
@@ -2140,12 +2203,12 @@ function love.draw()
         love.graphics.draw(gameOver, 0, 0)
         love.graphics.setColor(0, 1, 0)
         love.graphics.print("The best engineer in Voidland wakes up to a call one day.", 20, 60, 0, 0.2, 0.2)
-        love.graphics.print("The king of Voidland declares a state of emergency, as the server for voidlands network has crashed.", 20, 80, 0, 0.2, 0.2)
-        love.graphics.print("The server is used by all of Voidland's residents, and is crucial for the resident's day to day lives.", 20, 100, 0, 0.2, 0.2)
-        love.graphics.print("The king tells the engineer that after an investigation, it was discovered that", 20, 120, 0, 0.2, 0.2)
+        love.graphics.print("The king of Voidland declares a state of emergency, as the server for Voidland's network has ", 20, 80, 0, 0.2, 0.2)
+        love.graphics.print("crashed. The server is used by all of Voidland's residents, and is crucial for the resident's", 20, 100, 0, 0.2, 0.2)
+        love.graphics.print("day to day lives. The king tells the engineer that after an investigation, it was discovered that", 20, 120, 0, 0.2, 0.2)
         love.graphics.print("the server had been shut down by some of the wild creatures of Voidland.", 20, 140, 0, 0.2, 0.2)
         love.graphics.print("They apparently infiltrated the control room out of protest, because ", 20, 160, 0, 0.2, 0.2)
-        love.graphics.print("when the the control room and server were consctructed, large portions of", 20, 180, 0, 0.2, 0.2)
+        love.graphics.print("when the the control room and it's server were consctructed, large portions of", 20, 180, 0, 0.2, 0.2)
         love.graphics.print("the creature's habitat were destroyed.", 20, 200, 0, 0.2, 0.2)
         love.graphics.print("The king reminds the engineer one more time how important this task is.", 20, 220, 0, 0.2, 0.2)
         love.graphics.print("The engineer knows he may get a chance to meet the princess of Voidland", 20, 240, 0, 0.2, 0.2)
@@ -2155,8 +2218,10 @@ function love.draw()
     end
     
     -- Endgame Screen
-    if alive == true and boss.eAlive == false  then
-        love.graphics.print("The end.", user.x, user.y)
+    if alive == true and boss.eAlive == false and user.x > 7649 and user .x < 7916 and user.y >= 780 and endBool == false then
+        love.graphics.draw(textPrompt, user.x, user.y + 190)
+        love.graphics.print("Press 'q' to repair", user.x + 10, user.y + 200, 0, 0.16, 0.16)
+        love.graphics.print("the machine.", user.x + 10, user.y + 210, 0, 0.16, 0.16)
     end
 end
 
