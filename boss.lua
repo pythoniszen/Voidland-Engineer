@@ -64,7 +64,7 @@ function Boss:update(dt)
 --    print("hits:"..self.hits)
 --    print(self.lastHit)
 
-    if self.hits >= 1 then
+    if self.hits >= 12 then
         love.audio.stop(bossHitFx)
         bossDieFx:setLooping(false)
         bossDieFx:play()

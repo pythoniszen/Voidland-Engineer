@@ -99,6 +99,10 @@ function Projectile:update(dt)
         end
         
         if hitDetect(self, boss) then
+            love.audio.stop(bossHitFx)
+            bossHitFx:setLooping(false)
+            bossHitFx:setVolume(0.6)
+            bossHitFx:play()
             boss.hits = boss.hits + 1
             boss.image = bossHitImage
             bossTimer4:after(0.3, function() boss:hitAnimationEnd() end)

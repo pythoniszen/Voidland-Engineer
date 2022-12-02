@@ -53,10 +53,10 @@ function User:update(dt)
   
     User.super.update(self, dt)
     
---    if jumpBool == true then
---        print("user x =".. user.x)
---        print("user y =".. user.y)
---    end
+    if jumpBool == true then
+        print("user x =".. user.x)
+        print("user y =".. user.y)
+    end
     
     if isDashing == true then
         dashTimer:after(0.15, function() self:cancelDash() end)
@@ -178,9 +178,9 @@ function User:update(dt)
 --      end
       
       -- Left and right player movement + dashing
-      if love.keyboard.isDown("d") and isDashing == false then
+      if love.keyboard.isDown("d") and isDashing == false and endBool == false then
           self.x = self.x + self.speed * dt
-      elseif love.keyboard.isDown("a") and isDashing == false then
+      elseif love.keyboard.isDown("a") and isDashing == false and endBool == false then
           self.x = self.x - self.speed * dt
       elseif isDashing == true and user_left == false then
           self.image = dashImage
@@ -225,13 +225,13 @@ function User:update(dt)
     end
     
     -- Running animation
-    if love.keyboard.isDown("d")then
+    if love.keyboard.isDown("d") and endBool == false then
         currentFrame = currentFrame + 15 * dt
         if currentFrame >= 4 then
             currentFrame = 1
         end
     end
-    if love.keyboard.isDown("a")then
+    if love.keyboard.isDown("a") and endBool == false then
         currentFrameLeft = currentFrameLeft + 15 * dt
         if currentFrameLeft >= 4 then
             currentFrameLeft = 1
@@ -331,20 +331,23 @@ end
 
 -- Eat funtion
 function User:eat()
-    love.audio.stop(self.eatFx)
-    self.eatFx:setLooping(false)
-    self.eatFx:setVolume(0.6)
-    self.eatFx:play()
-    if mushroomCount > 0 then
-        self.eating = true
-        if invincible == true then
-            invincibleTimer:destroy()
+    if endBool == false and gameLevel ~= 2 and gameLevel ~= 3 and start == true and alive == true and drawLevel3Intro == false and drawLevel2Intro == false and drawIntro == false then
+        love.audio.stop(self.eatFx)
+        self.eatFx:setLooping(false)
+        self.eatFx:setVolume(0.6)
+        self.eatFx:play()
+        if mushroomCount > 0 then
+            self.eating = true
+            if invincible == true then
+                invincibleTimer:destroy()
+            end
+            mushroomCount = mushroomCount - 1
+            invincible = true
+            invincibleTimer:after(3, function() self:invincibleEnd() end)
+        else
+            mushroomCount = 0
+            love.audio.stop(self.eatFx)
         end
-        mushroomCount = mushroomCount - 1
-        invincible = true
-        invincibleTimer:after(3, function() self:invincibleEnd() end)
-    else
-        mushroomCount = 0
     end
 end
 
@@ -356,49 +359,51 @@ end
 
 function User:draw()
     -- Player movement
-    if love.keyboard.isDown("d") and jumpBool == true and isDashing == false then
-        love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 45, self.y + 40)
-    elseif love.keyboard.isDown("a") and jumpBool == true and isDashing == false then
-        love.graphics.draw(jump_img_left, left_run_frames[math.floor(currentFrameLeft)], self.x + 55, self.y + 40)
-    elseif gameLevel == 2 or gameLevel == 2.5 and drawLevel2Intro == true then
-        love.graphics.draw(standImageRight, self.x, self.y)
-    elseif endBool == true and endRunBool == false then
-        if user_left == true then
-            love.graphics.draw(standImageLeft, self.x, self.y)
-        elseif user_left == false then
+    if endBool == false then
+        if love.keyboard.isDown("d") and jumpBool == true and isDashing == false then
+            love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 45, self.y + 40)
+        elseif love.keyboard.isDown("a") and jumpBool == true and isDashing == false then
+            love.graphics.draw(jump_img_left, left_run_frames[math.floor(currentFrameLeft)], self.x + 55, self.y + 40)
+        elseif gameLevel == 2 or gameLevel == 2.5 and drawLevel2Intro == true then
             love.graphics.draw(standImageRight, self.x, self.y)
-        end
-    elseif onGround == false and jumpBool == false then
-        if love.keyboard.isDown("d") or love.keyboard.isDown("lshift") and user_left == false then
-            love.graphics.draw(engineer_jump, self.x, self.y)
-        elseif love.keyboard.isDown("a") or love.keyboard.isDown("lshift") and user_left == true then
-            love.graphics.draw(engineer_jump_left, self.x, self.y)
-        elseif endBool == false then
+        elseif endBool == true and endRunBool == false then
             if user_left == true then
-                love.graphics.draw(engineer_jump_left, self.x, self.y)
+                love.graphics.draw(standImageLeft, self.x, self.y)
             elseif user_left == false then
-                love.graphics.draw(engineer_jump, self.x, self.y)
+                love.graphics.draw(standImageRight, self.x, self.y)
             end
-        end
-        
-    -- Projectile input
-    elseif love.keyboard.isDown("k") and user_left == true and jumpBool == true then
-        love.graphics.draw(throw_img_left, self.x, self.y)
-    elseif love.keyboard.isDown("k") and user_left == false and jumpBool == true then
-        love.graphics.draw(throw_img, self.x, self.y)
-        
-    -- Basic stance / dashing / jump
-    elseif self.x ~= self.last.x and endBool == false then
-        if user_left == false then
-            love.graphics.draw(engineer_jump, self.x, self.y)
-        else
-            love.graphics.draw(engineer_jump_left, self.x, self.y)
-        end
-    elseif self.x == self.last.x and endBool == false then
-        if user_left == false and jumpBool == true then
-              love.graphics.draw(standImageRight, self.x, self.y)
-        elseif user_left == true and jumpBool == true then
-            love.graphics.draw(standImageLeft, self.x, self.y)
+        elseif onGround == false and jumpBool == false then
+            if love.keyboard.isDown("d") or love.keyboard.isDown("lshift") and user_left == false then
+                love.graphics.draw(engineer_jump, self.x, self.y)
+            elseif love.keyboard.isDown("a") or love.keyboard.isDown("lshift") and user_left == true then
+                love.graphics.draw(engineer_jump_left, self.x, self.y)
+            elseif endBool == false then
+                if user_left == true then
+                    love.graphics.draw(engineer_jump_left, self.x, self.y)
+                elseif user_left == false then
+                    love.graphics.draw(engineer_jump, self.x, self.y)
+                end
+            end
+            
+        -- Projectile input
+        elseif love.keyboard.isDown("k") and user_left == true and jumpBool == true then
+            love.graphics.draw(throw_img_left, self.x, self.y)
+        elseif love.keyboard.isDown("k") and user_left == false and jumpBool == true then
+            love.graphics.draw(throw_img, self.x, self.y)
+            
+        -- Basic stance / dashing / jump
+        elseif self.x ~= self.last.x and endBool == false then
+            if user_left == false then
+                love.graphics.draw(engineer_jump, self.x, self.y)
+            else
+                love.graphics.draw(engineer_jump_left, self.x, self.y)
+            end
+        elseif self.x == self.last.x and endBool == false then
+            if user_left == false and jumpBool == true then
+                  love.graphics.draw(standImageRight, self.x, self.y)
+            elseif user_left == true and jumpBool == true then
+                love.graphics.draw(standImageLeft, self.x, self.y)
+            end
         end
     end
     
@@ -425,27 +430,31 @@ end
 
 -- Function used for user projectile throw function
 function User:keyInput(key)
-    if key == "k" and user_left == true then
-        if pStock > 0 then
-            love.audio.stop(self.projectileFx)
-            self.projectileFx:setLooping(false)
-            self.projectileFx:setVolume(0.6)
-            self.projectileFx:play()
-            table.insert(leftProjectileList, Projectile_Left(self.x, self.y))
-            pStock = pStock - 1
+    if key == "k" and user_left == true and start == true and alive == true then
+        if endBool == false and gameLevel ~= 2 and gameLevel ~= 3 and start == true and alive == true and drawLevel3Intro == false and drawLevel2Intro == false and drawIntro == false then
+            if pStock > 0 then
+                love.audio.stop(self.projectileFx)
+                self.projectileFx:setLooping(false)
+                self.projectileFx:setVolume(0.6)
+                self.projectileFx:play()
+                table.insert(leftProjectileList, Projectile_Left(self.x, self.y))
+                pStock = pStock - 1
+            end
         end
-    elseif key == "k" and user_left == false then
-        if pStock > 0 then
-            love.audio.stop(self.projectileFx)
-            self.projectileFx:setLooping(false)
-            self.projectileFx:setVolume(0.6)
-            self.projectileFx:play()
-            table.insert(projectileList, Projectile(self.x, self.y))
-            pStock = pStock - 1
+    elseif key == "k" and user_left == false and start == true and alive == true then
+        if endBool == false and gameLevel ~= 2 and gameLevel ~= 3 and start == true and alive == true and drawLevel3Intro == false and drawLevel2Intro == false and drawIntro == false then
+            if pStock > 0 then
+                love.audio.stop(self.projectileFx)
+                self.projectileFx:setLooping(false)
+                self.projectileFx:setVolume(0.6)
+                self.projectileFx:play()
+                table.insert(projectileList, Projectile(self.x, self.y))
+                pStock = pStock - 1
+            end
         end
-    elseif key == "lshift" then
+    elseif key == "lshift" and start == true and alive == true then
         self:dash()
-    elseif key == "e" then
+    elseif key == "e" and start == true and alive == true then
         self:eat()
     end
 end
@@ -471,7 +480,7 @@ end
 function User:level3(level)
     if level == 3 then
         gameLevel = 3.5
-        hasKey = true
+        hasKey = false
     end
 end
 

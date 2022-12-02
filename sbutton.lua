@@ -22,7 +22,7 @@ function startButtonClass:update(dt)
   
     if mouse.x > self.x and mouse.y < self.y + 50 and mouse.x < self.width - self.x and mouse.y < self.y + self.height + 50 and mouse.y > self.y then
         self.image = startButtonImage2
-        if love.mouse.isDown("1") and start == false and controlScreenBool == false then
+        if love.mouse.isDown("1") and start == false and controlScreenBool == false and storyScreenBool == false and drawIntro == false and startFade == false then
             startFade = true
             self:startGame()
             love.graphics.setColor(r,g,b,a)
@@ -59,7 +59,7 @@ end
 function startButtonClass:endFade()
     startFade = false
     start = true
-    gameLevel = 3
+    gameLevel = 1
 end
 
 function startButtonClass:l1Txt()

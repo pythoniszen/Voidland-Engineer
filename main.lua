@@ -103,8 +103,8 @@ function love.load()
     enemy12 = EnemyMushroom(2650, 125, 2560, 2610, 125)
   
     bEnemy = BEnemyClass(2430, 280, 2340, 2390)
-    bEnemy2 = BEnemyClass(3180, 300, 3090, 3140)
-    bEnemy3 = BEnemyClass(3690, 370, 3600, 3650)
+    bEnemy2 = BEnemyClass(3180, 270, 3090, 3140)
+    bEnemy3 = BEnemyClass(3690, 355, 3600, 3650)
     bEnemy4 = BEnemyClass(4500, 260, 4410, 4460)
     bEnemy5 = BEnemyClass(4000, 150, 3910, 3960)
     bEnemy6 = BEnemyClass(5000, 350, 4910, 4960)
@@ -1165,9 +1165,11 @@ function love.update(dt)
         love.audio.stop(homeSong)
     end
     
-    if gameLevel == 3.5 then
-        doorFx2:setLooping(false)
-        doorFx2:play()
+    if endBool == true or gameLevel == 2 or gameLevel == 3 or start == false or alive == false or drawLevel3Intro == true or drawLevel2Intro == true or drawIntro == true then
+        love.audio.stop(user.eatFx)
+        love.audio.stop(user.dashFx)
+        love.audio.stop(user.jumpFx)
+        love.audio.stop(user.projectileFx)
     end
 
     if alive == true and gameLevel ~= 3 and gameLevel ~= 3.5 then
@@ -1817,19 +1819,25 @@ function love.update(dt)
                 drawGatePrompt = false
             end
             if hasKey == true and love.keyboard.isDown("q") and user.x > wall.x - 150 and user.y > wall.y - 150 then
-                love.audio.stop(doorFx)
-                doorFx:setLooping(false)
-                doorFx:play()
+
                 if gameLevel == 1 then
+                    love.audio.stop(doorFx)
+                    doorFx:setLooping(false)
+                    doorFx:play()
                     gameLevel = 2
                     fadeCurrentFrame = 1
                 elseif gameLevel == 2.5 then
+                    love.audio.stop(doorFx2)
+                    doorFx2:setLooping(false)
+                    doorFx2:play()
                     gameLevel = 3
                     fadeCurrentFrame5 = 1
                 elseif gameLevel == 3.5 then
                     hasKey = false
                     for i,wall in ipairs (walls3) do
                         if wall.image == metalGateImage or wall.image == gateImage then
+                            love.audio.stop(doorFx3)
+                            doorFx3:setLooping(false)
                             doorFx3:play()
                             wall.alive = false
                             drawGatePrompt = false
@@ -1847,7 +1855,12 @@ function love.update(dt)
         if love.keyboard.isDown("r") then
             love.graphics.setColor(r,g,b,a)
             love.audio.stop()
-            love.load()
+            love.event.quit("restart")
+--            love.load()
+        end
+    elseif endTextBool == true then
+        if love.keyboard.isDown("r") then
+            love.event.quit("restart")
         end
     end
     
@@ -1932,9 +1945,11 @@ function love.update(dt)
     end 
     
     -- Endgame screen
-    if endBool == true then
-        
-    end
+--    if endBool == true then
+--        if endTextBool == true then
+--            gameOverFxTimer:after(2, function() restart() end)
+--        end
+--    end
     
     if alive == false then
         user.gameOverFx:setLooping(false)

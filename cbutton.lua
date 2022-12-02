@@ -24,12 +24,12 @@ function controlsButtonClass:update(dt)
   
     if mouse.x > self.x and mouse.y < self.y + 50 and mouse.x < self.width - self.x and mouse.y < self.y + self.height + 50 and mouse.y > self.y then
         self.image = self.image3
-        if love.mouse.isDown("1") and start == false and self.image == controlsButtonImage2 then
+        if love.mouse.isDown("1") and start == false and self.image == controlsButtonImage2 and storyScreenBool == false and controlScreenBool == false and drawIntro == false and startFade == false then
             love.audio.stop(clickFx)
             clickFx:play()
             self:controlScreen()
             love.graphics.setColor(r,g,b,a)
-        elseif love.mouse.isDown("1") and start == false and self.image == storyButtonImage2 then
+        elseif love.mouse.isDown("1") and start == false and self.image == storyButtonImage2 and controlScreenBool == false and storyScreenBool == false and drawIntro == false and startFade == false then
             love.audio.stop(clickFx)
             clickFx:play()
             self:storyScreen()
