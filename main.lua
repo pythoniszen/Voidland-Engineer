@@ -69,14 +69,19 @@ function love.load()
     gameOverFxTimer = Timer()
     endGameFxBool = false
     computer = Computer()
+    drawResetTextTimer = Timer()
+    drawResetTextBool = false
+    playEndFxBool = true
     
-    -- Sound Fx
+    -- Sound Fx/ Audio
     clickFx = love.audio.newSource("/vleaudiofx/click.ogg", "stream")
     coinFx = love.audio.newSource("/vleaudiofx/coingrab.ogg", "stream")
     itemFx = love.audio.newSource("/vleaudiofx/itemgrab.ogg", "stream")
     doorFx = love.audio.newSource("/vleaudiofx/door.ogg", "stream")
     doorFx2 = love.audio.newSource("/vleaudiofx/door.ogg", "stream")
     doorFx3 = love.audio.newSource("/vleaudiofx/door.ogg", "stream")
+    serverFx = love.audio.newSource("/vleaudiofx/serverFX.ogg", "stream")
+    
     
     -- Player character components
     user = User(60, 480)
@@ -182,7 +187,7 @@ function love.load()
     enemy29L3 = EnemyMushroom(6550, 525, 6540, 6510, 525) -- middle
     enemy30L3 = EnemyMushroom(6650, 525, 6640, 6610, 525)
     enemy31L3 = EnemyMushroom(6650, 525, 6640, 6610, 525)
-    enemy32L3 = EnemyMushroom(6700, 525, 6690, 6660, 525)
+    enemy32L3 = EnemyMushroom(6690, 525, 6680, 6650, 525)
     enemy33L3 = EnemyMushroom(3800, 325, 3700, 3750, 325)
     
     bEnemyL3 = BEnemyClass(1800, 50, 1710, 1760)
@@ -835,6 +840,7 @@ function love.load()
     -- Music, background, game over screen, font
     homeSong = love.audio.newSource("/art/voidlandtheme.ogg", "stream")
     controlRoomSong = love.audio.newSource("/vleaudiofx/the-control-room.ogg", "stream")
+    endSong = love.audio.newSource("/vleaudiofx/endsong.ogg", "stream")
     
     myBackground = love.graphics.newImage("/art/bg.png")
     myBackground2 = love.graphics.newImage("/art/bg2.png")
@@ -1185,6 +1191,23 @@ function love.update(dt)
         end)
     end
     
+    --Endgame screen sounds
+    if endBool == true then
+        controlRoomSong:setLooping(false)
+        love.audio.stop(controlRoomSong)
+    end
+    
+    if playEndFxBool == true and endBool == true then
+        love.audio.stop()
+        serverFx:setLooping(false)
+        serverFx:setVolume(0.6)
+        serverFx:play()
+        endSong:setLooping(false)
+        endSong:setVolume(0.6)
+        endSong:play()
+        playEndFxBool = false
+    end
+    
     --Button updates
     startButton:update(dt)
     controlsButton:update(dt)
@@ -1206,6 +1229,14 @@ function love.update(dt)
     l3SongTimer:update(dt)
     gameOverFxTimer:update(dt)
     endRunTimer:update(dt)
+    drawResetTextTimer:update(dt)
+    
+    -- Destroys timers when resetting from endgame
+    if drawResetTextBool == true then
+        if love.keyboard.isDown('r') then
+            drawResetTextTimer:destroy()
+        end
+    end
     
     if endGameFxBool == true then
         gameOverFxTimer:destroy()
@@ -1944,12 +1975,14 @@ function love.update(dt)
         level3TextTimer:after(2, function() user:drawLevel3Text() end)
     end 
     
-    -- Endgame screen
---    if endBool == true then
---        if endTextBool == true then
---            gameOverFxTimer:after(2, function() restart() end)
---        end
---    end
+    -- Endgame screen bug fix
+    if endBool == true then
+        if endTextBool == true then
+            user.y = user.y
+            drawResetTextTimer:after(6, function() drawResetText() end)
+        end
+    end
+    
     
     if alive == false then
         user.gameOverFx:setLooping(false)
@@ -1964,13 +1997,8 @@ function love.update(dt)
         end)
     end
     
---    if reloadTextBool == true then
---        if love.keyboard.isDown("r") then
---            love.graphics.setColor(r,g,b,a)
---            love.audio.stop()
---            love.load()
---        end
---    end
+
+    
 end
 
 function love.draw()
@@ -2126,7 +2154,7 @@ function love.draw()
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame)], 0, 0)
     end
     if level1Text == true and startFade == true then
-        love.graphics.print("Area 1", 260, 250)
+        love.graphics.print("Area 1", 280, 250)
     end
     
     if drawIntro == true and start == false then
@@ -2145,14 +2173,14 @@ function love.draw()
     if drawLevel2Intro == true  then
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame4)], user.x -400, user.y - 400)
         if drawLevel2Text == true then
-            love.graphics.print("Area 2", user.x - 40, user.y - 60)
+            love.graphics.print("Area 2", user.x - 30, user.y - 60)
         end
     end
     
     if drawLevel3Intro == true  then
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame5)], user.x -400, user.y - 400)
         if drawLevel3Text == true then
-            love.graphics.print("Area 3", user.x - 40, user.y - 80)
+            love.graphics.print("Area 3", user.x - 30, user.y - 80)
             love.graphics.setColor(1, 0, 0)
             love.graphics.print('"The Control Room"', user.x - 90, user.y, 0, 0.5, 0.5)
             love.graphics.setColor(r, g, b, a)
@@ -2175,6 +2203,10 @@ function love.draw()
         if endTextBool == true then
             love.graphics.setColor(0, 1, 0)
             love.graphics.print("The End", 550, user.y - 100)
+            if drawResetTextBool == true then
+                love.graphics.setColor(0, 1, 0)
+                love.graphics.print("Press 'r' to reload the game.", 600, user.y + 150, 0, 0.2, 0.2)
+            end
         end
     end
     
@@ -2207,9 +2239,15 @@ function love.draw()
         love.graphics.print("'k' - Throw wrench", 20, 100, 0, 0.2, 0.2)
         love.graphics.print("'e' - Eat mushroom", 20, 120, 0, 0.2, 0.2)
         love.graphics.print("'q' - Action", 20, 140, 0, 0.2, 0.2)
-        love.graphics.print("Jump directly on top of enemies heads in order to neutralize them.", 20, 160, 0, 0.2, 0.2)
-        love.graphics.print("Hold down 'space' while landing on an enemies head in order to perform", 20, 180, 0, 0.2, 0.2)
+        love.graphics.print("-Jump directly on top of enemies heads in order to neutralize them.", 20, 160, 0, 0.2, 0.2)
+        love.graphics.print("-Hold down 'space' while landing on an enemies head in order to perform", 20, 180, 0, 0.2, 0.2)
         love.graphics.print("a 'super jump'.", 20, 200, 0, 0.2, 0.2)
+        love.graphics.print("-Eating a makes you unable to harm the creatures; Except for ranged attacks.", 20, 220, 0, 0.2, 0.2)
+        love.graphics.print("It also makes you invulnerable to any attacks from the creatures.", 20, 240, 0, 0.2, 0.2)
+        love.graphics.print("-Throw wrenches at creatures to neutralize them.", 20, 260, 0, 0.2, 0.2)
+        love.graphics.print("-Collect coins throughout the world to spend at the shop.", 20, 280, 0, 0.2, 0.2)
+        love.graphics.print("-Find keys in levels in order to progress through the gate at the end of", 20, 300, 0, 0.2, 0.2)
+        love.graphics.print("each area. This allows you to move forward and enter the next area in the game.", 20, 320, 0, 0.2, 0.2)
         love.graphics.print("Press 'escape' to exit the controls screen.", 450, 20, 0, 0.2, 0.2)
     end
     
@@ -2275,11 +2313,17 @@ end
 function finalSongPlay()
     controlRoomSong:setLooping(true)
     controlRoomSong:setVolume(0.3)
-    controlRoomSong:play()
+    if endBool == false then
+        controlRoomSong:play()
+    end
 end
 
 function endGameFx()
     endGameFxBool = true
     love.audio.stop(doorFx)
     love.audio.stop(controlRoomSong)
+end
+
+function drawResetText()
+    drawResetTextBool = true
 end
