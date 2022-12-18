@@ -33,7 +33,6 @@ function love.load()
     
     -- Loading in base game assets
     bossImage = love.graphics.newImage("/art/bossstand.png")
-    
     start = false
     gameLevel = 0
     stillCoin = love.graphics.newImage("/art/stillcoin.png")
@@ -57,6 +56,7 @@ function love.load()
     drawLevel3Intro = false
     drawLevel3Text = false
     textPrompt = love.graphics.newImage("/art/textprompt.png")
+    heartImg = love.graphics.newImage("/art/heartimg.png")
     shopKeep = Shopkeep(400, 845)
     traveler = Traveler(5872, 85)
     shopButton1 = ShopButton(400, 800, wrenchImage, 10)
@@ -811,6 +811,9 @@ function love.load()
     fEStretchFrames = {}
     fEMoveFrames = {}
     bossFramesLeft = {}
+    heartFrames = {}
+    princessFramesLeft = {}
+    princessFramesRight = {}
     
     local eWidth = enemyJumpImage:getWidth()
     local eHeight = enemyJumpImage:getHeight()
@@ -820,6 +823,16 @@ function love.load()
     local bossWidth = bossRunLeftImage:getWidth()
     local bossHeight = bossRunLeftImage:getHeight()
     local bossQuadWidth = bossWidth / 2
+    
+    local heartWidth = enemyJumpImage:getWidth()
+    local heartHeight = enemyJumpImage:getHeight()
+    local heartQuadW = 60
+    local heartQuadH = -20
+    
+    local princessWidth = princessRunLeftImage:getWidth()
+    local princessHeight = princessRunLeftImage:getHeight()
+    local princessQuadW = 60
+    local princessQuadH = -20
     
     -- Mushroom Class animation frames
     for i=0, 4 do
@@ -835,6 +848,16 @@ function love.load()
     
     for i=0, 2 do
         table.insert(bossFramesLeft, love.graphics.newQuad(6 + i * (bossQuadWidth + 5), 7, bossQuadWidth - 10, (bossHeight - 16), bossWidth + 10, bossHeight))
+    end
+    
+    -- Heart animation frames
+    for i=0, 4 do
+        table.insert(heartFrames, love.graphics.newQuad(6 + i * (heartQuadW + 15), 9, heartQuadW + 8, (heartHeight - 16), heartWidth, heartHeight))
+    end
+    
+    -- Princess animation frames
+    for i=0, 2 do
+        table.insert(princessFramesLeft, love.graphics.newQuad(6 + i * (princessQuadW), 6, princessQuadW - 6, (princessHeight - 11), princessWidth, princessHeight))
     end
 
     -- Music, background, game over screen, font
@@ -2191,11 +2214,7 @@ function love.draw()
     if endBool == true then
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame6)], user.x -400, user.y - 400)
         endRunTimer:after(2, function() computer:endRun() end)
---        if fadeCurrentFrame6 > 4 then
---            love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 45, self.y + 40)
---        end
         if endRunBool == true then
---            love.graphics.translate(-computer.x + 300, -user.y + 300)
             user:draw()
             princess:draw()
         end
@@ -2203,10 +2222,10 @@ function love.draw()
         if endTextBool == true then
             love.graphics.setColor(0, 1, 0)
             love.graphics.print("The End", 550, user.y - 100)
-            if drawResetTextBool == true then
-                love.graphics.setColor(0, 1, 0)
-                love.graphics.print("Press 'r' to reload the game.", 600, user.y + 150, 0, 0.2, 0.2)
-            end
+--            if drawResetTextBool == true then
+--                love.graphics.setColor(0, 1, 0)
+--                love.graphics.print("Press 'r' to reload the game.", 600, user.y + 150, 0, 0.2, 0.2)
+--            end
         end
     end
     
@@ -2324,6 +2343,9 @@ function endGameFx()
     love.audio.stop(controlRoomSong)
 end
 
-function drawResetText()
-    drawResetTextBool = true
+function drawResetText() -- change name to restarting game (what this function does) instead of reset text
+--    drawResetTextBool = true
+    love.graphics.setColor(r,g,b,a)
+    love.audio.stop()
+    love.event.quit("restart")
 end

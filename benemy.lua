@@ -57,15 +57,14 @@ function BEnemyClass:update(dt)
         self.currentFrame = 1
     end
 
-        -- Enemy direction change and jump mechanic
-        if self.loop == true then
-            self.eMove = true
-            if self.eLeft == true then
-                self.x = self.x - ((self.speed) * dt)
-            elseif self.eLeft == false then
-                self.x = self.x + ((self.speed) * dt)
-            end
+    if self.loop == true then
+        self.eMove = true
+        if self.eLeft == true then
+            self.x = self.x - ((self.speed) * dt)
+        elseif self.eLeft == false then
+            self.x = self.x + ((self.speed) * dt)
         end
+    end
         
         
     -- Checks if enemy is currently alive and drop from screen if its not

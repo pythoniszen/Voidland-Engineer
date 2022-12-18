@@ -480,7 +480,7 @@ end
 function User:level3(level)
     if level == 3 then
         gameLevel = 3.5
-        hasKey = false
+        hasKey = true
     end
 end
 
