@@ -2,7 +2,6 @@ require "main"
 require "helpers"
 require "user"
 
--- Similar to "enemy" but with a few changes
 Boss = Entity:extend()
 imgM = love.graphics.newImage("/art/enemy1.png")
 bossJumpImg = love.graphics.newImage("/art/bossjump.png")
@@ -45,24 +44,24 @@ end
 
 function Boss:update(dt)
     
+    -- Keeps track of position
     if self.y >= 760 then
         bossGroundBool = true
     else
         bossGroundBool = false
     end
-  
+    
+    -- Allows user to bounce
     if self.eAlive == true then
         self.bounceBool = true
---        self.image = bossImage
     end
   
+    -- Helps keep track of hitpoints
     if self.hits > self.lastHit + 1 then
         self.hits = self.lastHit + 1
     end
     
     self.lastHit = self.hits
---    print("hits:"..self.hits)
---    print(self.lastHit)
 
     if self.hits >= 12 then
         love.audio.stop(bossHitFx)
@@ -71,12 +70,9 @@ function Boss:update(dt)
         self.eAlive = false
         self.image = bossHitImage
         self.hits = 0
---        self.bounceBool = false
-  end
-
---    if hitDetect(user, self) == false then
---        self.bounceBool = true
---    end
+    end
+    
+    -- Determines animation speed
     if self.speed ~= 400 then
         self.currentFrame = self.currentFrame + 2 * dt
     elseif self.speed == 400 then
@@ -86,63 +82,66 @@ function Boss:update(dt)
         self.currentFrame = 1
     end
     
+    -- Collision detection with user
     if self.bounceBool == true and hitDetect(user, self) and (user.y >= user.last.y or bJumpBool == true) and invincible == false then
---          print("HIT!")
-          bJumpBool = false
-          if love.keyboard.isDown("space") then
-              self.bounceBool = false
-              if self.bounceBool == false and (userHitBoss == true or bJumpBool == true) then
-                  invincible = true
-                  self.image = bossHitImage
-                  if self.hits == self.lastHit then
-                      self.hits = self.hits + 1
-                  end
-                  userHitBoss = false
-                  if self.hits > self.lastHit + 1 then
-                      self.hits = self.lastHit + 1
-                  end
-                  bossTimer4:after(0.5, function() self:hitAnimationEnd() end)
-              end
-              user.gravity = -520
-              self.gravity = 500
-              invincible = false
-              love.audio.stop(bossHitFx)
-              bossHitFx:setLooping(false)
-              bossHitFx:setVolume(0.6)
-              bossHitFx:play()
-              return
-          else
-              self.bounceBool = false
-              if self.bounceBool == false and (userHitBoss == true or bJumpBool == true) then
-                  invincible = true
-                  self.image = bossHitImage
-                  if self.hits == self.lastHit then
-                      self.hits = self.hits + 1
-                  end
-                  userHitBoss = false
-                  if self.hits > self.lastHit + 1 then
-                      self.hits = self.lastHit + 1
-                  end
-                  bossTimer4:after(0.5, function() self:hitAnimationEnd() end)
-              end
-              invincible = false
-              user.gravity = -200
-              self.gravity = 500
-              love.audio.stop(bossHitFx)
-              bossHitFx:setLooping(false)
-              bossHitFx:setVolume(0.6)
-              bossHitFx:play()
-              return
-            
-          end
-          if user.eating == false and invincible == true then
-              bossTimer2:after(0.1, function() user:invincibleEnd() end)
-          end
-          self.bounceBool = true
-      elseif hitDetect(user, self) and invincible == false and user.y >= self.y then
-          alive = false
-      end
+        bJumpBool = false
+        if love.keyboard.isDown("space") then
+            self.bounceBool = false
+            if self.bounceBool == false and (userHitBoss == true or bJumpBool == true) then
+                invincible = true
+                self.image = bossHitImage
+                if self.hits == self.lastHit then
+                    self.hits = self.hits + 1
+                end
+                userHitBoss = false
+                if self.hits > self.lastHit + 1 then
+                    self.hits = self.lastHit + 1
+                end
+                bossTimer4:after(0.5, function() self:hitAnimationEnd() end)
+            end
+            user.gravity = -520
+            self.gravity = 500
+            invincible = false
+            love.audio.stop(bossHitFx)
+            bossHitFx:setLooping(false)
+            bossHitFx:setVolume(0.6)
+            bossHitFx:play()
+            return
+        else
+            self.bounceBool = false
+            if self.bounceBool == false and (userHitBoss == true or bJumpBool == true) then
+                invincible = true
+                self.image = bossHitImage
+                if self.hits == self.lastHit then
+                    self.hits = self.hits + 1
+                end
+                userHitBoss = false
+                if self.hits > self.lastHit + 1 then
+                    self.hits = self.lastHit + 1
+                end
+                bossTimer4:after(0.5, function() self:hitAnimationEnd() end)
+            end
+            invincible = false
+            user.gravity = -200
+            self.gravity = 500
+            love.audio.stop(bossHitFx)
+            bossHitFx:setLooping(false)
+            bossHitFx:setVolume(0.6)
+            bossHitFx:play()
+            return
+        end
+        
+        if user.eating == false and invincible == true then
+            bossTimer2:after(0.1, function() user:invincibleEnd() end)
+        end
+        
+        self.bounceBool = true
+
+    elseif hitDetect(user, self) and invincible == false and user.y >= self.y then
+        alive = false
+    end
     
+    -- Boss movement
     if self.x > self.boundaryRight then
         self.eLeft = true
     elseif self.x < self.boundaryLeft then
@@ -187,6 +186,7 @@ function Boss:jump(dt)
     bossGroundBool = false
     if self.eAlive == true then
         bJumpBool = true
+        -- Makes boss fall to ground level when user collides
         if hitDetect(user, self) then
             self.gravity = 500
         else
@@ -203,6 +203,7 @@ function Boss:endJump()
 end
 
 function Boss:draw()
+    --Draws boss spritesheet
     if self.image ~= bossJumpImg and self.image ~= bossHitImage and bossGroundBool == true then
         love.graphics.draw(bossRunLeftImage, bossFramesLeft[math.floor(self.currentFrame)], self.x, self.y + 10)
     else

@@ -38,11 +38,9 @@ function TitleScreenM:new(x, y, boundLeft, boundRight, floor)
 end
 
 function TitleScreenM:update(dt)
-  
     if self.x < -60 then
         self.x = 890
     end
-  
     if self.eAlive == false and self.bounceBool == true then
           if love.keyboard.isDown("space") then
               user.gravity = -520
@@ -52,17 +50,14 @@ function TitleScreenM:update(dt)
               self.bounceBool = false
           end
       end
-  
     if self.eAlive == true then
-      
-      self.eMove = false
-      self.last.x = self.x
-      self.last.y = self.y
-
-      self.currentFrame = self.currentFrame + 5.8 * dt
-    if self.currentFrame >= 5 then
-        self.currentFrame = 1
-    end
+        self.eMove = false
+        self.last.x = self.x
+        self.last.y = self.y
+        self.currentFrame = self.currentFrame + 5.8 * dt
+        if self.currentFrame >= 5 then
+            self.currentFrame = 1
+        end
       
         -- Enemy direction change and jump mechanic
         if self.loop == true then
@@ -84,38 +79,38 @@ function TitleScreenM:update(dt)
         end
     -- Checks if enemy is currently alive and drop from screen if its not
     elseif start == true and self.eAlive == false then
-            self.gravity = self.gravity + self.weight * dt
-            self.y = self.y + (self.gravity + 400) * dt
+        self.gravity = self.gravity + self.weight * dt
+        self.y = self.y + (self.gravity + 400) * dt
     end
 end
 
 -- Movement funtion for enemy including direction change and bounce
 function TitleScreenM:movement()
-        if self.x < self.boundaryRight and self.x > self.boundaryLeft then
-            self.eLeft = true
-        else
-            self.eLeft = false
-        end
-        
-        if self.eLeft == true and self.eMove == true and self.eAlive == false then
-            self.image = enemyFaceR
-            self.currentFrame = 1
-        elseif self.eLeft == true and self.eMove == false then
-            self.image = enemyFaceL
-            self.currentFrame = 1
-        elseif self.eLeft == false and self.eMove == true and self.eAlive == false then
-            self.image = enemyFaceL
-            self.currentFrame = 1
-        elseif self.eLeft == false and self.eMove == false then
-            self.image = enemyFaceR
-            self.currentFrame = 1
-        end
-        
-        if self.loop == true then
-            self.loop = false
-        elseif self.loop == false then
-            self.loop = true
-        end
+    -- Movement
+    if self.x < self.boundaryRight and self.x > self.boundaryLeft then
+        self.eLeft = true
+    else
+        self.eLeft = false
+    end
+    if self.eLeft == true and self.eMove == true and self.eAlive == false then
+        self.image = enemyFaceR
+        self.currentFrame = 1
+    elseif self.eLeft == true and self.eMove == false then
+        self.image = enemyFaceL
+        self.currentFrame = 1
+    elseif self.eLeft == false and self.eMove == true and self.eAlive == false then
+        self.image = enemyFaceL
+        self.currentFrame = 1
+    elseif self.eLeft == false and self.eMove == false then
+        self.image = enemyFaceR
+        self.currentFrame = 1
+    end
+    
+    if self.loop == true then
+        self.loop = false
+    elseif self.loop == false then
+        self.loop = true
+    end
 end
 
 

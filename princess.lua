@@ -36,6 +36,7 @@ function Princess:update(dt)
     self.lastX = self.x
     self.y = user.y + 45
     
+    -- Animates the princess who appears during the end game animation.
     self.currentFrame = self.currentFrame + 5 * dt
     if self.currentFrame >= 3 then
         self.currentFrame = 1
@@ -66,7 +67,6 @@ function Princess:update(dt)
 end
 
 function Princess:draw()
-  
     if self.image == princessRunLeftImage and self.x ~= self.lastX and walkOutBool == false then
         love.graphics.draw(self.image, princessFramesLeft[math.floor(self.currentFrame)], self.x, self.y + 1)
     elseif walkOutBool == true then

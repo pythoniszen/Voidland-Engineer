@@ -21,6 +21,7 @@ end
 
 function Key:update(dt)
     
+    -- Allows user to collect key
     if self.alive == false and self.loop == true then
         hasKey = true
         self.loop = false

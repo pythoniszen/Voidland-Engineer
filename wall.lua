@@ -21,6 +21,7 @@ function Wall:new(x, y)
     elseif metalBrick == true then
         Wall.super.new(self, x, y, "/art/metalbrick.png")
     end
+    
     -- Properties
     self.strength = 100
     self.width = self.image:getWidth() - 40
