@@ -1,6 +1,5 @@
 require "main"
 
-
 -- Entity class which is used by various entities to create
 -- A unique class for that entity appearing in the game world
 -- Which uses this class as a template
@@ -73,11 +72,11 @@ function Entity:resolveCollision(e)
 end
 
 function Entity:draw()
-  if self.strength == 100 then
-      love.graphics.draw(self.image, self.x + 10, self.y)
-  else
-      love.graphics.draw(self.image, self.x, self.y)
-  end
+    if self.strength == 100 then
+        love.graphics.draw(self.image, self.x + 10, self.y)
+    else
+        love.graphics.draw(self.image, self.x, self.y)
+    end
 end
 
 -- Function called to check if entity collides with entity

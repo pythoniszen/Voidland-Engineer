@@ -41,26 +41,29 @@ function EnemyMushroom:update(dt)
     self.enemyDieFx:setVolume(1.0)
     
     EnemyMushroom.super.update(self, dt)
+    
+    -- User head bounce code
     if self.eAlive == false and self.bounceBool == true then
-          if love.keyboard.isDown("space") then
-              user.gravity = -520
-              self.bounceBool = false
-          else
-              user.gravity = -200
-              self.bounceBool = false
-          end
-      end
-  
-    if self.eAlive == true then
-      
-      self.eMove = false
-      self.last.x = self.x
-      self.last.y = self.y
-
-      self.currentFrame = self.currentFrame + 5.8 * dt
-    if self.currentFrame >= 5 then
-        self.currentFrame = 1
+        if love.keyboard.isDown("space") then
+            user.gravity = -520
+            self.bounceBool = false
+        else
+            user.gravity = -200
+            self.bounceBool = false
+        end
     end
+  
+    -- Keeps track of movement
+    if self.eAlive == true then
+        self.eMove = false
+        self.last.x = self.x
+        self.last.y = self.y
+
+        self.currentFrame = self.currentFrame + 5.8 * dt
+        
+        if self.currentFrame >= 5 then
+            self.currentFrame = 1
+        end
       
         -- Enemy direction change and jump mechanic
         if self.loop == true then
@@ -80,10 +83,11 @@ function EnemyMushroom:update(dt)
         else
             self.gravity = -10
         end
+        
     -- Checks if enemy is currently alive and drop from screen if its not
     elseif start == true and self.eAlive == false then
-            self.gravity = self.gravity + self.weight * dt
-            self.y = self.y + (self.gravity + 400) * dt
+        self.gravity = self.gravity + self.weight * dt
+        self.y = self.y + (self.gravity + 400) * dt
     end
 end
 

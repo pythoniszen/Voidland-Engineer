@@ -20,6 +20,7 @@ function Traveler:new(x, y)
 end
 
 function Traveler:update(dt)
+    -- Lets user talk to traveler
     if user.x > 5738 and user.x < 5779 and user.y <= 85 and user_left == false and user.y > 70 and travelerTalkBool == false then
         drawTravelerAlert = true
         if love.keyboard.isDown("q") then
@@ -28,31 +29,26 @@ function Traveler:update(dt)
     else
         drawTravelerAlert = false
     end
-    
     if user.x > traveler.x then
         travelerTalkBool = false
         travelerCounter = 0
     end
-    
     if travelerTalkBool == false then
         travelerCounter = 0
     end
-    
     if user_left == true then
         travelerTalkBool = false
     end
-    
     if travelerCounter >= 11 then
         travelerTalkBool = false
     end
-
 end
 
 function Traveler:draw()
+    -- Draws npc and his dialogue
     love.graphics.draw(self.image, self.x, self.y)
     
     if travelerTalkBool == true and travelerCounter <= 11 and user.x == user.last.x and user.x < traveler.x - 80 then
-        
         if travelerCounter == 0 and user.x < self.x then
             love.graphics.draw(npcTalkImage, self.x - 160, self.y - 80)
             love.graphics.setColor(0, 0, 0)
@@ -101,8 +97,8 @@ function Traveler:draw()
             love.graphics.setColor(0, 0, 0)
             love.graphics.print("Traveler:", self.x - 150, self.y - 70, 0, 0.16, 0.16)
             love.graphics.print("After all, we're the", self.x - 150, self.y - 60, 0, 0.16, 0.16)
-            love.graphics.print(" ones who decided take", self.x - 150, self.y - 50, 0, 0.16, 0.16)
-            love.graphics.print(" over their territory...", self.x - 150, self.y - 40, 0, 0.16, 0.16)
+            love.graphics.print(" ones who took over", self.x - 150, self.y - 50, 0, 0.16, 0.16)
+            love.graphics.print(" Rtheir territory...", self.x - 150, self.y - 40, 0, 0.16, 0.16)
             love.graphics.print("(press 'q' to continue)", self.x - 150, self.y - 25, 0, 0.16, 0.16)
             love.graphics.setColor(r, g, b, a)
         elseif travelerCounter == 6 and user.x < self.x then

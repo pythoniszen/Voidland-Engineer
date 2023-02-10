@@ -4,7 +4,6 @@ Timer = require "chrono-master.chrono-master.Timer"
 
 startTimer = Timer()
 level1textTimer = Timer()
-
 startButtonClass = Button:extend()
 startButtonImage = love.graphics.newImage("/art/startbutton.png")
 startButtonImage2 = love.graphics.newImage("/art/startbuttonhighlight.png")
@@ -19,7 +18,8 @@ end
 
 function startButtonClass:update(dt)
     mouse.x, mouse.y = love.mouse.getPosition()
-  
+    
+    -- Lets user click the button and begin the game
     if mouse.x > self.x and mouse.y < self.y + 50 and mouse.x < self.width - self.x and mouse.y < self.y + self.height + 50 and mouse.y > self.y then
         self.image = startButtonImage2
         if love.mouse.isDown("1") and start == false and controlScreenBool == false and storyScreenBool == false and drawIntro == false and startFade == false then
@@ -49,6 +49,7 @@ function startButtonClass:draw()
     love.graphics.draw(self.image, self.x, self.y, 0, 0.2, 0.2)
 end
 
+-- Triggers level 1 text to show
 function startButtonClass:startGame()
     love.audio.stop(clickFx)
     clickFx:play()
@@ -59,7 +60,7 @@ end
 function startButtonClass:endFade()
     startFade = false
     start = true
-    gameLevel = 3
+    gameLevel = 1
 end
 
 function startButtonClass:l1Txt()

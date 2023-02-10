@@ -23,6 +23,7 @@ function Shopkeep:new(x, y)
 end
 
 function Shopkeep:update(dt)
+    --Lets user talk to Shopkeep
     if user_left == false and shopTalkBool == false and user.x < self.x - 100 and gameLevel > 1 and user.y >= 829 then
         if user.x > self.x - 130 then
             drawShopAlert = true
@@ -31,43 +32,29 @@ function Shopkeep:update(dt)
                 shopTalkBool = true
             end
         end
---    elseif user_left == true and shopTalkBool == false and user.x > self.x - 50 and gameLevel == 2.5 and user.y >= 829 then
---        if user.x < (self.x - 20) + 180 then
---            drawShopAlert = true
---            self.image = shopKeepImageRight
---            if love.keyboard.isDown("q") then
---                shopTalkBool = true
---            end
---        end
-        
     else
         drawShopAlert = false
     end
-    
     if user.x > shopKeep.x then
         shopTalkBool = false
         shopTalkCounter = 0
     end
-    
     if shopTalkBool == false then
         shopTalkCounter = 0
     end
-    
     if shopTalkBool == true and user_left == true and user.x < self.x - 150 or user.y < 829 then
         shopTalkBool = false
     end
-    
     if shopTalkCounter >= 3 then
         shopTalkBool = false
     end
-    
 end
 
 function Shopkeep:draw()
+    -- Draws Shopkeep and his dialogue
     love.graphics.draw(self.image, self.x, self.y)
     
     if shopTalkBool == true and shopTalkCounter <= 2 and user.x == user.last.x and user.x < shopKeep.x - 80 then
-        
         if shopTalkCounter == 0 and user.x < self.x then
             love.graphics.draw(npcTalkImage, self.x - 160, self.y - 80)
             love.graphics.setColor(0, 0, 0)

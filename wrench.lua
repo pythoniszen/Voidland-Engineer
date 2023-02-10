@@ -20,7 +20,7 @@ function Wrench:new(x, y)
 end
 
 function Wrench:update(dt)
-    
+    -- Keeps track of projectile stock
     if self.alive == false and self.loop == true then
         pStock = pStock + 1
         self.loop = false

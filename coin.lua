@@ -21,6 +21,7 @@ end
 
 function Coin:update(dt)
     
+    -- Keeps track of coin count
     if self.alive == false and self.loop == true then
         coinCount = coinCount + 1
         self.loop = false

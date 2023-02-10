@@ -24,6 +24,7 @@ function Computer:new(x, y)
 end
 
 function Computer:update(dt)
+    -- Allows user to interact with the computer
     if alive == true and boss.eAlive == false and user.x > 7649 and user .x < 7916 and user.y >= 780 and endBool == false then
         if love.keyboard.isDown("q") then
             endBool = true
@@ -38,5 +39,6 @@ function Computer:draw(x, y)
 end
 
 function Computer:endRun()
+    -- Triggers the end game animation
     endRunBool = true
 end

@@ -1,6 +1,4 @@
-
-
--- This file includes helper functions.
+-- This file includes a helper function and tilemaps.
 
 -- Balanced for small enemy colliding with player
 function hitDetect(element_x, element_y)
@@ -63,31 +61,18 @@ function hitDetect(element_x, element_y)
         elseif element_y.imageMain == imgB and element_x_bottom > element_y_top and element_x_bottom < element_y_bottom + 10 then
             element_y.eAlive = true
             return true
-        elseif element_y.imageMain == bossImage and element_x_bottom > element_y_top and element_x_top < element_y_top then --and invincible == false then
-            --local delta = love.timer.getDelta()
---            k = true
---            if boss.hits > boss.lastHit + 1 then
---                k = false
---            end
-            if element_x_bottom < element_y_top + 19 and element_x_bottom > element_y_top and element_x_top < element_y_top - user.height + 18 then --and k == true then --and boss.bounceBool == false then
---                element_y.hits = element_y.hits + 1
---                element_y.eAlive = true
---                k = false
+        elseif element_y.imageMain == bossImage and element_x_bottom > element_y_top and element_x_top < element_y_top then
+            if element_x_bottom < element_y_top + 19 and element_x_bottom > element_y_top and element_x_top < element_y_top - user.height + 18 then
                 userHitBoss = true
                 return true
             end
             
         elseif element_y.imageMain == bossImage and element_x_bottom > element_y_top and element_x_bottom < element_y_bottom + 10 then
-            --local delta = love.timer.getDelta()
---            element_y.eAlive = true
---            element_y.hits = element_y.hits + 1
             return true
         end
     end
     
     -- Collision detection
-    
-    
     if element_x_right > element_y_left + 15
     and element_x_left < element_y_right - 60
     and element_x_bottom > element_y_top + 15
@@ -100,7 +85,7 @@ end
 
 -- Bitmap which is loaded in 'main'
 -- Dictates where platforms appear
--- Hardcoded bitmap instead of iterative in order to visually edit/work with the map
+-- Hardcoded bitmap instead of iterative in order to visually edit/work with the map in vscode
     map = {
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,3,4,3,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2},

@@ -15,6 +15,7 @@ function Button:new(x, y, imageVar)
 end
 
 function Button:update(dt)
+    -- Gets the x and y position of the mouse
     mouse.x, mouse.y = love.mouse.getPosition()
 end
 

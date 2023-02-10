@@ -1,13 +1,12 @@
 function love.load()
-
-    -- Including classic module to simulate classes in Love2d
-    -- Including chrono module to simulate timers
-    -- Linking other pages to main
+    -- Includes classic module to simulate classes in Love2d
+    -- Includes chrono module to simulate timers
+    -- Links other pages to main
     Object = require "classic-master.classic"
     Timer = require "chrono-master.chrono-master.Timer"
     require "entity"
     require "titlescreenmushroom"
-    require "button" 
+    require "button"
     require "sbutton" 
     require "cbutton" 
     require "shopbutton"
@@ -29,7 +28,6 @@ function love.load()
     require "traveler"
     require "boss"
     require "princess"
-
     
     -- Loading in base game assets
     bossImage = love.graphics.newImage("/art/bossstand.png")
@@ -37,7 +35,7 @@ function love.load()
     gameLevel = 0
     stillCoin = love.graphics.newImage("/art/stillcoin.png")
     coinCount = 0
-    mushroomCount = 99
+    mushroomCount = 0
     drawGatePrompt = false
     promptX = 0
     PromptY = 0
@@ -69,7 +67,7 @@ function love.load()
     gameOverFxTimer = Timer()
     endGameFxBool = false
     computer = Computer()
-    drawResetTextTimer = Timer()
+    resetGameTimer = Timer()
     drawResetTextBool = false
     playEndFxBool = true
     
@@ -81,7 +79,6 @@ function love.load()
     doorFx2 = love.audio.newSource("/vleaudiofx/door.ogg", "stream")
     doorFx3 = love.audio.newSource("/vleaudiofx/door.ogg", "stream")
     serverFx = love.audio.newSource("/vleaudiofx/serverFX.ogg", "stream")
-    
     
     -- Player character components
     user = User(60, 480)
@@ -119,7 +116,6 @@ function love.load()
     -- List of all level 1 enemies
     enemiesList = {enemy, enemy2, enemy3, enemy4, enemy5, bEnemy, enemy6, enemy7, bEnemy2, bEnemy3, enemy8, enemy9, bEnemy4, bEnemy5, enemy10, bEnemy6, enemy11, enemy12, bEnemy7, bEnemy8}
     
-   
    -- Spawns enemies for level 2
     enemyL2 = EnemyMushroom(1200, 875, 1110, 1160, 875)
     enemy2L2 = EnemyMushroom(1400, 875, 1310, 1360, 875)
@@ -150,7 +146,6 @@ function love.load()
     bEnemy6L2 = BEnemyClass(4500, 25, 4410, 4460)
     bEnemy7L2 = BEnemyClass(5540, 600, 5490, 5500)
 
-    
     -- List of all level 2 enemies
     enemiesList2 = {enemyL2, enemy2L2, enemy3L2, enemy4L2, enemy5L2, enemy6L2, enemy7L2, enemy8L2, enemy9L2, enemy10L2, enemy11L2, enemy12L2, enemy13L2, enemy14L2, enemy15L2, enemy16L2, enemy17L2, enemy18L2, enemy19L2, enemy20L2, bEnemyL2, bEnemy2L2, bEnemy3L2, bEnemy4L2, bEnemy5L2, bEnemy6L2, bEnemy7L2}
     
@@ -174,17 +169,16 @@ function love.load()
     enemy17L3 = EnemyMushroom(4660, 825, 4570, 4630, 825)
     enemy18L3 = EnemyMushroom(3030, 825, 2940, 3000, 825)
     enemy19L3 = EnemyMushroom(5310, 575, 5220, 5280, 575)
-    enemy20L3 = EnemyMushroom(5330, 575, 5240, 5300, 575) -- Middle platform
-    enemy21L3 = EnemyMushroom(5260, 575, 5170, 5230, 575) -- middle of middle platform
-    enemy22L3 = EnemyMushroom(4690, 575, 4600, 4660, 575) -- left
-    --(5480, 725, 5470, 5440, 725)
+    enemy20L3 = EnemyMushroom(5330, 575, 5240, 5300, 575)
+    enemy21L3 = EnemyMushroom(5260, 575, 5170, 5230, 575)
+    enemy22L3 = EnemyMushroom(4690, 575, 4600, 4660, 575)
     enemy23L3 = EnemyMushroom(5940, 825, 5930, 5900, 825)
-    enemy24L3 = EnemyMushroom(4730, 575, 4720, 4700, 575) -- left
+    enemy24L3 = EnemyMushroom(4730, 575, 4720, 4700, 575)
     enemy25L3 = EnemyMushroom(6140, 825, 6130, 6100, 825)
     enemy26L3 = EnemyMushroom(6090, 375, 6080, 6050, 375)
     enemy27L3 = EnemyMushroom(6040, 375, 6030, 6000, 375)
     enemy28L3 = EnemyMushroom(6450, 525, 6440, 6410, 525)
-    enemy29L3 = EnemyMushroom(6550, 525, 6540, 6510, 525) -- middle
+    enemy29L3 = EnemyMushroom(6550, 525, 6540, 6510, 525)
     enemy30L3 = EnemyMushroom(6650, 525, 6640, 6610, 525)
     enemy31L3 = EnemyMushroom(6650, 525, 6640, 6610, 525)
     enemy32L3 = EnemyMushroom(6690, 525, 6680, 6650, 525)
@@ -321,8 +315,8 @@ function love.load()
     bossTimer:every(4, function() boss:jump(dt) end)
     bossTimer2:every(9, function() boss:movement(dt) end)
     
-    -- Level 1 timers
-    -- mushroom enemies
+    -- Level 1 Timers
+    -- Mushroom Enemies
     enemyTimer:every(2, function() enemy:movement() end)
     enemy2Timer:script(function(wait)
         wait(2.4)
@@ -369,7 +363,7 @@ function love.load()
         enemy12Timer:every(2, function() enemy12:movement() end)
     end)
   
-    -- Bee timers
+    -- Bee Timers
     bEnemyTimer:script(function(wait)
         wait(1.4)
         bEnemyTimer:every(2, function() bEnemy:movement() end)
@@ -403,8 +397,8 @@ function love.load()
         bEnemy8Timer:every(2, function() bEnemy8:movement() end)
     end)
     
-    --Level 2 enemy timers
-    -- Mushroom enemies
+    --Level 2 Enemy Timers
+    -- Mushroom Enemies
     enemyL2Timer:script(function(wait)
         wait(2.6)
         enemyL2Timer:every(2, function() enemyL2:movement() end)
@@ -486,8 +480,7 @@ function love.load()
         enemy20L2Timer:every(1.2, function() enemy20L2:movement() end)
     end)
   
-  
-    --Bee Timer
+    --Bee Timers
     bEnemyL2Timer:script(function(wait)
         wait(2.1)
         bEnemyL2Timer:every(2, function() bEnemyL2:movement() end)
@@ -517,8 +510,8 @@ function love.load()
         bEnemy7L2Timer:every(1.5, function() bEnemy7L2:movement() end)
     end)
   
-    --Level 3 enemy timers
-    -- Mushroom enemies
+    --Level 3 Enemy Timers
+    -- Mushroom Enemies
     enemyL3Timer:script(function(wait)
         wait(2.2)
         enemyL3Timer:every(2, function() enemyL3:movement() end)
@@ -700,16 +693,13 @@ function love.load()
     objects2 = {}
     objects3 = {}
     
-    
-    
-    -- Player projectile
+    -- Projectiles
     projectileList = {}
     leftProjectileList = {}
     
     inStock = true
-    pStock = 3
+    pStock = 6
     wallHit = false
-    
     
     -- Player movement/ status
     frames = {}
@@ -726,13 +716,11 @@ function love.load()
     for i=0, 4 do
         table.insert(frames, love.graphics.newQuad(5 + i * (quad_width + 15), 10, quad_width + 10, quad_height, img_width, img_height))
     end
-    
     currentFrame = 1
     
     for i=0, 4 do
         table.insert(left_run_frames, love.graphics.newQuad(5 + i * (quad_width + 15), 10, quad_width + 10, quad_height, img_width,        img_height))
     end
-    
     currentFrameLeft = 1
     
     alive = true
@@ -800,7 +788,6 @@ function love.load()
     fadeCurrentFrame6 = 1
     
     -- Enemy animations
-    
     enemyJumpImage = love.graphics.newImage("/art/enemyjumpleft.png")
     enemyJumpImageRight = love.graphics.newImage("/art/enemyjumpright.png")
     bEnemyFlyRight = love.graphics.newImage("/art/benemyflyright.png")
@@ -875,7 +862,6 @@ function love.load()
     font = love.graphics.newFont("/art/Retro Gaming.ttf", 60)
     love.graphics.setFont(font)
     
-    
     -- Tilemaps located in helpers.lua
     for i,v in ipairs(map) do
         for j,w in ipairs(v) do
@@ -888,7 +874,6 @@ function love.load()
                 grassBlock3 = false
                 local newWall = Wall(a, b)
                 table.insert(walls, newWall)
-                
             elseif w == 2 then
                 local a = (j-1)*50
                 local b = (i-1)*50
@@ -898,7 +883,6 @@ function love.load()
                 grassBlock3 = false
                 local newWall = Wall(a, b)
                 table.insert(walls, newWall)
-            
             elseif w == 5 then
                 local a = (j-1)*50
                 local b = (i-1)*50
@@ -977,7 +961,7 @@ function love.load()
         end
     end
     
-    -- Tilemaps for level2
+    -- Tilemap for level 2
     for i,v in ipairs(map2) do
         for j,w in ipairs(v) do
             if w == 1 then
@@ -990,7 +974,6 @@ function love.load()
                 dirtBlock = false
                 local newWall = Wall(a, b)
                 table.insert(walls2, newWall)
-                
             elseif w == 2 then
                 local a = (j-1)*50
                 local b = (i-1)*50
@@ -1001,7 +984,6 @@ function love.load()
                 dirtBlock = false
                 local newWall = Wall(a, b)
                 table.insert(walls2, newWall)
-            
             elseif w == 5 then
                 local a = (j-1)*50
                 local b = (i-1)*50
@@ -1099,96 +1081,96 @@ function love.load()
     end
     
     for i,v in ipairs(map3) do
-            for j,w in ipairs(v) do
-                if w == 1 then
-                    local a = (j-1)*50
-                    local b = (i-1)*50
-                    brickWall = false
-                    grassBlock2 = false
-                    grassBlock1 = false
-                    grassBlock3 = false
-                    dirtBlock = false
-                    metalBrick = false
-                    local newWall = Wall(a, b)
-                    table.insert(walls3, newWall)
-                elseif w == 5 then
-                    local a = (j-1)*50
-                    local b = (i-1)*50
-                    brickWall = false
-                    grassBlock2 = false
-                    grassBlock1 = false
-                    grassBlock3 = false
-                    dirtBlock = false
-                    metalBrick = true
-                    local newWall = Wall(a, b)
-                    table.insert(walls3, newWall)
-                
-                -- Game objects (anything that isn't a wall)
-                elseif w == 3 then
-                    local a = (j-1)*50
-                    local b = (i-1)*50
-                    grassBlock2 = false
-                    grassBlock1 = false
-                    grassBlock3 = false
-                    brickWall = false
-                    dirtBlock = false
-                    metalBrick = false
-                    local newCoin = Coin(a, b)
-                    table.insert(objects3, newCoin)
-                elseif w == 4 then
-                    local a = (j-1)*50
-                    local b = (i-1)*50
-                    grassBlock2 = false
-                    grassBlock1 = false
-                    grassBlock3 = false
-                    brickWall = false
-                    dirtBlock = false
-                    metalBrick = false
-                    local newWrench = Wrench(a, b)
-                    table.insert(objects3, newWrench)
-                elseif w == 8 then
-                    local a = (j-1)*50
-                    local b = (i-1)*50
-                    grassBlock2 = false
-                    grassBlock1 = false
-                    grassBlock3 = false
-                    brickWall = false
-                    dirtBlock = false
-                    metalBrick = false
-                    local newMushroom = Mushroom(a, b)
-                    table.insert(objects3, newMushroom)
-                elseif w == 9 then
-                    local a = (j-1)*50
-                    local b = (i-1)*50
-                    grassBlock2 = false
-                    grassBlock1 = false
-                    grassBlock3 = false
-                    brickWall = false
-                    dirtBlock = false
-                    metalBrick = false
-                    local newKey = Key(a, b)
-                    table.insert(objects3, newKey)
-                elseif w == 10 then
-                    local a = (j-1)*50
-                    local b = (i-1)*50
-                    grassBlock2 = false
-                    grassBlock1 = false
-                    grassBlock3 = false
-                    brickWall = false
-                    dirtBlock = false
-                    metalBrick = false
-                    local newGate = Gate(a, b)
-                    table.insert(walls3, newGate)
-                end
+        for j,w in ipairs(v) do
+            if w == 1 then
+                local a = (j-1)*50
+                local b = (i-1)*50
+                brickWall = false
+                grassBlock2 = false
+                grassBlock1 = false
+                grassBlock3 = false
+                dirtBlock = false
+                metalBrick = false
+                local newWall = Wall(a, b)
+                table.insert(walls3, newWall)
+            elseif w == 5 then
+                local a = (j-1)*50
+                local b = (i-1)*50
+                brickWall = false
+                grassBlock2 = false
+                grassBlock1 = false
+                grassBlock3 = false
+                dirtBlock = false
+                metalBrick = true
+                local newWall = Wall(a, b)
+                table.insert(walls3, newWall)
+            
+            -- Game objects (anything that isn't a wall)
+            elseif w == 3 then
+                local a = (j-1)*50
+                local b = (i-1)*50
+                grassBlock2 = false
+                grassBlock1 = false
+                grassBlock3 = false
+                brickWall = false
+                dirtBlock = false
+                metalBrick = false
+                local newCoin = Coin(a, b)
+                table.insert(objects3, newCoin)
+            elseif w == 4 then
+                local a = (j-1)*50
+                local b = (i-1)*50
+                grassBlock2 = false
+                grassBlock1 = false
+                grassBlock3 = false
+                brickWall = false
+                dirtBlock = false
+                metalBrick = false
+                local newWrench = Wrench(a, b)
+                table.insert(objects3, newWrench)
+            elseif w == 8 then
+                local a = (j-1)*50
+                local b = (i-1)*50
+                grassBlock2 = false
+                grassBlock1 = false
+                grassBlock3 = false
+                brickWall = false
+                dirtBlock = false
+                metalBrick = false
+                local newMushroom = Mushroom(a, b)
+                table.insert(objects3, newMushroom)
+            elseif w == 9 then
+                local a = (j-1)*50
+                local b = (i-1)*50
+                grassBlock2 = false
+                grassBlock1 = false
+                grassBlock3 = false
+                brickWall = false
+                dirtBlock = false
+                metalBrick = false
+                local newKey = Key(a, b)
+                table.insert(objects3, newKey)
+            elseif w == 10 then
+                local a = (j-1)*50
+                local b = (i-1)*50
+                grassBlock2 = false
+                grassBlock1 = false
+                grassBlock3 = false
+                brickWall = false
+                dirtBlock = false
+                metalBrick = false
+                local newGate = Gate(a, b)
+                table.insert(walls3, newGate)
             end
         end
+    end
 end
 
 function love.update(dt)
-    
     -- Fixes bug where character would fall off screen when game window was moved
     dt = math.min(dt, 1/10)
 
+    -- Stops/starts audio during certain events
     if gameLevel == 3 then
         homeSong:setLooping(false)
         love.audio.stop(homeSong)
@@ -1200,7 +1182,7 @@ function love.update(dt)
         love.audio.stop(user.jumpFx)
         love.audio.stop(user.projectileFx)
     end
-
+    
     if alive == true and gameLevel ~= 3 and gameLevel ~= 3.5 then
         homeSong:setLooping(true)
         homeSong:setVolume(0.3)
@@ -1214,7 +1196,6 @@ function love.update(dt)
         end)
     end
     
-    --Endgame screen sounds
     if endBool == true then
         controlRoomSong:setLooping(false)
         love.audio.stop(controlRoomSong)
@@ -1252,19 +1233,19 @@ function love.update(dt)
     l3SongTimer:update(dt)
     gameOverFxTimer:update(dt)
     endRunTimer:update(dt)
-    drawResetTextTimer:update(dt)
+    resetGameTimer:update(dt)
     
     -- Destroys timers when resetting from endgame
-    if drawResetTextBool == true then
+    if resetGameTimer == true then
         if love.keyboard.isDown('r') then
-            drawResetTextTimer:destroy()
+            resetGameTimer:destroy()
         end
     end
-    
     if endGameFxBool == true then
         gameOverFxTimer:destroy()
     end
     
+    -- Updates boss
     if bossBool == true then
         bossTimer:update(dt)
         bossTimer2:update(dt)
@@ -1273,6 +1254,7 @@ function love.update(dt)
         boss:update(dt)
     end
     
+    --Updates various elements of the game
     if gameLevel >= 3 then
         computer:update(dt)
     end
@@ -1421,6 +1403,7 @@ function love.update(dt)
     dashTimer:update(dt)
     cooldownTimer:update(dt)
     
+    -- Destroys various timers
     if invincible == false then
         invincibleTimer:destroy()
     end
@@ -1444,7 +1427,8 @@ function love.update(dt)
         l3SongTimer:destroy()
     end
     
-    
+    -- Destroys enemy timers
+    --Level 1 enemies
     if enemy.eAlive == false then
         enemyTimer:destroy()
     
@@ -1727,7 +1711,6 @@ function love.update(dt)
         for i,v in ipairs(walls) do
             v:update(dt)
         end
-        
         for i,v in ipairs(objects) do
             v:update(dt)
         end
@@ -1735,7 +1718,6 @@ function love.update(dt)
         for i,v in ipairs(walls2) do
             v:update(dt)
         end
-        
         for i,v in ipairs(objects2) do
             v:update(dt)
         end
@@ -1743,12 +1725,12 @@ function love.update(dt)
         for i,v in ipairs(walls3) do
             v:update(dt)
         end
-        
         for i,v in ipairs(objects3) do
             v:update(dt)
         end
     end
     
+    -- Collision detection for various game elements
     local loop = true
     local limit = 0
 
@@ -1805,7 +1787,6 @@ function love.update(dt)
                     object.alive = false
                 end
             end
-
             for i,wall in ipairs(walls2) do
                 collision = user:resolveCollision(wall)
                 if collision then
@@ -1832,7 +1813,6 @@ function love.update(dt)
                     object.alive = false
                 end
             end
-
             for i,wall in ipairs(walls3) do
                 if walkOutBool == false then
                     collision = user:resolveCollision(wall)
@@ -1859,6 +1839,7 @@ function love.update(dt)
         v:update(dt)
     end
     
+    -- Keeps projectile count from going below zero and keeps track of if user has any projectiles.
     if pStock <= 0 then
         inStock = false
         if pStock < 0 then
@@ -1866,6 +1847,7 @@ function love.update(dt)
         end
     end
     
+    -- This allows for gates to be functional and transitions the user from level to level.
     for i,wall in ipairs(walls) do
         if wall.image == gateImage and user.x > wall.x - 150 and user.y > wall.y - 20 and bossBool == false then
             drawGatePrompt = true
@@ -1873,7 +1855,6 @@ function love.update(dt)
                 drawGatePrompt = false
             end
             if hasKey == true and love.keyboard.isDown("q") and user.x > wall.x - 150 and user.y > wall.y - 150 then
-
                 if gameLevel == 1 then
                     love.audio.stop(doorFx)
                     doorFx:setLooping(false)
@@ -1910,7 +1891,6 @@ function love.update(dt)
             love.graphics.setColor(r,g,b,a)
             love.audio.stop()
             love.event.quit("restart")
---            love.load()
         end
     elseif endTextBool == true then
         if love.keyboard.isDown("r") then
@@ -1918,47 +1898,38 @@ function love.update(dt)
         end
     end
     
-    
     -- Fade animation
-    
     fadeCurrentFrame = fadeCurrentFrame + 45 * dt
     if fadeCurrentFrame >= 6 then
         fadeCurrentFrame = 6
     end
-    
     fadeCurrentFrame2 = fadeCurrentFrame2 - 45 * dt
     if fadeCurrentFrame2 <= 1 then
         fadeCurrentFrame2 = 1
         stopIntroFadeIn = true
     end
-    
     fadeCurrentFrame3 = fadeCurrentFrame3 + 45 * dt
     if fadeCurrentFrame3 >= 6 then
         fadeCurrentFrame3 = 6
     end
-    
     fadeCurrentFrame4 = fadeCurrentFrame4 + 45 * dt
     if fadeCurrentFrame4 >= 6 then
         fadeCurrentFrame4 = 6
     end
-    
     fadeCurrentFrame5 = fadeCurrentFrame5 + 45 * dt
     if fadeCurrentFrame5 >= 6 then
         fadeCurrentFrame5 = 6
     end
-    
     fadeCurrentFrame6 = fadeCurrentFrame6 + 45 * dt
     if fadeCurrentFrame6 >= 6 then
         fadeCurrentFrame6 = 6
     end
 
     -- Wrench Animation
-    
     wrenchCurrentFrame = wrenchCurrentFrame + 10 * dt
     if wrenchCurrentFrame >= 5 then
         wrenchCurrentFrame = 1
     end
-    
     wrenchCurrentFrameLeft = wrenchCurrentFrameLeft + 10 * dt
     if wrenchCurrentFrameLeft >= 5 then
         wrenchCurrentFrameLeft = 1
@@ -1970,6 +1941,7 @@ function love.update(dt)
         coinCurrentFrame = 1
     end
     
+    -- Removes all enemies left alive from the previous level
     if gameLevel == 2.5 then
         for i,enemy in ipairs(enemiesList) do
             enemy.eAlive = false
@@ -1980,33 +1952,31 @@ function love.update(dt)
         end
     end
     
+    -- Level transition code which animates the fade to black
     if gameLevel == 2 then
         user:level2(gameLevel)
         drawLevel2Intro = true
     end
-    
     if drawLevel2Intro == true then
         level2TextTimer:after(2, function() user:drawLevel2Text() end)
     end
-    
     if gameLevel == 3 then
         user:level3(gameLevel)
         drawLevel3Intro = true
     end
-    
     if drawLevel3Intro == true then
         level3TextTimer:after(2, function() user:drawLevel3Text() end)
     end 
     
-    -- Endgame screen bug fix
+    -- Resets game to title screen after endgame animation
     if endBool == true then
         if endTextBool == true then
             user.y = user.y
-            drawResetTextTimer:after(6, function() drawResetText() end)
+            resetGameTimer:after(6.8, function() resetGame() end)
         end
     end
     
-    
+    -- Plays game over sound
     if alive == false then
         user.gameOverFx:setLooping(false)
         if endGameFxBool == false then
@@ -2019,13 +1989,9 @@ function love.update(dt)
             gameOverFxTimer:after(0.2, function() endGameFx() end)
         end)
     end
-    
-
-    
 end
 
 function love.draw()
-    
     --Camera
     if endRunBool == false then
         love.graphics.translate(-user.x + 300, -user.y + 300)
@@ -2042,27 +2008,27 @@ function love.draw()
         love.graphics.draw(myBackground3, -300, -760)
     end
     
-    
+    -- Draws shop
     if gameLevel ~= 1 then
         shopKeep:draw()
         shopButton1:draw()
         shopButton2:draw()
-        
     end
     
+    -- Draws level 2 npc
     if gameLevel == 2.5 then
         traveler:draw()
     end
     
+    -- Draws server at the end of the game
     if gameLevel == 3.5 then
         computer:draw()
     end
     
+    -- Draws player character
     user:draw()
     
-    
     -- Draws bitmap, objects, and projectiles
-    
     if gameLevel == 1 then
         for i,v in ipairs(objects) do
             v:draw()
@@ -2093,6 +2059,7 @@ function love.draw()
         end
     end
     
+    -- Draws tilemap
     if gameLevel == 1 then
         for i,v in ipairs(walls) do
             v:draw()
@@ -2109,12 +2076,12 @@ function love.draw()
         end
     end
     
+    -- Game over screen
     if endBool == true then
         love.graphics.draw(gameOver, 300, 450)
     end
     
     -- Draws enemy
-    
     if gameLevel == 1 and start == true then
         for i,enemy in ipairs(enemiesList) do
             enemy:draw()
@@ -2132,7 +2099,7 @@ function love.draw()
         end
     end
     
-    
+    -- Draws powerup timer icon
     if user.eating == true then
         love.graphics.draw(mushroomImage, user.x + 10, user.y + 10, 0, 0.6, 0.6)
     end
@@ -2150,14 +2117,13 @@ function love.draw()
         end
     end
     
+    -- Gate prompt
     if drawGatePrompt == true and jumpBool == true then
         love.graphics.draw(textPrompt, user.x, user.y + 190)
         love.graphics.print("If you have a key,", user.x + 10, user.y + 200, 0, 0.16, 0.16)
         love.graphics.print("press 'q' to open the", user.x + 10, user.y + 210, 0, 0.16, 0.16)
         love.graphics.print(" gate.", user.x + 10, user.y + 220, 0, 0.16, 0.16)
     end
-    
-      
     
     -- Start Screen
     if start == false then
@@ -2176,10 +2142,12 @@ function love.draw()
     if startFade == true and start == false then
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame)], 0, 0)
     end
+    -- Level 1 text
     if level1Text == true and startFade == true then
         love.graphics.print("Area 1", 280, 250)
     end
     
+    -- Draws intro
     if drawIntro == true and start == false then
         love.graphics.draw(gameOver, 0, 0)
         love.graphics.print("A Nathan Lusk game.", 220, 270, 0, 0.5, 0.5)
@@ -2193,6 +2161,7 @@ function love.draw()
         end
     end
     
+    -- Level 2 text
     if drawLevel2Intro == true  then
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame4)], user.x -400, user.y - 400)
         if drawLevel2Text == true then
@@ -2200,6 +2169,7 @@ function love.draw()
         end
     end
     
+    -- Level 3 text
     if drawLevel3Intro == true  then
         love.graphics.draw(fadeFrames[math.floor(fadeCurrentFrame5)], user.x -400, user.y - 400)
         if drawLevel3Text == true then
@@ -2221,19 +2191,17 @@ function love.draw()
         
         if endTextBool == true then
             love.graphics.setColor(0, 1, 0)
-            love.graphics.print("The End", 550, user.y - 100)
---            if drawResetTextBool == true then
---                love.graphics.setColor(0, 1, 0)
---                love.graphics.print("Press 'r' to reload the game.", 600, user.y + 150, 0, 0.2, 0.2)
---            end
+            love.graphics.print("The End", 550, user.y - 50)
         end
     end
     
+    -- Shop dialogue
     if drawShopAlert == true and endBool == false then
         love.graphics.draw(textPrompt, user.x, user.y + 190)
         love.graphics.print("Press 'q' to talk.", user.x + 10, user.y + 200, 0, 0.16, 0.16)
     end
     
+    -- Npc dialogue
     if drawTravelerAlert == true then
         love.graphics.draw(textPrompt, user.x, user.y + 190)
         love.graphics.print("Press 'q' to talk.", user.x + 10, user.y + 200, 0, 0.16, 0.16)
@@ -2261,8 +2229,8 @@ function love.draw()
         love.graphics.print("-Jump directly on top of enemies heads in order to neutralize them.", 20, 160, 0, 0.2, 0.2)
         love.graphics.print("-Hold down 'space' while landing on an enemies head in order to perform", 20, 180, 0, 0.2, 0.2)
         love.graphics.print("a 'super jump'.", 20, 200, 0, 0.2, 0.2)
-        love.graphics.print("-Eating a makes you unable to harm the creatures; Except for ranged attacks.", 20, 220, 0, 0.2, 0.2)
-        love.graphics.print("It also makes you invulnerable to any attacks from the creatures.", 20, 240, 0, 0.2, 0.2)
+        love.graphics.print("-Eating makes you unable to harm the creatures; Except for ranged attacks.", 20, 220, 0, 0.2, 0.2)
+        love.graphics.print("It also makes you invulnerable to any attacks from the creatures while the mushroom icon is present.", 20, 240, 0, 0.2, 0.2)
         love.graphics.print("-Throw wrenches at creatures to neutralize them.", 20, 260, 0, 0.2, 0.2)
         love.graphics.print("-Collect coins throughout the world to spend at the shop.", 20, 280, 0, 0.2, 0.2)
         love.graphics.print("-Find keys in levels in order to progress through the gate at the end of", 20, 300, 0, 0.2, 0.2)
@@ -2274,14 +2242,14 @@ function love.draw()
     if storyScreenBool == true then
         love.graphics.draw(gameOver, 0, 0)
         love.graphics.setColor(0, 1, 0)
-        love.graphics.print("The best engineer in Voidland wakes up to a call one day.", 20, 60, 0, 0.2, 0.2)
+        love.graphics.print("The best engineer in Voidland wakes up to a call.", 20, 60, 0, 0.2, 0.2)
         love.graphics.print("The king of Voidland declares a state of emergency, as the server for Voidland's network has ", 20, 80, 0, 0.2, 0.2)
         love.graphics.print("crashed. The server is used by all of Voidland's residents, and is crucial for the resident's", 20, 100, 0, 0.2, 0.2)
         love.graphics.print("day to day lives. The king tells the engineer that after an investigation, it was discovered that", 20, 120, 0, 0.2, 0.2)
         love.graphics.print("the server had been shut down by some of the wild creatures of Voidland.", 20, 140, 0, 0.2, 0.2)
-        love.graphics.print("They apparently infiltrated the control room out of protest, because ", 20, 160, 0, 0.2, 0.2)
-        love.graphics.print("when the the control room and it's server were consctructed, large portions of", 20, 180, 0, 0.2, 0.2)
-        love.graphics.print("the creature's habitat were destroyed.", 20, 200, 0, 0.2, 0.2)
+        love.graphics.print("They infiltrated the control room out of protest, because ", 20, 160, 0, 0.2, 0.2)
+        love.graphics.print("when the the control room and its server were constructed large portions of", 20, 180, 0, 0.2, 0.2)
+        love.graphics.print("the creature's habitats were destroyed.", 20, 200, 0, 0.2, 0.2)
         love.graphics.print("The king reminds the engineer one more time how important this task is.", 20, 220, 0, 0.2, 0.2)
         love.graphics.print("The engineer knows he may get a chance to meet the princess of Voidland", 20, 240, 0, 0.2, 0.2)
         love.graphics.print("if he can do a good job and impress the king.", 20, 260, 0, 0.2, 0.2)
@@ -2297,15 +2265,13 @@ function love.draw()
     end
 end
 
--- function for user input
+-- Functions for user input
 function love.keypressed(key)
     user:keyInput(key)
     if key == "space" then
         if jumpBool == true then
             user:jump()
         end
---    elseif key == "return" then
---        start = false
     elseif key == "q" then
         if shopTalkBool == true then
             shopTalkCounter = shopTalkCounter + 1
@@ -2329,6 +2295,7 @@ function love.mousepressed(x, y, button)
     end
 end
 
+-- Plays level 3 music
 function finalSongPlay()
     controlRoomSong:setLooping(true)
     controlRoomSong:setVolume(0.3)
@@ -2337,14 +2304,15 @@ function finalSongPlay()
     end
 end
 
+-- End game sounds
 function endGameFx()
     endGameFxBool = true
     love.audio.stop(doorFx)
     love.audio.stop(controlRoomSong)
 end
 
-function drawResetText() -- change name to restarting game (what this function does) instead of reset text
---    drawResetTextBool = true
+-- Resets the game to the title screen
+function resetGame()
     love.graphics.setColor(r,g,b,a)
     love.audio.stop()
     love.event.quit("restart")

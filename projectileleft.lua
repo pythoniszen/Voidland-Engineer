@@ -8,7 +8,6 @@ Projectile_Left = Object:extend()
 wrenchImg = love.graphics.newImage("/art/wrench.png")
 
 function Projectile_Left:new(x, y)
-  
     --Properties
     self.image = wrenchImg
     self.x = x + 50
@@ -21,6 +20,7 @@ function Projectile_Left:new(x, y)
 end
 
 function Projectile_Left:update(dt)
+    -- Collision detection and movement code
     if gameLevel == 1 then
         for i,v in ipairs(walls) do
             if self:checkCollision(v) then
@@ -31,7 +31,6 @@ function Projectile_Left:update(dt)
                 end
             end
         end
-    
     elseif gameLevel == 2.5 then
         for i,v in ipairs(walls2) do
             if self:checkCollision(v) then
@@ -53,7 +52,6 @@ function Projectile_Left:update(dt)
             end
         end
     end
-  
     
     -- Enemies 
     if gameLevel == 1 then
@@ -70,7 +68,6 @@ function Projectile_Left:update(dt)
                 end
             end
         end
-    
     elseif gameLevel == 2.5 then
         for i,enemy in ipairs(enemiesList2) do
             if hitDetect(self, enemy) then
@@ -85,7 +82,6 @@ function Projectile_Left:update(dt)
                 end
             end
         end
-    
     elseif gameLevel == 3.5 then
         for i,enemy in ipairs(enemiesList3) do
             if hitDetect(self, enemy) then
@@ -116,7 +112,6 @@ function Projectile_Left:update(dt)
             end
         end
     end
-    
     self.x = self.x - self.speed * dt
 end
 

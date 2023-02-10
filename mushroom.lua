@@ -19,7 +19,7 @@ function Mushroom:new(x, y)
 end
 
 function Mushroom:update(dt)
-    
+    -- Keeps track of mushroom count
     if self.alive == false and self.loop == true then
         mushroomCount = mushroomCount + 1
         self.loop = false

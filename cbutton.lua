@@ -22,6 +22,7 @@ function controlsButtonClass:update(dt)
     
     mouse.x, mouse.y = love.mouse.getPosition()
   
+    -- Allows user to click on button and trigger the controls/story screen
     if mouse.x > self.x and mouse.y < self.y + 50 and mouse.x < self.width - self.x and mouse.y < self.y + self.height + 50 and mouse.y > self.y then
         self.image = self.image3
         if love.mouse.isDown("1") and start == false and self.image == controlsButtonImage2 and storyScreenBool == false and controlScreenBool == false and drawIntro == false and startFade == false then

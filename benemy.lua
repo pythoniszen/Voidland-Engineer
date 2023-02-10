@@ -1,7 +1,7 @@
 require "main"
 require "helpers"
 
--- Similar to "enemy" but with a few changes
+-- Similar to "enemy" class but with a few changes
 BEnemyClass = Entity:extend()
 bFallL = love.graphics.newImage("/art/benemyfallleft.png")
 bFallR = love.graphics.newImage("/art/benemyfallright.png")
@@ -33,46 +33,46 @@ function BEnemyClass:new(x, y, boundLeft, boundRight)
 end
 
 function BEnemyClass:update(dt)
-  
     self.enemyDieFx:setVolume(0.8)
   
+    -- Helps user perfom a 'super jump'
     if self.eAlive == false and self.bounceBool == true then
-          if love.keyboard.isDown("space") then
-              user.gravity = -520
-              self.bounceBool = false
-          else
-              user.gravity = -200
-              self.bounceBool = false
-          end
-      end
-  
-    if self.eAlive == true then
-      
-      self.eMove = false
-      self.last.x = self.x
-      self.last.y = self.y
-      
-      self.currentFrame = self.currentFrame + 20 * dt
-    if self.currentFrame >= 5 then
-        self.currentFrame = 1
-    end
-
-    if self.loop == true then
-        self.eMove = true
-        if self.eLeft == true then
-            self.x = self.x - ((self.speed) * dt)
-        elseif self.eLeft == false then
-            self.x = self.x + ((self.speed) * dt)
+        if love.keyboard.isDown("space") then
+            user.gravity = -520
+            self.bounceBool = false
+        else
+            user.gravity = -200
+            self.bounceBool = false
         end
     end
+  
+    -- Animation and movement code
+    if self.eAlive == true then
+        self.eMove = false
+        self.last.x = self.x
+        self.last.y = self.y
+        self.currentFrame = self.currentFrame + 20 * dt
+    
+        if self.currentFrame >= 5 then
+            self.currentFrame = 1
+        end
+
+        if self.loop == true then
+            self.eMove = true
+            if self.eLeft == true then
+                self.x = self.x - ((self.speed) * dt)
+            elseif self.eLeft == false then
+                self.x = self.x + ((self.speed) * dt)
+            end
+        end
         
-        
-    -- Checks if enemy is currently alive and drop from screen if its not
+    -- Checks if enemy is currently alive and drop from screen if it's not
     elseif start == true and self.eAlive == false then
-            self.gravity = self.gravity + self.weight * dt
-            self.y = self.y + (self.gravity + 400) * dt
+        self.gravity = self.gravity + self.weight * dt
+        self.y = self.y + (self.gravity + 400) * dt
     end
     
+    -- Determines direction
     if self.eLeft == true and self.eAlive == true then
         self.image = bEnemyFlyLeft
     elseif self.eLeft == false and self.eAlive == true then
@@ -105,7 +105,7 @@ end
 
 
 function BEnemyClass:draw()
-
+    -- Draws the spritesheet
     if self.eLeft == true and self.eAlive == true then
         love.graphics.draw(bEnemyFlyLeft, bEFrames[math.floor(self.currentFrame)], self.x + 6, self.y + 12)
     elseif self.eLeft == false and self.eAlive == true then

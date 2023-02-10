@@ -16,12 +16,9 @@ function ShopButton:new(x, y, imageVar, price)
 end
 
 function ShopButton:update(dt)
-  
     if mouse.x > self.x - 98 and mouse.y < self.y and mouse.x < self.x - 48 and mouse.y > 220 and mouse.y < 300 then
-        --self.image = stillCoin
         self.canBuy = true
     else
-        --self.image = self.imageMain
         self.canBuy = false
     end
     
@@ -38,9 +35,7 @@ function ShopButton:draw()
             love.graphics.draw(self.image, self.x - 110, self.y - 25, 0, 0.8, 0.8)
         else
             love.graphics.draw(self.image, self.x - 100, self.y - 25)      
-        
         end
-        
         love.graphics.draw(stillCoin, self.x - 95, self.y + 10, 0, 0.2, 0.2)
         love.graphics.print(":"..self.price, self.x - 85, self.y + 10, 0, 0.16, 0.16)
     end

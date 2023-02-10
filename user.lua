@@ -50,13 +50,7 @@ function User:new(x, y)
 end
 
 function User:update(dt)
-  
     User.super.update(self, dt)
-    
---    if jumpBool == true then
---        print("user x =".. user.x)
---        print("user y =".. user.y)
---    end
     
     if isDashing == true then
         dashTimer:after(0.15, function() self:cancelDash() end)
@@ -68,7 +62,6 @@ function User:update(dt)
         -- Keeps track of last position for collision detect
         self.last.x = self.x
         self.last.y = self.y
-        
         if wallHitBottom == true then
             onGround = true
         end
@@ -78,146 +71,134 @@ function User:update(dt)
             user_left = true
         end
         
-        -- Collision detection with enemies
-      if gameLevel == 1 then
-          for i,enemy in ipairs(enemiesList) do
-              if hitDetect(self, enemy) then
-                  if invincible == true then
-                      enemy.eAlive = true
-                  elseif enemy.eAlive == false then
-                      return
-                  elseif invincible == false then
-                      alive = false
-                  end
-              end
-          end
+          -- Collision detection with enemies
+        if gameLevel == 1 then
+            for i,enemy in ipairs(enemiesList) do
+                if hitDetect(self, enemy) then
+                    if invincible == true then
+                        enemy.eAlive = true
+                    elseif enemy.eAlive == false then
+                        return
+                    elseif invincible == false then
+                        alive = false
+                    end
+                end
+            end
+        elseif gameLevel == 2.5 then
+            for i,enemy in ipairs(enemiesList2) do
+                if hitDetect(self, enemy) then
+                    if invincible == true then
+                        enemy.eAlive = true
+                    elseif enemy.eAlive == false then
+                        return
+                    elseif invincible == false then
+                        alive = false
+                    end
+                end
+            end
+        elseif gameLevel == 3.5 then
+            for i,enemy in ipairs(enemiesList3) do
+                if hitDetect(self, enemy) then
+                    if invincible == true then
+                        enemy.eAlive = true
+                    elseif enemy.eAlive == false then
+                        return
+                    elseif invincible == false then
+                        alive = false
+                    end
+                end
+            end
+            if hitDetect(self, boss) then
+                boss.bounceBool = false
+                if boss.bounceBool == false and self.y < 720 and invincible == false then
+                    if love.keyboard.isDown("space") then
+                        self.gravity = -520
+                    else
+                        self.gravity = -200
+                    end
+                elseif invincible == false and boss.eAlive == true and userHitBoss == false then
+                    alive = false
+                end
+            end
+        end
+        if jumpBool == true then
+            boss.bounceBool = true
+        end
+        
+        -- Enemies from classes head bounce
+        for i,enemy in ipairs(enemiesList) do
+            if enemy.eAlive == false and enemy.bounceBool == true then
+                if love.keyboard.isDown("space") then
+                    self.gravity = -520
+                    enemy.bounceBool = false
+                else
+                    self.gravity = -200
+                    enemy.bounceBool = false
+                end
+            end
+        end
+        for i,enemy in ipairs(enemiesList2) do
+            if enemy.eAlive == false and enemy.bounceBool == true then
+                if love.keyboard.isDown("space") then
+                    self.gravity = -520
+                    enemy.bounceBool = false
+                else
+                    self.gravity = -200
+                    enemy.bounceBool = false
+                end
+            end
+        end
+        for i,enemy in ipairs(enemiesList3) do
+            if enemy.eAlive == false and enemy.bounceBool == true then
+                if love.keyboard.isDown("space") then
+                    self.gravity = -520
+                    enemy.bounceBool = false
+                else
+                    self.gravity = -200
+                    enemy.bounceBool = false
+                end
+            end
+        end
+        
+        -- Left and right player movement + dashing
+        if love.keyboard.isDown("d") and isDashing == false and endBool == false then
+            self.x = self.x + self.speed * dt
+        elseif love.keyboard.isDown("a") and isDashing == false and endBool == false then
+            self.x = self.x - self.speed * dt
+        elseif isDashing == true and user_left == false then
+            self.image = dashImage
+            self.x = self.x + (self.speed + 600) * dt
+        elseif isDashing == true and user_left == true then
+            self.image = dashImageLeft
+            self.x = self.x - (self.speed + 600) * dt
+        end
+        
+        -- Keeps track of if player can jump (prevents infinite jumping)
+        if self.last.y == self.y then
+            jumpBool = false
+        else
+            jumpBool = true
+        end
       
-      elseif gameLevel == 2.5 then
-          for i,enemy in ipairs(enemiesList2) do
-              if hitDetect(self, enemy) then
-                  if invincible == true then
-                      enemy.eAlive = true
-                  elseif enemy.eAlive == false then
-                      return
-                  elseif invincible == false then
-                      alive = false
-                  end
-              end
-          end
-      elseif gameLevel == 3.5 then
-          for i,enemy in ipairs(enemiesList3) do
-              if hitDetect(self, enemy) then
-                  if invincible == true then
-                      enemy.eAlive = true
-                  elseif enemy.eAlive == false then
-                      return
-                  elseif invincible == false then
-                      alive = false
-                  end
-              end
-          end
-          
-          if hitDetect(self, boss) then
-              boss.bounceBool = false
-              if boss.bounceBool == false and self.y < 720 and invincible == false then
-                  if love.keyboard.isDown("space") then
-                      self.gravity = -520
-                  else
-                      self.gravity = -200
-                  end
-              elseif invincible == false and boss.eAlive == true and userHitBoss == false then
-                  alive = false
-              end
-          end
-      end
-      
-      if jumpBool == true then
-          boss.bounceBool = true
-      end
-      
-      -- enemies from classes head bounce
-      for i,enemy in ipairs(enemiesList) do
-          if enemy.eAlive == false and enemy.bounceBool == true then
-              if love.keyboard.isDown("space") then
-                  self.gravity = -520
-                  enemy.bounceBool = false
-              else
-                  self.gravity = -200
-                  enemy.bounceBool = false
-              end
-          end
-      end
-      
-      for i,enemy in ipairs(enemiesList2) do
-          if enemy.eAlive == false and enemy.bounceBool == true then
-              if love.keyboard.isDown("space") then
-                  self.gravity = -520
-                  enemy.bounceBool = false
-              else
-                  self.gravity = -200
-                  enemy.bounceBool = false
-              end
-          end
-      end
-      
-      
-      for i,enemy in ipairs(enemiesList3) do
-          if enemy.eAlive == false and enemy.bounceBool == true then
-              if love.keyboard.isDown("space") then
-                  self.gravity = -520
-                  enemy.bounceBool = false
-              else
-                  self.gravity = -200
-                  enemy.bounceBool = false
-              end
-          end
-      end
-      
---      if boss.lastHit < boss.hits then
-          
---      end
-      
-      -- Left and right player movement + dashing
-      if love.keyboard.isDown("d") and isDashing == false and endBool == false then
-          self.x = self.x + self.speed * dt
-      elseif love.keyboard.isDown("a") and isDashing == false and endBool == false then
-          self.x = self.x - self.speed * dt
-      elseif isDashing == true and user_left == false then
-          self.image = dashImage
-          self.x = self.x + (self.speed + 600) * dt
-      elseif isDashing == true and user_left == true then
-          self.image = dashImageLeft
-          self.x = self.x - (self.speed + 600) * dt
-
-      end
-      
-      -- Keeps track of if player can jump (prevents infinite jumping)
-      if self.last.y == self.y then
-          jumpBool = false
-      else
-          jumpBool = true
-      end
-      
-      -- User gravity
-      self.gravity = self.gravity + self.weight * dt
+        -- User gravity
+          self.gravity = self.gravity + self.weight * dt
           self.y = self.y + self.gravity * dt
   
   -- Prevents user from moving player character while either dead or
   -- While at title screen
-  elseif alive == false or start == false then
-      self.x = self.x
-      self.y = self.y
-  end
+    elseif alive == false or start == false then
+        self.x = self.x
+        self.y = self.y
+    end
   
-  -- Endscreen
-  if endBool == true and endRunBool == false then
-      self.x = self.last.x
-      self.y = self.last.y
-  end
+    -- Endscreen
+    if endBool == true and endRunBool == false then
+        self.x = self.last.x
+        self.y = self.last.y
+    end
     
     -- Contains user in the game window
     local window_width = love.graphics.getWidth(myBackground)
-    
     if self.x < 0 then
         self.x = 0
     elseif self.x > 6649 and bossBool == false then
@@ -237,18 +218,17 @@ function User:update(dt)
             currentFrameLeft = 1
         end
     end
-    
     if drawLevel2Intro == true and drawLevel2Text == false then
         self.x = self.last.x
         self.y = self.last.y
         jumpBool = true
-    -- places user at level2 start point    
+    
+    -- Places user at level 2 start point    
     elseif drawLevel2Intro == true and drawLevel2Text == true then
         self.x = 60
         self.y = 830
         jumpBool = true
     end
-    
     if drawLevel3Intro == true and drawLevel3Text == false then
         self.x = self.last.x
         self.y = self.last.y
@@ -259,7 +239,6 @@ function User:update(dt)
         self.y = 830
         jumpBool = true
     end
-    
     if endRunBool == true then
         if endBoolX == true then
             self.x = -50
@@ -270,14 +249,12 @@ function User:update(dt)
         if currentFrame >= 4 then
             currentFrame = 1
         end
-        
         if self.x < 690 then
             self.x = self.x + self.speed * dt
         else
             self.x = self.last.x
         end
     end
-    
     if walkOutBool == true then
         self.speed = 180
         self.x = self.x + self.speed * dt
@@ -306,9 +283,7 @@ function User:jump()
 end
 
 -- Dash function
-
 function User:dash()
-    
     self.dashFx:setLooping(false)
     self.dashFx:setVolume(0.3)
     self.dashFx:play()
@@ -317,13 +292,10 @@ function User:dash()
         cooldown = true
     end
 end
-
 function User:cancelDash()
     isDashing = false
     cooldownTimer:after(2, function() self:cooldownEnd() end)
 end
-
-
 function User:cooldownEnd()
     love.audio.stop(self.dashFx)
     cooldown = false
@@ -351,6 +323,7 @@ function User:eat()
     end
 end
 
+-- Function for invincible state
 function User:invincibleEnd()
     invincible = false
     self.eating = false
@@ -407,6 +380,7 @@ function User:draw()
         end
     end
     
+    -- User animation code for endgame animation
     if endBool == true and endRunBool == false then
         if user_left == true then
             love.graphics.draw(standImageLeft, self.x, self.y)
@@ -420,12 +394,10 @@ function User:draw()
             love.graphics.draw(standImageRight, self.x, self.y)
         end
     end
-    
     if walkOutBool == true then
         love.graphics.draw(jump_img, frames[math.floor(currentFrame)], self.x + 45, self.y + 40)
         endTextTimer:after(4, function() self:endText() end)
     end
-
 end
 
 -- Function used for user projectile throw function
@@ -466,12 +438,10 @@ function User:level2(level)
         hasKey = false
     end
 end
-
 function User:drawLevel2Text()
     drawLevel2Text = true
     level2ScreenEndTimer:after(2, function() self:endLevel2Screen() end)
 end
-
 function User:endLevel2Screen()
     drawLevel2Intro = false
 end
@@ -480,15 +450,13 @@ end
 function User:level3(level)
     if level == 3 then
         gameLevel = 3.5
-        hasKey = true
+        hasKey = false
     end
 end
-
 function User:drawLevel3Text()
     drawLevel3Text = true
     level3ScreenEndTimer:after(2, function() self:endLevel3Screen() end)
 end
-
 function User:endLevel3Screen()
     drawLevel3Intro = false
 end
