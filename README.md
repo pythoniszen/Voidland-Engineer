@@ -2,6 +2,10 @@
 #### Description:
 ##### Installation Instructions:
   Included in this project folder is the source code to Voidland Engineer, as well as the compressed zip file for the game itself. Unzip the the zip files' contents and open the extracted file. Click the .exe file inside of this folder to launch the game. After this, you are set to play Voidland Engineer! Do not remove any files from this folder to ensure the game will launch and run as intended.
+  
+ALTERNATE DOWNLOAD LINK: https://www.mediafire.com/folder/yxyg4yi4o27m4/Voidland_Engineer
+
+NOTE: Voidland Engineer is only available on Windows at this time.
 ##### About:
   Voidland Engineer is a 2D sidescrolling adventure inspired by old school style games such as the original Super Mario Bros. A lot of love was put in to this project, in which almost all components were made by me (Nathan Lusk). All music, sounds, artwork, and most of the code was created by me (except for a few frameworks/modules). When I was younger, I used to make games in the programming language Scratch. I was never able to make exactly what I wanted to create, as I was quite young at the time. I thought it would be fun, as well as a good learning experience, to revisit coding games and to make a game without using an engine or any pre-made art.
 ##### Development Details/ Design:
